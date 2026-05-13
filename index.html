@@ -3,588 +3,106 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Portfolio Tracker v2.22</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<title>Leader Portfolio Aggregator v1</title>
 <style>
 :root{
   --nav:#1E293B;--teal:#0D9488;--amber:#D97706;--green:#15803D;--red:#DC2626;
   --bg:#F8FAFC;--card:#FFFFFF;--border:#E2E8F0;--text:#0F172A;--text2:#475569;--muted:#94A3B8;
   --tealL:#CCFBF1;--amberL:#FEF3C7;--greenL:#DCFCE7;--redL:#FEE2E2;--slateL:#F1F5F9;
-  --indigo:#4F46E5;--violet:#7C3AED;--rose:#E11D48;--acctamber:#B45309;--cyan:#0891B2;--emerald:#059669;
-  --r:12px;--r2:8px;--shadow:0 10px 30px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.06);
-  --stickyHeadH:64px;
+  --r:12px;--shadow:0 10px 30px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.06);
 }
-*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Aptos,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px;overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:999px}.topbar{height:54px;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:3px solid var(--teal);gap:12px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--teal),#14B8A6);display:grid;place-items:center;font-weight:720}.brand-title{font-weight:700;letter-spacing:.02em;white-space:nowrap}.top-actions,.weekbox{display:flex;align-items:center;gap:8px}.weekbox label{font-size:11px;color:#CBD5E1}.weekbox select{background:#334155;color:#fff;border:1px solid #475569;border-radius:8px;padding:6px 8px;max-width:230px}.status{font-size:11px;color:#CBD5E1;white-space:nowrap}.btn{border:0;border-radius:9px;padding:7px 11px;font-weight:650;font-size:12px;background:#334155;color:#fff;transition:.15s}.btn:hover{filter:brightness(1.08)}.btn.primary{background:var(--teal)}.btn.warn{background:var(--amber)}.btn.danger{background:var(--red)}.btn.light{background:#F1F5F9;color:var(--text);border:1px solid var(--border)}.btn.small{padding:5px 8px;font-size:11px}.btn.account-add{background:var(--violet);color:#fff}.btn.io{background:#475569;color:#fff}.shell{display:flex;height:calc(100vh - 54px)}.sidebar{width:210px;background:#E2E8F0;border-right:1px solid #CBD5E1;overflow:auto;padding:12px}.side-label{font-size:10px;color:var(--muted);font-weight:720;text-transform:uppercase;letter-spacing:.09em;margin:12px 8px 6px}.navitem{width:100%;display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;background:transparent;border-radius:10px;color:var(--text2);text-align:left;font-weight:650}.navitem:hover{background:#F8FAFC;color:var(--text)}.navitem.active{background:#FFFFFF;color:var(--nav);box-shadow:0 1px 2px rgba(15,23,42,.08)}.dot{width:9px;height:9px;border-radius:999px;flex:0 0 auto}.inactive{opacity:.48}.main{flex:1;overflow:auto;padding:18px 22px}.page{display:none}.page.active{display:block;isolation:isolate}.page-head{display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;z-index:26;background:var(--bg);padding:0 0 12px 0;margin:0;border-bottom:1px solid rgba(226,232,240,.95);box-shadow:0 10px 18px rgba(248,250,252,.98)}.title{font-size:20px;font-weight:720;letter-spacing:-.02em}.subtitle{font-size:12px;color:var(--muted);margin-top:3px}.grid{display:grid;gap:12px}.kpi-row{grid-template-columns:repeat(6,minmax(0,1fr))}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}.card.pad{padding:14px}.card-h{padding:11px 14px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#1E293B,#334155);color:#fff}.card-title{font-size:11px;font-weight:760;color:#fff;letter-spacing:.06em;text-transform:uppercase}.card-body{padding:14px}.kpi{position:relative;padding:13px 13px 12px}.kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--teal)}.k-label{font-size:10px;color:var(--muted);font-weight:720;text-transform:uppercase;letter-spacing:.06em}.k-val{font-size:22px;font-weight:760;letter-spacing:-.03em;margin-top:3px}.k-sub{font-size:11px;color:var(--text2);margin-top:2px}.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:720}.chip.green{background:var(--greenL);color:var(--green)}.chip.red{background:var(--redL);color:var(--red)}.chip.amber{background:var(--amberL);color:var(--amber)}.chip.slate{background:var(--slateL);color:var(--text2)}.tabs{display:flex;gap:4px;position:sticky;top:var(--stickyHeadH);z-index:24;background:var(--bg);padding-top:12px;margin:0 0 14px 0;border-bottom:1px solid var(--border);box-shadow:0 12px 20px rgba(248,250,252,.98)}.tab{border:0;background:transparent;padding:10px 13px;color:var(--text2);font-weight:700;border-bottom:3px solid transparent}.tab.active{color:var(--teal);border-color:var(--teal)}.subpage{display:none}.subpage.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.field{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px}.field label{display:block;font-size:10px;color:var(--muted);font-weight:720;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.field input,.field select,.field textarea{width:100%;border:0;background:transparent;outline:0;color:var(--text);font-weight:700}.field textarea{font-weight:500;min-height:92px;resize:vertical;line-height:1.5}.delta{margin-top:4px;font-size:10px}.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.qcard{border:1px solid var(--border);border-radius:12px;padding:11px;background:#fff}.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.qbadge{font-size:10px;color:#fff;background:var(--nav);border-radius:7px;padding:3px 7px;font-weight:760}.qline{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin:5px 0;color:var(--text2)}.qline b{color:var(--text)}.bar{height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--teal);width:0%;border-radius:999px}.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}.data-table th{background:#F8FAFC;border-bottom:1px solid var(--border);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:9px;white-space:nowrap}.data-table td{border-bottom:1px solid #EEF2F7;padding:7px 9px;vertical-align:middle}.data-table tr:hover td{background:#FCFDFF}.data-table input,.data-table select,.data-table textarea{width:100%;min-width:55px;border:0;background:transparent;outline:0;color:var(--text)}.data-table textarea{min-height:36px;resize:vertical;line-height:1.35}.row-actions{display:flex;gap:5px}.iconbtn{border:1px solid var(--border);background:#fff;border-radius:8px;padding:4px 7px;font-size:11px;font-weight:720}.iconbtn.teal{color:var(--teal);background:var(--tealL);border-color:#99F6E4}.iconbtn.red{color:var(--red);background:var(--redL);border-color:#FECACA}.iconbtn.amber{color:var(--amber);background:var(--amberL);border-color:#FDE68A}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.account-block{margin-bottom:12px}.acct-head{padding:12px 14px;color:#fff;display:flex;justify-content:space-between;gap:12px}.acct-name{font-size:15px;font-weight:760}.acct-sub{font-size:11px;opacity:.78}.acct-metrics{display:flex;gap:18px;text-align:right}.acct-metrics b{display:block;font-size:16px}.muted{color:var(--muted)}.toast{position:fixed;right:22px;bottom:22px;background:var(--nav);color:#fff;border-radius:12px;padding:11px 15px;font-weight:700;box-shadow:0 20px 40px rgba(15,23,42,.25);opacity:0;transform:translateY(12px);transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateY(0)}.modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.52);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}.modal-bg.show{display:flex}.modal{background:#fff;border-radius:16px;box-shadow:0 30px 80px rgba(15,23,42,.28);width:520px;max-width:96vw;max-height:90vh;overflow:auto}.modal-h{padding:17px 18px;border-bottom:1px solid var(--border)}.modal-h h3{margin:0;font-size:18px}.modal-h p{margin:3px 0 0;color:var(--muted);font-size:12px}.modal-b{padding:16px 18px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid var(--border)}.forecast-grid{display:grid;grid-template-columns:70px repeat(4,1fr);gap:8px;align-items:center}.forecast-grid .h{font-size:10px;font-weight:760;color:var(--muted);text-transform:uppercase}.forecast-grid input{border:1px solid var(--border);border-radius:8px;padding:7px}.split{display:grid;grid-template-columns:1.1fr 1fr;gap:12px}.leader-card{border-left:5px solid var(--teal)}.leader-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.overview-top{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric-mini{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.metric-mini.three{grid-template-columns:repeat(3,1fr)}.metric-box{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.metric-box .lab{font-size:10px;color:var(--muted);font-weight:760;text-transform:uppercase;letter-spacing:.06em}.metric-box .val{font-size:22px;font-weight:760;margin-top:4px}.conv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.conv-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;border-left:5px solid var(--teal)}.rate-row{margin:10px 0}.rate-head{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--text2);font-weight:700;margin-bottom:5px}.rate-head b{color:var(--text)}.ai-bar-row{display:grid;grid-template-columns:160px 70px 1fr;gap:10px;align-items:center;margin:9px 0}.ai-bar-row .ai-label{font-size:11px;color:var(--text2);font-weight:700}.ai-bar-row input{border:1px solid var(--border);border-radius:8px;padding:6px 8px;width:68px}.palette-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.palette-opt{border:1px solid var(--border);background:#fff;border-radius:10px;padding:9px 10px;display:flex;align-items:center;gap:9px;font-weight:700;color:var(--text2)}.palette-opt.active{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.14);color:var(--text)}.palette-swatch{width:16px;height:16px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(15,23,42,.14)}.conv-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:7px}.conv-metric{background:var(--slateL);border-radius:10px;padding:8px}.conv-metric .small-lab{font-size:9px;color:var(--muted);font-weight:720;text-transform:uppercase}.conv-metric .small-val{font-size:16px;font-weight:760;color:var(--text);margin-top:2px}.page-head + .tabs,.page-head + #portfolioContent{margin-top:12px}.sticky-kpis{position:sticky;top:var(--stickyHeadH);z-index:24;background:var(--bg);padding:12px 0 14px 0;margin:0 0 14px 0;border-bottom:1px solid rgba(226,232,240,.95);box-shadow:0 12px 20px rgba(248,250,252,.98)}@media(max-width:1200px){.section-grid,.overview-top{grid-template-columns:1fr}.leader-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.conv-grid{grid-template-columns:repeat(2,1fr)}}.print-hide{}@media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:repeat(2,1fr)}.split,.two-col,.three-col{grid-template-columns:1fr}.top-actions{gap:5px}.btn{padding:6px 8px}.sidebar{width:190px}.main{padding:14px}}@media(max-width:820px){:root{--stickyHeadH:92px}.page-head{padding:0 0 10px 0;gap:8px;flex-wrap:wrap}body{overflow:auto}.topbar{height:auto;flex-wrap:wrap;padding:10px}.shell{height:auto;min-height:calc(100vh - 80px)}.sidebar{display:none}.main{padding:12px}.kpi-row,.qgrid{grid-template-columns:1fr}.top-actions{flex-wrap:wrap}.weekbox{flex-wrap:wrap}.acct-metrics{display:none}.sticky-kpis,.tabs{top:var(--stickyHeadH)} }
-
-/* v2.7 mobile navigation fix: keep Portfolio + Accounts visible on phones */
-@media(max-width:820px){
-  .shell{display:flex;flex-direction:column;height:auto;min-height:calc(100vh - 80px)}
-  .sidebar{display:block!important;width:100%;border-right:0;border-bottom:1px solid var(--border);padding:8px 10px;overflow-x:auto;background:#E2E8F0;position:sticky;top:0;z-index:20}
-  .side-label{margin:6px 6px 4px}
-  #accountNav{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
-  .navitem{width:auto;min-width:max-content;white-space:nowrap;padding:8px 10px}
-  #navPortfolio{width:auto;display:inline-flex;margin-bottom:6px}
-  .tabs{overflow-x:auto;white-space:nowrap}
-  .tab{min-width:max-content}
-  .main{padding:12px}
-}
-
-/* v2.9 layout and tile consistency refinements */
-.kpi{border-left:4px solid var(--accent,var(--teal));}
-.kpi:before{display:none;}
-.metric-box{position:relative;border-left:4px solid var(--accent,var(--teal));}
-.metric-box.accent-nav{--accent:var(--nav)}
-.metric-box.accent-teal{--accent:var(--teal)}
-.metric-box.accent-green{--accent:var(--green)}
-.metric-box.accent-amber{--accent:var(--amber)}
-.metric-box.accent-red{--accent:var(--red)}
-.margin-ai-bd{display:grid;grid-template-columns:.72fr 1.14fr 1.14fr;gap:12px;align-items:stretch;}
-.bd-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
-.apply-btn{background:var(--teal)!important;color:#fff!important;border-color:transparent!important;}
-@media(max-width:1100px){.margin-ai-bd{grid-template-columns:1fr 1fr}.margin-ai-bd .compact-margin{grid-column:1/-1}.bd-kpi-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){.margin-ai-bd,.bd-kpi-grid{grid-template-columns:1fr}}
-
-
-/* v2.12 opaque sticky surfaces + delta chips */
-.main{background:var(--bg);}
-.page-head,
-.sticky-kpis,
-.tabs{
-  background:#F8FAFC!important;
-  background-color:#F8FAFC!important;
-  background-image:linear-gradient(#F8FAFC,#F8FAFC)!important;
-  backdrop-filter:none!important;
-  -webkit-backdrop-filter:none!important;
-}
-.page-head::before,
-.sticky-kpis::before,
-.tabs::before{
-  content:"";
-  position:absolute;
-  left:-24px;
-  right:-24px;
-  top:-18px;
-  bottom:-18px;
-  background:#F8FAFC;
-  z-index:-1;
-  pointer-events:none;
-}
-.page-head{overflow:visible;}
-.sticky-kpis{overflow:visible;}
-.tabs{overflow:visible;}
-.delta-chip{display:inline-flex;align-items:center;gap:3px;border-radius:999px;padding:1px 6px;font-size:9px;font-weight:760;line-height:1.35;white-space:nowrap;}
-.delta-chip.green{background:var(--greenL);color:var(--green)}
-.delta-chip.red{background:var(--redL);color:var(--red)}
-.delta-chip.slate{background:var(--slateL);color:var(--text2)}
-.delta-line{margin-top:5px;}
-.qdelta{font-size:9px;margin-left:6px;flex:0 0 auto;}.qval{display:inline-flex;align-items:center;justify-content:flex-end;gap:4px;margin-left:auto;white-space:nowrap}.qval b{color:var(--text)}
-.metric-delta{margin-top:5px;}
-@media(max-width:820px){.page-head::before,.sticky-kpis::before,.tabs::before{left:-14px;right:-14px;}}
-
-
-/* v2.14 visual hierarchy and sticky separators */
-.page-head{
-  border-bottom:1px solid #CBD5E1!important;
-}
-.page-head::after,
-.sticky-kpis::after,
-.tabs::after{
-  content:"";
-  position:absolute;
-  left:-24px;
-  right:-24px;
-  bottom:0;
-  height:1px;
-  background:#CBD5E1;
-  pointer-events:none;
-  z-index:2;
-}
-.sticky-kpis{
-  border-top:1px solid #E2E8F0!important;
-  border-bottom:1px solid #CBD5E1!important;
-  box-shadow:0 10px 0 #F8FAFC,0 14px 22px rgba(15,23,42,.08)!important;
-}
-.tabs{
-  border-top:1px solid #E2E8F0!important;
-  border-bottom:1px solid #CBD5E1!important;
-  box-shadow:0 10px 0 #F8FAFC,0 14px 22px rgba(15,23,42,.08)!important;
-}
-.qgap{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:3px;
-  min-width:92px;
-}
-.qgap-label{
-  font-size:8px;
-  line-height:1;
-  color:var(--muted);
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-}
-.qgap .chip{
-  font-size:11px;
-  padding:4px 8px;
-  font-weight:800;
-  box-shadow:inset 0 0 0 1px rgba(15,23,42,.04);
-}
-.qhead{
-  align-items:flex-start;
-}
-@media(max-width:820px){
-  .page-head::after,.sticky-kpis::after,.tabs::after{left:-14px;right:-14px;}
-}
-
-
-/* v2.15 account tab spacing, editable fields, and quarter modal refinements */
-.subpage{
-  padding-top:16px;
-}
-.tabs + .subpage.active{
-  margin-top:2px;
-}
-.data-table input:not([type="checkbox"]),
-.data-table select,
-.data-table textarea{
-  border:1px solid #CBD5E1!important;
-  background:#FFFFFF!important;
-  border-radius:8px!important;
-  padding:6px 8px!important;
-  box-shadow:inset 0 1px 1px rgba(15,23,42,.03);
-}
-.data-table input:not([type="checkbox"]):focus,
-.data-table select:focus,
-.data-table textarea:focus,
-.forecast-stack input:focus{
-  border-color:var(--teal)!important;
-  box-shadow:0 0 0 3px rgba(13,148,136,.12)!important;
-}
-.data-table input[type="checkbox"]{
-  width:16px;
-  height:16px;
-  accent-color:var(--teal);
-}
-#forecastModal .modal{
-  width:680px;
-}
-.forecast-stack{
-  display:grid;
-  gap:10px;
-}
-.forecast-row{
-  display:grid;
-  grid-template-columns:96px minmax(0,1fr);
-  gap:10px;
-  align-items:center;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:10px;
-  background:#fff;
-}
-.forecast-row .h{
-  font-size:10px;
-  font-weight:800;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:.06em;
-}
-.forecast-row input{
-  width:100%;
-  border:1px solid #CBD5E1;
-  border-radius:8px;
-  padding:8px 10px;
-  outline:0;
-}
-.sold-metric-layout{
-  display:grid;
-  grid-template-columns:.85fr 1.65fr;
-  gap:12px;
-  align-items:stretch;
-}
-.sold-type-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-}
-.sold-total-card .card-body,
-.sold-type-card .card-body{
-  height:100%;
-}
-@media(max-width:1000px){
-  .sold-metric-layout{grid-template-columns:1fr}
-  .sold-type-grid{grid-template-columns:1fr}
-  #forecastModal .modal{width:96vw}
-}
-
-
-/* v2.16 action cleanup, sidebar emphasis, and account about layout */
-.account-subtitle{font-size:12px;color:var(--muted);margin-top:3px;font-weight:650}
-.account-subtitle b{color:var(--text);font-weight:800}
-.about-priority-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:start}
-.tech-data-grid{display:grid;grid-template-columns:minmax(260px,30%) minmax(0,70%);gap:12px;align-items:start}
-.compact-table .data-table{font-size:11px}
-.compact-table .data-table th{padding:7px 8px;font-size:9px}
-.compact-table .data-table td{padding:5px 7px}
-.compact-table .data-table input:not([type="checkbox"]),
-.compact-table .data-table select,
-.compact-table .data-table textarea{padding:5px 6px!important;border-radius:7px!important}
-.compact-table .data-table textarea{min-height:30px}
-#removeWeekBtn{white-space:nowrap}
-@media(max-width:1200px){.about-priority-grid,.tech-data-grid{grid-template-columns:1fr}}
-
-/* v2.17 portfolio leader tabs */
-.portfolio-tabs{display:flex;gap:4px;position:sticky;top:var(--stickyHeadH);z-index:25;background:#F8FAFC;padding-top:12px;margin:0 0 14px 0;border-top:1px solid #E2E8F0;border-bottom:1px solid #CBD5E1;box-shadow:0 10px 0 #F8FAFC,0 14px 22px rgba(15,23,42,.08);overflow-x:auto;white-space:nowrap}
-.portfolio-tabs::before{content:"";position:absolute;left:-24px;right:-24px;top:-18px;bottom:-18px;background:#F8FAFC;z-index:-1;pointer-events:none}
-.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 47px);z-index:23}
-.leader-summary-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:12px;align-items:stretch}
-.leader-pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.leader-pill{background:var(--slateL);border-radius:999px;padding:5px 9px;font-size:11px;font-weight:750;color:var(--text2)}
-@media(max-width:1000px){.leader-summary-grid{grid-template-columns:1fr}.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 44px)}}
-@media(max-width:820px){.portfolio-tabs{top:var(--stickyHeadH)}.portfolio-tabs::before{left:-14px;right:-14px}.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 45px)}}
-
-
-/* v2.18 leader tab cleanup + seamless portfolio tabs */
-.portfolio-tabs{
-  display:flex!important;
-  align-items:flex-end;
-  gap:4px;
-  position:sticky;
-  top:var(--stickyHeadH);
-  z-index:25;
-  background:var(--bg)!important;
-  background-color:var(--bg)!important;
-  padding:10px 0 0 0!important;
-  margin:0 0 14px 0!important;
-  border-top:0!important;
-  border-bottom:1px solid #CBD5E1!important;
-  box-shadow:none!important;
-  overflow-x:auto!important;
-  overflow-y:hidden!important;
-  white-space:nowrap;
-  scrollbar-width:none;
-}
-.portfolio-tabs::-webkit-scrollbar{display:none;height:0}
-.portfolio-tabs::before{
-  content:"";
-  position:absolute;
-  left:-24px;
-  right:-24px;
-  top:-14px;
-  bottom:0;
-  background:var(--bg);
-  z-index:-1;
-  pointer-events:none;
-}
-.portfolio-tabs .tab{
-  flex:0 0 auto;
-  background:transparent;
-  border-radius:0;
-  margin:0;
-}
-.portfolio-tabs .tab.active{
-  background:transparent;
-}
-.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 43px);z-index:23}
-@media(max-width:1000px){.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 43px)}}
-@media(max-width:820px){.portfolio-tabs{top:var(--stickyHeadH)}.portfolio-tabs::before{left:-14px;right:-14px}.portfolio-tab-body .sticky-kpis{top:calc(var(--stickyHeadH) + 43px)}}
-
-
-/* v2.22 pipeline layout, exclusion control, and about-team refinements */
-.pipeline-summary-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:12px;align-items:stretch;}
-.pipeline-total-mini{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
-.pipeline-total-mini .metric-box{padding:10px;}
-.pipeline-total-mini .metric-box .val{font-size:18px;}
-.pipeline-delta{margin-top:5px;}
-.account-name-leader-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:1050px){.pipeline-summary-grid{grid-template-columns:.62fr 1.38fr}.pipeline-summary-grid .conv-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:820px){.pipeline-summary-grid,.account-name-leader-grid{grid-template-columns:1fr}.pipeline-total-mini{grid-template-columns:repeat(3,minmax(0,1fr))!important;}}
-
-
-/* v2.22 account about balance and pipeline table width controls */
-.about-priority-grid{grid-template-columns:3fr 1fr!important;}
-.stakeholder-wrap .data-table th:nth-child(4),
-.stakeholder-wrap .data-table td:nth-child(4){width:84px;max-width:84px;}
-.stakeholder-wrap .data-table th:nth-child(3),
-.stakeholder-wrap .data-table td:nth-child(3){min-width:150px;}
-.stakeholder-wrap .data-table th:nth-child(5),
-.stakeholder-wrap .data-table td:nth-child(5){min-width:240px;}
-.pipeline-table th.pipeline-conf-col,
-.pipeline-table td.pipeline-conf-col{width:76px;max-width:76px;min-width:76px;}
-.pipeline-table th.pipeline-notes-col,
-.pipeline-table td.pipeline-notes-col{min-width:240px;}
-.pipeline-table th.pipeline-deal-col,
-.pipeline-table td.pipeline-deal-col{min-width:120px;}
-.pipeline-table th.pipeline-exclude-col,
-.pipeline-table td.pipeline-exclude-col{width:78px;max-width:78px;text-align:center;}
-.status-pill{display:inline-flex;align-items:center;border-radius:999px;background:var(--slateL);color:var(--text2);font-size:10px;font-weight:800;padding:4px 8px;white-space:nowrap;}
-@media(max-width:1200px){.about-priority-grid{grid-template-columns:1fr!important}}
-
-
-/* v2.24 user prefix + pipeline row refinements */
-.userbox{display:flex;align-items:center;gap:6px}
-.userbox label{font-size:11px;color:#CBD5E1}
-.userbox input{background:#334155;color:#fff;border:1px solid #475569;border-radius:8px;padding:6px 8px;width:120px;outline:0}
-.userbox input::placeholder{color:#94A3B8}
-.pipeline-table th.pipeline-values-col,
-.pipeline-table td.pipeline-values-col{width:78px;max-width:78px;text-align:center;}
-.pipeline-table th.pipeline-uw-col,
-.pipeline-table td.pipeline-uw-col{min-width:145px;}
-@media(max-width:820px){.userbox{width:100%}.userbox input{width:160px}}
-
+*{box-sizing:border-box}body{margin:0;font-family:Inter,"Segoe UI",Aptos,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px;overflow:hidden}button,input,select,textarea{font:inherit}button{cursor:pointer}::-webkit-scrollbar{width:7px;height:7px}::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:999px}
+.topbar{min-height:58px;background:var(--nav);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:3px solid var(--teal);gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--teal),#14B8A6);display:grid;place-items:center;font-weight:800}.brand-title{font-weight:760;letter-spacing:.02em;white-space:nowrap}.status{font-size:11px;color:#CBD5E1;margin-top:1px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.leaderbox{display:flex;align-items:center;gap:7px}.leaderbox label{font-size:11px;color:#CBD5E1}.leaderbox input{background:#334155;color:#fff;border:1px solid #475569;border-radius:8px;padding:7px 9px;width:160px;outline:0}.leaderbox input::placeholder{color:#94A3B8}.btn{border:0;border-radius:9px;padding:8px 11px;font-weight:700;font-size:12px;background:#334155;color:#fff;transition:.15s}.btn:hover{filter:brightness(1.08)}.btn.primary{background:var(--teal)}.btn.warn{background:var(--amber)}.btn.light{background:#F1F5F9;color:var(--text);border:1px solid var(--border)}.btn.danger{background:var(--red)}.shell{display:flex;height:calc(100vh - 58px)}.sidebar{width:250px;background:#E2E8F0;border-right:1px solid #CBD5E1;overflow:auto;padding:12px}.side-label{font-size:10px;color:#64748B;font-weight:800;text-transform:uppercase;letter-spacing:.09em;margin:12px 8px 6px}.navitem{width:100%;display:flex;align-items:center;gap:9px;padding:9px 10px;border:0;background:transparent;border-radius:10px;color:var(--text2);text-align:left;font-weight:700}.navitem:hover{background:#F8FAFC;color:var(--text)}.navitem.active{background:#FFFFFF;color:var(--nav);box-shadow:0 1px 2px rgba(15,23,42,.08)}.dot{width:9px;height:9px;border-radius:999px;flex:0 0 auto}.main{flex:1;overflow:auto;padding:18px 22px}.page{display:none}.page.active{display:block}.page-head{display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;z-index:10;background:var(--bg);padding:0 0 12px 0;margin:0 0 14px 0;border-bottom:1px solid #CBD5E1;box-shadow:0 10px 18px rgba(248,250,252,.98)}.title{font-size:20px;font-weight:760;letter-spacing:-.02em}.subtitle{font-size:12px;color:var(--muted);margin-top:3px}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}.card.pad{padding:14px}.card-h{padding:11px 14px;border-bottom:1px solid #334155;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,#1E293B,#334155);color:#fff}.card-title{font-size:11px;font-weight:800;color:#fff;letter-spacing:.06em;text-transform:uppercase}.card-body{padding:14px}.grid{display:grid;gap:12px}.kpi-row{grid-template-columns:repeat(6,minmax(0,1fr));position:sticky;top:64px;z-index:8;background:var(--bg);padding:12px 0 14px;border-bottom:1px solid #CBD5E1;box-shadow:0 12px 20px rgba(248,250,252,.98)}.kpi{position:relative;padding:13px;border-left:4px solid var(--accent,var(--teal))}.k-label{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.k-val{font-size:22px;font-weight:780;letter-spacing:-.03em;margin-top:3px}.k-sub{font-size:11px;color:var(--text2);margin-top:2px}.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:800}.chip.green{background:var(--greenL);color:var(--green)}.chip.red{background:var(--redL);color:var(--red)}.chip.amber{background:var(--amberL);color:var(--amber)}.chip.slate{background:var(--slateL);color:var(--text2)}.tabs{display:flex;gap:4px;position:sticky;top:0;z-index:7;background:var(--bg);padding-top:10px;margin:0 0 14px 0;border-bottom:1px solid var(--border);overflow-x:auto}.tab{border:0;background:transparent;padding:10px 13px;color:var(--text2);font-weight:760;border-bottom:3px solid transparent}.tab.active{color:var(--teal);border-color:var(--teal)}.subpage{display:none}.subpage.active{display:block}.qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.qcard{border:1px solid var(--border);border-radius:12px;padding:11px;background:#fff}.qhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}.qbadge{font-size:10px;color:#fff;background:var(--nav);border-radius:7px;padding:3px 7px;font-weight:800}.qline{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin:6px 0;color:var(--text2)}.qline b{color:var(--text)}.bar{height:7px;background:#E2E8F0;border-radius:999px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--teal);width:0%;border-radius:999px}.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}.data-table th{background:#F8FAFC;border-bottom:1px solid var(--border);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:9px;white-space:nowrap}.data-table td{border-bottom:1px solid #EEF2F7;padding:8px 9px;vertical-align:top}.data-table tr:hover td{background:#FCFDFF}.muted{color:var(--muted)}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.metric-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric-box{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;border-left:4px solid var(--accent,var(--teal))}.metric-box .lab{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em}.metric-box .val{font-size:20px;font-weight:780;margin-top:4px}.account-block{margin-bottom:12px}.acct-head{padding:12px 14px;color:#fff;display:flex;justify-content:space-between;gap:12px}.acct-name{font-size:15px;font-weight:780}.acct-sub{font-size:11px;opacity:.84}.acct-metrics{display:flex;gap:18px;text-align:right;flex-wrap:wrap}.acct-metrics b{display:block;font-size:16px}.toast{position:fixed;right:22px;bottom:22px;background:var(--nav);color:#fff;border-radius:12px;padding:11px 15px;font-weight:700;box-shadow:0 20px 40px rgba(15,23,42,.25);opacity:0;transform:translateY(12px);transition:.2s;z-index:30}.toast.show{opacity:1;transform:translateY(0)}.empty{border:1px dashed #CBD5E1;background:#fff;border-radius:14px;padding:22px;color:var(--text2);line-height:1.5}.source-pill{display:inline-flex;align-items:center;border-radius:999px;background:#F1F5F9;color:#475569;font-size:10px;font-weight:800;padding:4px 8px;white-space:nowrap}.warnbox{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;border-radius:12px;padding:10px 12px;line-height:1.45}.help{font-size:11px;color:#CBD5E1;max-width:520px;line-height:1.35}.file-list{display:flex;gap:6px;flex-wrap:wrap}.file-pill{background:#fff;border:1px solid var(--border);border-radius:999px;padding:5px 8px;font-size:11px;color:var(--text2)}
+@media(max-width:1200px){.kpi-row{grid-template-columns:repeat(3,1fr)}.two-col,.three-col{grid-template-columns:1fr}.metric-mini{grid-template-columns:1fr 1fr}.sidebar{width:215px}.main{padding:14px}.acct-metrics{display:none}}
+@media(max-width:820px){body{overflow:auto}.topbar{height:auto}.shell{height:auto;min-height:calc(100vh - 80px);flex-direction:column}.sidebar{width:100%;border-right:0;border-bottom:1px solid var(--border);padding:8px 10px;position:sticky;top:0;z-index:20}.main{padding:12px}.kpi-row,.qgrid,.metric-mini{grid-template-columns:1fr;position:relative;top:auto}.leaderbox{width:100%}.leaderbox input{width:180px}.tabs{overflow-x:auto}.tab{min-width:max-content}}
 </style>
 </head>
 <body>
-<div class="topbar print-hide">
-  <div class="brand"><div class="brand-mark">PT</div><div><div class="brand-title">PORTFOLIO TRACKER</div><div class="status" id="statusText"></div></div></div>
-  <div class="weekbox"><label>Week</label><select id="weekSel" onchange="onWeekChange()"></select><button class="btn small" onclick="openModal('weekModal')">+ Week</button><button class="btn small light" id="removeWeekBtn" onclick="removeWeek()">Remove Week</button></div>
-  <div class="userbox"><label>User</label><input id="userNameInput" placeholder="Your name" onchange="setUserName(this.value)" onblur="setUserName(this.value)"></div>
+<div class="topbar">
+  <div class="brand"><div class="brand-mark">LA</div><div><div class="brand-title">LEADER PORTFOLIO AGGREGATOR</div><div class="status" id="statusText">Import latest user JSON exports to begin</div></div></div>
+  <div class="leaderbox"><label>Leader</label><input id="leaderNameInput" placeholder="Leader name" onchange="setLeaderFilter(this.value)" onblur="setLeaderFilter(this.value)"></div>
   <div class="top-actions">
-    <button class="btn small account-add" onclick="openModal('accountModal')">+ Account</button>
-    <button class="btn small apply-btn" onclick="applyChanges()">Apply / Refresh Metrics</button>
-    <button class="btn small primary" id="saveBtn" onclick="saveWeek()">Save</button>
-    <button class="btn small io" onclick="exportJson()">Export</button>
-    <button class="btn small io" onclick="document.getElementById('importFile').click()">Import JSON</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importJson(event)">
-    <button class="btn small io" onclick="document.getElementById('excelFile').click()">Import Excel</button><input id="excelFile" type="file" accept=".xlsx,.xls,.xlsm" style="display:none" onchange="importExcel(event)">
-    <button class="btn small warn" onclick="openModal('pptModal')">Export PPT</button>
-    <button class="btn small danger" onclick="resetAll()">Reset</button>
+    <button class="btn primary" onclick="pickFolder()">Choose JSON Folder</button>
+    <button class="btn" onclick="document.getElementById('jsonFiles').click()">Import JSON Files</button><input id="jsonFiles" type="file" accept=".json" multiple style="display:none" onchange="importFiles(event)">
+    <button class="btn light" onclick="refreshFromFolder()">Refresh</button>
+    <button class="btn warn" onclick="exportLeaderJson()">Export Leader View</button>
+    <button class="btn danger" onclick="clearAll()">Clear</button>
   </div>
+  <div class="help">Folder access works in supported desktop browsers. iPhone/Safari usually require the multi-file JSON import button.</div>
 </div>
 <div class="shell">
-  <aside class="sidebar print-hide"><div class="side-label">Portfolio</div><button id="navPortfolio" class="navitem active" onclick="showPage('portfolio')"><span class="dot" style="background:var(--teal)"></span>Overview</button><div class="side-label">Accounts</div><div id="accountNav"></div></aside>
-  <main class="main"><section id="page-portfolio" class="page active"><div class="page-head"><div><div class="title">Portfolio Overview</div><div class="subtitle">Manager-ready weekly view · Portfolio / Leader / Account rollups</div></div></div><div id="portfolioContent"></div></section><div id="accountPages"></div></main>
+  <aside class="sidebar">
+    <div class="side-label">View</div>
+    <button id="navOverview" class="navitem active" onclick="showPage('overview')"><span class="dot" style="background:var(--teal)"></span>Overview</button>
+    <div class="side-label">Accounts</div>
+    <div id="accountNav"></div>
+    <div class="side-label">Sources</div>
+    <div id="sourceList" class="file-list"></div>
+  </aside>
+  <main class="main">
+    <section id="page-overview" class="page active">
+      <div class="page-head"><div><div class="title">Leader Overview</div><div class="subtitle" id="overviewSubtitle">Filtered rollup by leader name across latest uploaded JSON exports</div></div></div>
+      <div id="overviewContent"></div>
+    </section>
+    <div id="accountPages"></div>
+  </main>
 </div>
 <div class="toast" id="toast"></div>
-
-<div class="modal-bg" id="weekModal"><div class="modal"><div class="modal-h"><h3>Add Week</h3><p>Create a dated weekly snapshot for sorting and week-over-week comparisons.</p></div><div class="modal-b"><div class="field"><label>Display Name</label><input id="newWeekLabel" placeholder="e.g. Week of May 11, 2026"></div><br><div class="field"><label>Week Date</label><input id="newWeekDate" type="date"></div></div><div class="modal-actions"><button class="btn light" onclick="closeModal('weekModal')">Cancel</button><button class="btn primary" onclick="addWeek()">Add Week</button></div></div></div>
-<div class="modal-bg" id="accountModal"><div class="modal"><div class="modal-h"><h3>Add Account</h3><p>Choose an account color from the approved palette.</p></div><div class="modal-b"><div class="field"><label>Account Name</label><input id="newAcctName" placeholder="e.g. Tris Pharma"></div><br><div class="field"><label>Leader</label><input id="newAcctLeader" placeholder="e.g. Ed / Vipin"></div><br><div class="field"><label>Color</label><input type="hidden" id="newAcctColor"><div id="colorPalette" class="palette-grid"></div></div></div><div class="modal-actions"><button class="btn light" onclick="closeModal('accountModal')">Cancel</button><button class="btn primary" onclick="addAccount()">Add Account</button></div></div></div>
-<div class="modal-bg" id="forecastModal"><div class="modal"><div class="modal-h"><h3 id="forecastTitle">Quarterly Values</h3><p id="forecastHelp">Enter quarterly unweighted values. Weighted values are derived automatically using the confidence score.</p></div><div class="modal-b" id="forecastBody"></div><div class="modal-actions"><button class="btn light" onclick="closeModal('forecastModal')">Cancel</button><button class="btn primary" onclick="saveQuarterModal()">Save Values</button></div></div></div>
-<div class="modal-bg" id="pptModal"><div class="modal"><div class="modal-h"><h3>Export PowerPoint</h3><p>Select the views to include in the generated leadership deck.</p></div><div class="modal-b" id="pptOptions"></div><div class="modal-actions"><button class="btn light" onclick="closeModal('pptModal')">Cancel</button><button class="btn warn" onclick="exportPpt()">Export PPT</button></div></div></div>
-
 <script>
-const PALETTE=[['Indigo','#4F46E5'],['Violet','#7C3AED'],['Rose','#E11D48'],['Amber','#B45309'],['Cyan','#0891B2'],['Emerald','#059669']];
-const DEFAULT_ACCOUNTS=[{id:'shield',name:'Shield',leader:'Vipin',color:'#4F46E5'},{id:'akebia',name:'Akebia',leader:'Vipin',color:'#7C3AED'},{id:'tris',name:'Tris Pharma',leader:'Ed',color:'#0891B2'}];
 const QTRS=['q1','q2','q3','q4']; const QLAB={q1:'Q1',q2:'Q2',q3:'Q3',q4:'Q4'};
-let accounts=load('pt2_accounts',DEFAULT_ACCOUNTS),weeks=load('pt2_weeks',[]),history=load('pt2_history',{}),submitted=load('pt2_submitted',[]),inactive=load('pt2_inactive',[]),excelCache=load('pt2_excel_cache',null),userName=load('pt2_user_name',''),currentWeek='',modalCtx=null;
-let activePage='portfolio',activeSubTabs={},activePortfolioTab='overview';
-function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}function persist(){localStorage.setItem('pt2_accounts',JSON.stringify(accounts));localStorage.setItem('pt2_weeks',JSON.stringify(weeks));localStorage.setItem('pt2_history',JSON.stringify(history));localStorage.setItem('pt2_submitted',JSON.stringify(submitted));localStorage.setItem('pt2_inactive',JSON.stringify(inactive));localStorage.setItem('pt2_excel_cache',JSON.stringify(excelCache));localStorage.setItem('pt2_user_name',JSON.stringify(userName));}
-function parseAmount(v){let str=String(v??'').trim().replace(/[$,\s]/g,'');if(!str)return 0;let mult=1,last=str.slice(-1).toLowerCase();if(last==='m'){mult=1000000;str=str.slice(0,-1)}else if(last==='k'){mult=1000;str=str.slice(0,-1)}let n=Number(str);return isFinite(n)?n*mult:0}
-function money(v){let n=parseAmount(v);if(!isFinite(n)||n===0)return '—';let a=Math.abs(n),s=n<0?'-':'';if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M';if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'K';return s+'$'+a.toFixed(0)}
-function num(v){return parseAmount(v)}function pct(n,d){return d?Math.round(n/d*100):0}function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function uid(p){return p+'_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)}
-function getWeekLabel(k){return weeks.find(w=>w.key===k)?.label||k}function getWeekDate(){return currentWeek||new Date().toISOString().slice(0,10)}function elapsedQtrs(){let m=new Date(getWeekDate()+'T00:00:00').getMonth();return m<3?['q1']:m<6?['q1','q2']:m<9?['q1','q2','q3']:QTRS}
-function defaultAcctData(){return {about:{desc:'',technology:'',priorities:'',leaderOverride:''},stakeholders:[],internalTeam:[],matrix:[...'Omni|Clinical|Medical Affairs|Patient|CRM|MDM|BI|Data Governance|Data Management|AI'.split('|')].map(x=>({id:uid('m'),domain:x,vendor:'',status:'',notes:''})),overview:{marginActual:'',marginTarget:'',aiDelivery:'',aiProposal:'',aiTalent:'',innovationIndex:''},targets:{q1:0,q2:0,q3:0,q4:0},surveys:[],meetings:[],bdcost:[],risks:[],innovations:[],competitive:[],pipeline:[],sold:[],notes:{meeting:'',leadership:'',actions:[]}}}
-function ensureWeek(){if(!currentWeek){toast('Add a week first');return false} if(!history[currentWeek])history[currentWeek]={};accounts.forEach(a=>{if(!history[currentWeek][a.id])history[currentWeek][a.id]=defaultAcctData();if(!history[currentWeek][a.id].internalTeam)history[currentWeek][a.id].internalTeam=[]});return true}
-function data(aid){ensureWeek();return history[currentWeek][aid]}
-function snapshot(){if(currentWeek)collectAll();return {version:2,userName,exportedAt:new Date().toISOString(),accounts,weeks,history,submitted,inactive,excelCache}}
-function buildWeekOptions(){let sel=document.getElementById('weekSel');let keys=[...new Set([...weeks.map(w=>w.key),...Object.keys(history),...submitted])].sort((a,b)=>b.localeCompare(a));sel.innerHTML=keys.length?keys.map(k=>`<option value="${k}">${esc(getWeekLabel(k))}${submitted.includes(k)?' ✓':history[k]?' ●':''}</option>`).join(''):'<option value="">— Add week —</option>';if(!currentWeek&&keys.length)currentWeek=keys[0];sel.value=currentWeek||'';updateStatus()}
-function updateStatus(){let s=document.getElementById('statusText'),b=document.getElementById('saveBtn'),rw=document.getElementById('removeWeekBtn');if(!currentWeek){s.textContent='No week selected';if(b)b.textContent='Save';if(rw)rw.disabled=true;return}if(rw)rw.disabled=false;if(submitted.includes(currentWeek)){s.textContent='Week saved · editable';if(b){b.textContent='Update';b.classList.remove('warn')}}else{if(b){b.textContent='Save';b.classList.remove('warn')}s.textContent=history[currentWeek]?'Draft not saved':'Draft not saved'}}
-function onWeekChange(){collectAll();currentWeek=document.getElementById('weekSel').value;ensureWeek();renderAll();updateStatus();}
-function addWeek(){let label=document.getElementById('newWeekLabel').value.trim(),date=document.getElementById('newWeekDate').value;if(!label||!date)return toast('Enter week display name and date');if(weeks.some(w=>w.key===date))return toast('This week date already exists');collectAll();weeks.push({key:date,label});let sortedSubmitted=submitted.slice().sort((a,b)=>b.localeCompare(a));let source=sortedSubmitted.find(w=>w<date&&history[w])||sortedSubmitted.find(w=>history[w]);currentWeek=date;if(source){history[date]=JSON.parse(JSON.stringify(history[source]));accounts.forEach(a=>{if(!history[date][a.id])history[date][a.id]=defaultAcctData()});}else{ensureWeek();}persist();closeModal('weekModal');document.getElementById('newWeekLabel').value='';document.getElementById('newWeekDate').value='';buildWeekOptions();renderAll();toast(source?'Week added from last submitted values':'Week added')}
-function removeWeek(){if(!currentWeek)return toast('No week selected');let label=getWeekLabel(currentWeek);if(!confirm(`Remove ${label}? This will delete the full weekly snapshot for all accounts.`))return;collectAll();delete history[currentWeek];weeks=weeks.filter(w=>w.key!==currentWeek);submitted=submitted.filter(w=>w!==currentWeek);let remaining=[...new Set([...weeks.map(w=>w.key),...Object.keys(history)])].sort((a,b)=>b.localeCompare(a));currentWeek=remaining[0]||'';persist();buildWeekOptions();renderAll();toast('Week removed')}
-function addAccount(){let name=document.getElementById('newAcctName').value.trim(),leader=document.getElementById('newAcctLeader').value.trim(),color=document.getElementById('newAcctColor').value||PALETTE[0][1];if(!name)return toast('Enter account name');let id=name.toLowerCase().replace(/[^a-z0-9]+/g,'_')+'_'+Date.now();accounts.push({id,name,leader,color});Object.keys(history).forEach(w=>history[w][id]=defaultAcctData());let applied={sold:0,pipeline:0};if(currentWeek&&excelCache){ensureWeek();applied=applyExcelCache(id,true)}persist();closeModal('accountModal');renderAll();toast(applied.sold||applied.pipeline?`Account added · Excel auto-pulled ${applied.sold} sold and ${applied.pipeline} pipeline rows`:'Account added')}
-function saveWeek(skipConfirm=false){if(!ensureWeek())return;let wasSaved=submitted.includes(currentWeek);collectAll();if(!wasSaved)submitted.push(currentWeek);persist();autoExportJson();buildWeekOptions();renderPortfolio();updateStatus();toast(wasSaved?'Week updated and JSON exported':'Week saved and JSON exported')}
-function submitWeek(){saveWeek(true)}
-function setUserName(val){userName=String(val||'').trim();persist()}function safeFilePart(v){let s=String(v||'').trim().replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'');return s||'portfolio'}function jsonPrefix(){return userName?safeFilePart(userName)+'_portfolio':'portfolio'}function jsonStamp(){return new Date().toISOString().replace(/[-:]/g,'').replace(/\..+$/,'').replace('T','_')}function exportJson(){setUserName(document.getElementById('userNameInput')?.value||userName);let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'});download(blob,`${jsonPrefix()}_${jsonStamp()}.json`);toast('JSON exported')}function autoExportJson(){setUserName(document.getElementById('userNameInput')?.value||userName);let blob=new Blob([JSON.stringify(snapshot(),null,2)],{type:'application/json'});download(blob,`${jsonPrefix()}_${jsonStamp()}.json`)}
-function importJson(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let s=JSON.parse(r.result);if(!s.accounts||!s.history)return toast('Invalid tracker JSON');accounts=s.accounts;weeks=s.weeks||[];history=s.history||{};submitted=s.submitted||[];inactive=s.inactive||[];excelCache=s.excelCache||null;userName=s.userName||userName||'';currentWeek=Object.keys(history).sort((a,b)=>b.localeCompare(a))[0]||'';persist();renderAll();toast('JSON imported')}catch(err){toast('Could not import JSON')}};r.readAsText(f);e.target.value=''}
-
-function normHeader(v){return String(v??'').replace(/[\r\n\t\f\v\u00a0]+/g,' ').replace(/\s+/g,' ').trim().toLowerCase()}
-function excelDate(v){
-  if(v instanceof Date&&!isNaN(v))return v;
-  if(typeof v==='number'&&window.XLSX&&XLSX.SSF){let d=XLSX.SSF.parse_date_code(v);return d?new Date(d.y,d.m-1,d.d):null}
-  let d=new Date(v);return isNaN(d)?null:d;
-}
-function excelYear(){let y=new Date((currentWeek||new Date().toISOString().slice(0,10))+'T00:00:00').getFullYear();return y||new Date().getFullYear()}
-function qKeyFromDate(v,year){let d=excelDate(v);if(!d||d.getFullYear()!==year)return '';return QTRS[Math.floor(d.getMonth()/3)]||''}
-function findSheetByName(wb,name){let target=String(name).toLowerCase();let nm=wb.SheetNames.find(n=>String(n).trim().toLowerCase()===target);return nm?wb.Sheets[nm]:null}
-function sheetRows(ws){return XLSX.utils.sheet_to_json(ws,{header:1,raw:true,defval:''})}
-function findHeaderRow(rows,requiredHeaders,year){
-  for(let i=0;i<Math.min(rows.length,35);i++){
-    let h=rows[i].map(normHeader);
-    let ok=requiredHeaders.every(req=>h.includes(req));
-    let hasMonth=rows[i].some(v=>!!qKeyFromDate(v,year));
-    if(ok&&hasMonth)return i;
-  }
-  return -1;
-}
-function headerMap(header){let m={};header.forEach((h,i)=>{let k=normHeader(h);if(k&&!m[k])m[k]=i});return m}
-function idxOf(m,names){for(let n of names){let k=normHeader(n);if(m[k]!==undefined)return m[k]}return -1}
-function textAt(row,i){return i>=0?String(row[i]??'').trim():''}
-function valAt(row,i){return i>=0?row[i]:''}
-function quarterSumsFromRow(row,header,year,divideBy=1){let q={q1:{uw:0,sold:0},q2:{uw:0,sold:0},q3:{uw:0,sold:0},q4:{uw:0,sold:0}};header.forEach((h,i)=>{let key=qKeyFromDate(h,year);if(key){let v=num(row[i]);if(divideBy&&divideBy>0)v=v/divideBy;q[key].uw+=v;q[key].sold+=v}});return q}
-function nonZeroQ(q,field){return QTRS.some(k=>num(q[k]?.[field]||0)!==0)}
-function normClientName(s){return String(s||'').toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]/g,'')}
-function matchAccountByClient(client){
-  let clean=String(client||'').trim();if(!clean)return null;
-  let c=normClientName(clean);if(!c)return null;
-  return accounts.find(a=>normClientName(a.name)===c)||null;
-}
-function mapDealType(v){let s=String(v||'').toLowerCase();if(s.includes('renew'))return 'Renewal';if(s.includes('upsell')||s.includes('expansion'))return 'Upsell';if(s.includes('ai')||s.includes('innovation'))return 'AI';return 'New'}
-function mapConviction(prob,status=''){
-  let p=num(prob);if(p>1)p=p/100;let s=String(status||'').toLowerCase();
-  if(p>=0.75||s.includes('confirm')||s.includes('won'))return 'High';
-  if(p>=0.5||s.includes('proposal')||s.includes('negot'))return 'Medium';
-  if(p>=0.25)return 'Low';return 'Early';
-}
-function buildSoldCacheRecords(rows,year){
-  let hi=findHeaderRow(rows,['client','project'],year);if(hi<0)return [];
-  let header=rows[hi],m=headerMap(header),out=[];
-  let cClient=idxOf(m,['Client']),cProject=idxOf(m,['Project']),cPid=idxOf(m,['PID']),cPm=idxOf(m,['Project Manager']),cLob=idxOf(m,['LOB']),cProd=idxOf(m,['Product/ Services','Product/Services']),cEng=idxOf(m,['Engagement Type']),cSow=idxOf(m,['Signed SOW/PO']);
-  for(let r=hi+1;r<rows.length;r++){
-    let row=rows[r],client=textAt(row,cClient),project=textAt(row,cProject);if(!client&&!project)continue;
-    let q=quarterSumsFromRow(row,header,year,1);if(!nonZeroQ(q,'sold'))continue;
-    let firstMonth=header.find((h,i)=>qKeyFromDate(h,year)&&num(row[i])!==0);
-    out.push({rowNo:r+1,client,project:project||'Imported Sold Deal',details:[`PID: ${textAt(row,cPid)}`,`PM: ${textAt(row,cPm)}`,`LOB: ${textAt(row,cLob)}`,`Product/Services: ${textAt(row,cProd)}`,`Engagement Type: ${textAt(row,cEng)}`,`Signed SOW/PO: ${textAt(row,cSow)}`].filter(x=>!x.endsWith(': ')).join('\n'),type:mapDealType(textAt(row,cEng)),soldDate:excelDate(firstMonth)?.toISOString().slice(0,10)||'',q});
-  }
-  return out;
-}
-function buildPipelineCacheRecords(rows,year){
-  let hi=findHeaderRow(rows,['client','project','probability'],year);if(hi<0)return [];
-  let header=rows[hi],m=headerMap(header),out=[];
-  let cLeader=idxOf(m,['GL Name']),cOpp=idxOf(m,['Opp ID']),cClient=idxOf(m,['Client']),cProject=idxOf(m,['Project']),cTotal=idxOf(m,['Total Deal Size']),cStatus=idxOf(m,['Proposal Status']),cType=idxOf(m,['Opp Type']),cProb=idxOf(m,['Probability']),cStart=idxOf(m,['Project Start date']),cDur=idxOf(m,['Expected Duration (Months)']),cLob=idxOf(m,['LOB']),cProd=idxOf(m,['Product/Services','Product/ Services']),cEng=idxOf(m,['Engagement Type']);
-  for(let r=hi+1;r<rows.length;r++){
-    let row=rows[r],client=textAt(row,cClient),project=textAt(row,cProject),status=textAt(row,cStatus);if(!client&&!project)continue;
-    let prob=num(valAt(row,cProb));if(prob>1)prob=prob/100;let q=quarterSumsFromRow(row,header,year,prob>0?prob:1);if(!nonZeroQ(q,'uw')&&num(valAt(row,cTotal))<=0)continue;
-    let start=excelDate(valAt(row,cStart));
-    out.push({rowNo:r+1,client,leader:textAt(row,cLeader),project:project||'Imported Pipeline Opportunity',conviction:mapConviction(prob,status),type:mapDealType(textAt(row,cType)),status:status||'',totalDealSize:num(valAt(row,cTotal)),value:QTRS.reduce((s,k)=>s+num(q[k].uw),0)||num(valAt(row,cTotal)),confidence:prob?Math.round(prob*100):'',targetDate:start?start.toISOString().slice(0,10):'',thisWeek:[`Opp ID: ${textAt(row,cOpp)}`,`Total Deal Size: ${money(valAt(row,cTotal))}`,`Proposal Status: ${status}`,`Duration: ${textAt(row,cDur)} months`,`LOB: ${textAt(row,cLob)}`,`Product/Services: ${textAt(row,cProd)}`,`Engagement Type: ${textAt(row,cEng)}`].filter(x=>!x.includes(':  months')&&!x.endsWith(': ')).join('\n'),q});
-  }
-  return out;
-}
-function cloneSoldQ(q){let out={};QTRS.forEach(k=>out[k]={sold:num(q?.[k]?.sold||0)});return out}
-function clonePipeQ(q){let out={};QTRS.forEach(k=>out[k]={uw:num(q?.[k]?.uw||0)});return out}
-function clearExcelRowsForAccount(aid){let d=data(aid);d.sold=(d.sold||[]).filter(r=>r._source!=='excel');d.pipeline=(d.pipeline||[]).filter(r=>r._source!=='excel')}
-function applyExcelCache(accountFilterId='',silent=false){
-  let stats={sold:0,pipeline:0,matchedAccounts:new Set(),skippedClients:new Set()};
-  if(!excelCache||!currentWeek)return stats;
-  ensureWeek();
-  let ids=accountFilterId?[accountFilterId]:accounts.map(a=>a.id);
-  ids.forEach(clearExcelRowsForAccount);
-  (excelCache.sold||[]).forEach(rec=>{let a=matchAccountByClient(rec.client);if(!a){stats.skippedClients.add(rec.client);return}if(accountFilterId&&a.id!==accountFilterId)return;let d=data(a.id);d.sold.push({id:uid('sold'),name:rec.project,details:rec.details,type:rec.type,soldDate:rec.soldDate,duration:'',status:'Active',q:cloneSoldQ(rec.q),_source:'excel',_importId:excelCache.id,_excelRow:rec.rowNo,_excelClient:rec.client});stats.sold++;stats.matchedAccounts.add(a.id)});
-  (excelCache.pipeline||[]).forEach(rec=>{let a=matchAccountByClient(rec.client);if(!a){stats.skippedClients.add(rec.client);return}if(accountFilterId&&a.id!==accountFilterId)return;if(rec.leader&&!a.leader)a.leader=rec.leader;let d=data(a.id);d.pipeline.push({id:uid('pipeline'),conviction:rec.conviction,type:rec.type,name:rec.project,status:rec.status,totalDealSize:rec.totalDealSize,value:rec.value,confidence:rec.confidence,targetDate:rec.targetDate,thisWeek:rec.thisWeek,lastWeek:'',leaderNotes:'',excludeFromCalc:false,q:clonePipeQ(rec.q),_source:'excel',_importId:excelCache.id,_excelRow:rec.rowNo,_excelClient:rec.client});stats.pipeline++;stats.matchedAccounts.add(a.id)});
-  if(!silent){let skipped=stats.skippedClients.size?` · skipped ${stats.skippedClients.size} client(s) not in tracker`:'';toast(`Excel stored: imported ${stats.sold} sold and ${stats.pipeline} pipeline rows${skipped}`)}
-  return stats;
-}
-function importExcel(e){
-  let f=e.target.files[0];if(!f)return;if(!currentWeek){toast('Add/select a week before importing Excel');e.target.value='';return}if(!window.XLSX){toast('Excel parser not loaded. Check internet/CDN access.');e.target.value='';return}
-  collectAll();ensureWeek();let year=excelYear();let r=new FileReader();
-  r.onload=()=>{try{let wb=XLSX.read(new Uint8Array(r.result),{type:'array',cellDates:true});let soldWs=findSheetByName(wb,'Sold'),pfWs=findSheetByName(wb,'PF');if(!soldWs&&!pfWs)return toast('Excel import failed: Sold/PF tabs not found');excelCache={id:'excel_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),fileName:f.name,uploadedAt:new Date().toISOString(),year,sold:soldWs?buildSoldCacheRecords(sheetRows(soldWs),year):[],pipeline:pfWs?buildPipelineCacheRecords(sheetRows(pfWs),year):[]};let stats=applyExcelCache('',true);persist();renderAll();let skipped=stats.skippedClients.size?` · skipped ${stats.skippedClients.size} client(s) not in tracker`:'';toast(`Excel stored for ${year}: imported ${stats.sold} sold and ${stats.pipeline} pipeline rows${skipped}`)}catch(err){console.error(err);toast('Could not import Excel. Check Sold/PF tab format.')}finally{e.target.value=''}};
-  r.readAsArrayBuffer(f);
-}
-
-function resetAll(){if(confirm('This will wipe all local tracker data. Continue?')){localStorage.removeItem('pt2_accounts');localStorage.removeItem('pt2_weeks');localStorage.removeItem('pt2_history');localStorage.removeItem('pt2_submitted');localStorage.removeItem('pt2_inactive');localStorage.removeItem('pt2_excel_cache');localStorage.removeItem('pt2_user_name');excelCache=null;userName='';accounts=DEFAULT_ACCOUNTS;weeks=[];history={};submitted=[];inactive=[];currentWeek='';renderAll();toast('Tracker reset')}}
-function download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}function openModal(id){document.getElementById(id).classList.add('show')}function closeModal(id){document.getElementById(id).classList.remove('show')}
-function previousSubmittedWeek(){let keys=submitted.slice().sort((a,b)=>b.localeCompare(a));let idx=keys.indexOf(currentWeek);return idx>=0?keys[idx+1]:keys.find(k=>k<currentWeek)}function deltaHtml(curr,prev){let d=num(curr)-num(prev);if(!prev&&prev!==0)return '';let c=d>0?'green':d<0?'red':'slate';return `<span class="chip ${c}">${d>0?'▲ +':d<0?'▼ ':''}${money(d)}</span>`}
-function quarterObj(row,mode){row.q=row.q||{};QTRS.forEach(q=>row.q[q]=row.q[q]||{uw:0,sold:0});return row.q}
-function confidenceFactor(r){let raw=String(r.confidence??'').trim();if(!raw)return 0;let c=num(raw);if(!isFinite(c)||c<=0)return 0;return Math.min(c,100)/100}
-function pipeQuarterTotal(r){return QTRS.reduce((a,q)=>a+pipeQuarterUW(r,q),0)}
-function pipeValue(r){let qTotal=pipeQuarterTotal(r);let direct=num(r.value??r.totalValue??r.estimatedValue);return qTotal||direct}
-function pipeWeightedValue(r){return pipeValue(r)*confidenceFactor(r)}
+const COLORS=['#4F46E5','#7C3AED','#E11D48','#B45309','#0891B2','#059669','#0D9488','#D97706'];
+let directoryHandle=null, rawFiles=[], snapshots=[], leaderName=localStorage.getItem('leader_agg_name')||'', activePage='overview', activeSubTabs={};
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function parseAmount(v){let str=String(v??'').trim().replace(/[$,\s]/g,''); if(!str)return 0; let mult=1,last=str.slice(-1).toLowerCase(); if(last==='m'){mult=1e6;str=str.slice(0,-1)}else if(last==='k'){mult=1e3;str=str.slice(0,-1)}let n=Number(str);return isFinite(n)?n*mult:0}
+function num(v){return parseAmount(v)}
+function money(v){let n=num(v); if(!isFinite(n)||n===0)return '—'; let a=Math.abs(n),s=n<0?'-':''; if(a>=1e6)return s+'$'+(a/1e6).toFixed(2)+'M'; if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'K'; return s+'$'+a.toFixed(0)}
+function pct(n,d){return d?Math.round(n/d*100):0}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function defaultAcctData(){return {about:{desc:'',technology:'',priorities:''},stakeholders:[],internalTeam:[],matrix:[],overview:{},targets:{q1:0,q2:0,q3:0,q4:0},surveys:[],meetings:[],bdcost:[],risks:[],innovations:[],competitive:[],pipeline:[],sold:[],notes:{meeting:'',leadership:'',actions:[]}}}
+function quarterObj(row){row.q=row.q||{};QTRS.forEach(q=>row.q[q]=row.q[q]||{uw:0,sold:0});return row.q}
+function confidenceFactor(r){let raw=String(r.confidence??'').trim(); if(!raw)return 0; let c=num(raw); if(!isFinite(c)||c<=0)return 0; return Math.min(c,100)/100}
 function pipeQuarterUW(r,q){return num(quarterObj(r)[q]?.uw)}
 function pipeQuarterW(r,q){return pipeQuarterUW(r,q)*confidenceFactor(r)}
-function isClosedPipelineStatus(status){let s=String(status||'').toLowerCase();return s==='lost'||s==='sold'||s.includes('lost')||s.includes('won')||s.includes('closed won')}
-function includePipelineRow(r,portfolioHighOnly=false){return !r.excludeFromCalc&&(!portfolioHighOnly||r.conviction==='High')}
-function activePipeRows(d,portfolioHighOnly=false){return (d.pipeline||[]).filter(r=>includePipelineRow(r,portfolioHighOnly))}
-function accountSumsForWeek(aid,week,portfolioHighOnly=false){let d=history[week]?.[aid]||defaultAcctData(),elapsed=elapsedQtrs(),pipeRows=(d.pipeline||[]).filter(r=>includePipelineRow(r,portfolioHighOnly));let s={target:0,sold:0,ytdTarget:0,ytdSold:0,gap:0,uw:0,w:0,fu:0,fw:0,q:{}};s.uw=pipeRows.reduce((a,r)=>a+pipeValue(r),0);s.w=pipeRows.reduce((a,r)=>a+pipeWeightedValue(r),0);QTRS.forEach(q=>{let t=num(d.targets?.[q]);let sold=(d.sold||[]).reduce((a,r)=>a+num(quarterObj(r)[q]?.sold),0);let fu=pipeRows.reduce((a,r)=>a+pipeQuarterUW(r,q),0);let fw=pipeRows.reduce((a,r)=>a+pipeQuarterW(r,q),0);s.q[q]={target:t,sold,gap:sold-t,uw:fu,w:fw,fu,fw};s.target+=t;s.sold+=sold;s.fu+=fu;s.fw+=fw;if(elapsed.includes(q)){s.ytdTarget+=t;s.ytdSold+=sold}});s.gap=s.sold-s.target;return s}
-function accountSums(aid,portfolioHighOnly=false){return accountSumsForWeek(aid,currentWeek,portfolioHighOnly)}
-function portfolioSumsForWeek(week,accts=accounts){let s={target:0,sold:0,ytdTarget:0,ytdSold:0,gap:0,uw:0,w:0,fu:0,fw:0,q:{q1:{},q2:{},q3:{},q4:{}}};QTRS.forEach(q=>s.q[q]={target:0,sold:0,gap:0,uw:0,w:0,fu:0,fw:0});accts.forEach(a=>{let x=accountSumsForWeek(a.id,week,true);['target','sold','ytdTarget','ytdSold','uw','w','fu','fw'].forEach(k=>s[k]+=x[k]);QTRS.forEach(q=>Object.keys(s.q[q]).forEach(k=>s.q[q][k]+=x.q[q][k]))});s.gap=s.sold-s.target;return s}
-function portfolioSums(accts=accounts){return portfolioSumsForWeek(currentWeek,accts)}
-function previousComparableWeek(){if(!currentWeek)return '';let keys=[...new Set([...submitted,...Object.keys(history)])].filter(k=>k&&k<currentWeek&&history[k]).sort((a,b)=>b.localeCompare(a));return keys[0]||''}
-function deltaChip(curr,prev,type='money',label=''){if(prev===undefined||prev===null)return '';let d=(type==='count'?Number(curr||0)-Number(prev||0):num(curr)-num(prev));let cls=d>0?'green':d<0?'red':'slate';let txt=type==='count'?(d>0?'+'+d:String(d)):money(d);if(d>0&&type!=='count')txt='+'+txt;let prefix=label?label+' ':'';return `<span class="delta-chip ${cls}">${prefix}${txt}</span>`}
-function deltaBlock(curr,prev,type='money'){let wk=previousComparableWeek();return wk?`<div class="delta-line">${deltaChip(curr,prev,type)}</div>`:''}
-function deltaInline(curr,prev,type='money'){let wk=previousComparableWeek();return wk?`<span class="qdelta">${deltaChip(curr,prev,type)}</span>`:''}
-function kpi(label,val,sub='',color='var(--teal)',cls='',delta=''){return `<div class="card kpi ${cls}" style="--accent:${color};border-left-color:${color}"><div class="k-label">${label}</div><div class="k-val">${val}</div><div class="k-sub">${sub}</div>${delta||''}</div>`}
-function gapChip(g){let cls=g>0?'green':g<0?'red':'slate';let sign=g>0?'+':'';return `<span class="qgap"><span class="qgap-label">Gap to Target</span><span class="chip ${cls}">${sign}${money(g)}</span></span>`}
-function qCards(qs,color='var(--teal)',prevQs=null){return `<div class="qgrid">${QTRS.map(q=>{let x=qs[q]||{},px=prevQs?.[q]||{};let gp=num(x.sold)-num(x.target);return `<div class="qcard"><div class="qhead"><span class="qbadge" style="background:${color}">${QLAB[q]}</span>${gapChip(gp)}</div><div class="qline"><span>Target</span><span class="qval"><b>${money(x.target)}</b>${deltaInline(x.target,px.target)}</span></div><div class="qline"><span>Sold</span><span class="qval"><b>${money(x.sold)}</b>${deltaInline(x.sold,px.sold)}</span></div><div class="qline"><span>Gap %</span><span class="qval"><b>${gp>=0?'—':pct(Math.abs(gp),x.target)+'%'}</b>${deltaInline(gp,(num(px.sold)-num(px.target)))}</span></div><div class="qline"><span>Pipeline Unweighted</span><span class="qval"><b>${money(x.uw)}</b>${deltaInline(x.uw,px.uw)}</span></div><div class="qline"><span>Pipeline Weighted</span><span class="qval"><b>${money(x.w)}</b>${deltaInline(x.w,px.w)}</span></div><div class="bar"><i style="width:${Math.min(100,pct(x.sold,x.target))}%;background:${color}"></i></div></div>`}).join('')}</div>`}
-function leaderName(a){return (a.leader||'Unassigned').trim()||'Unassigned'}
-function leaderKey(l){return 'ldr_'+String(l||'Unassigned').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')}
-function leaderGroups(){let groups={};accounts.forEach(a=>{let l=leaderName(a);groups[l]=groups[l]||[];groups[l].push(a)});return groups}
-function portfolioKpis(accts,label='Portfolio'){let s=portfolioSums(accts),prevWeek=previousComparableWeek(),ps=prevWeek?portfolioSumsForWeek(prevWeek,accts):null;let active=accts.filter(a=>!inactive.includes(a.id)).length,total=accts.length,prevActive=active;let gapColor=s.gap<0?'var(--red)':s.gap>0?'var(--green)':'var(--text2)';let gapCls=s.gap<0?'bad':s.gap>0?'good':'neutral';let gapSub=s.gap<0?pct(Math.abs(s.gap),s.target)+'% behind target':s.gap>0?'Ahead of target':'At target';return `<div class="grid kpi-row sticky-kpis">${kpi('Active / Total Accounts',active+' / '+total,label+' account count','var(--teal)','',ps?deltaBlock(active,prevActive,'count'):'')}${kpi('Yearly Target',money(s.target),'Sum of account quarterly targets','var(--nav)','',ps?deltaBlock(s.target,ps.target):'')}${kpi('Yearly Sold',money(s.sold),'Sum of sold quarterly values','var(--green)','',ps?deltaBlock(s.sold,ps.sold):'')}${kpi('Gap to Target',money(s.gap),gapSub,gapColor,gapCls,ps?deltaBlock(s.gap,ps.gap):'')}${kpi('High Pipeline Unweighted',money(s.uw),'High conviction only','var(--teal)','',ps?deltaBlock(s.uw,ps.uw):'')}${kpi('High Pipeline Weighted',money(s.w),'High value × confidence','var(--teal)','',ps?deltaBlock(s.w,ps.w):'')}</div>`}
-function portfolioQuarterCard(title,accts,color='var(--teal)'){let s=portfolioSums(accts),prevWeek=previousComparableWeek(),ps=prevWeek?portfolioSumsForWeek(prevWeek,accts):null;return `<div class="card"><div class="card-h"><div class="card-title">${esc(title)}</div></div><div class="card-body">${qCards(s.q,color,ps?.q)}</div></div>`}
-function leaderSummaryCard(l,accts,prevWeek=''){let s=portfolioSums(accts),ps=prevWeek?portfolioSumsForWeek(prevWeek,accts):null;let color=accts[0]?.color||'var(--teal)';let active=accts.filter(a=>!inactive.includes(a.id)).length;let gapText=s.gap<0?`${money(Math.abs(s.gap))} behind`:(s.gap>0?`${money(s.gap)} ahead`:'At target');let gapCls=s.gap<0?'red':(s.gap>0?'green':'slate');return `<div class="card leader-card" style="border-left-color:${color}"><div class="card-body"><div class="leader-summary-grid"><div><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><b style="font-size:17px">${esc(l)}</b><div class="muted">${active} active / ${accts.length} total account${accts.length===1?'':'s'}</div></div><div style="text-align:right"><span class="chip ${gapCls}">${gapText}</span>${ps?deltaBlock(s.gap,ps.gap):''}<br>${s.sold<s.target?`<span class="muted">${pct(s.sold,s.target)}% to plan</span>`:`<span class="muted">On / above plan</span>`}</div></div><div class="leader-pill-row">${accts.map(a=>`<span class="leader-pill"><span class="dot" style="display:inline-block;background:${a.color};vertical-align:middle;margin-right:5px"></span>${esc(a.name)}</span>`).join('')}</div></div><div class="metric-mini"><div class="metric-box accent-nav"><div class="lab">Target</div><div class="val">${money(s.target)}</div>${ps?deltaBlock(s.target,ps.target):''}</div><div class="metric-box accent-green"><div class="lab">Sold</div><div class="val">${money(s.sold)}</div>${ps?deltaBlock(s.sold,ps.sold):''}</div><div class="metric-box accent-teal"><div class="lab">High UW Pipe</div><div class="val">${money(s.uw)}</div>${ps?deltaBlock(s.uw,ps.uw):''}</div><div class="metric-box accent-teal"><div class="lab">High W Pipe</div><div class="val">${money(s.w)}</div>${ps?deltaBlock(s.w,ps.w):''}</div></div></div></div></div>`}
-function leaderCard(l,accts,prevWeek=''){let s=portfolioSums(accts),ps=prevWeek?portfolioSumsForWeek(prevWeek,accts):null;let colors=accts.map(a=>a.color);let color=colors[0]||'var(--teal)';let gapText=s.gap<0?`${money(Math.abs(s.gap))} behind`:(s.gap>0?`${money(s.gap)} ahead`:'At target');let gapCls=s.gap<0?'red':(s.gap>0?'green':'slate');return `<div class="card leader-card" style="border-left-color:${color}"><div class="card-body"><div style="display:flex;justify-content:space-between;gap:12px"><div><b style="font-size:16px">${esc(l)}</b><div class="muted">${accts.map(a=>a.name).join(' · ')}</div></div><div style="text-align:right"><span class="chip ${gapCls}">${gapText}</span>${ps?deltaBlock(s.gap,ps.gap):''}<br>${s.sold<s.target?`<span class="muted">${pct(s.sold,s.target)}% to plan</span>`:`<span class="muted">—</span>`}</div></div><div class="acct-metrics" style="justify-content:flex-start;text-align:left;margin-top:10px;flex-wrap:wrap"><span><b>${money(s.target)}</b>Target ${ps?deltaBlock(s.target,ps.target):''}</span><span><b>${money(s.sold)}</b>Sold ${ps?deltaBlock(s.sold,ps.sold):''}</span><span><b>${money(s.uw)}</b>High UW Pipe ${ps?deltaBlock(s.uw,ps.uw):''}</span><span><b>${money(s.w)}</b>High W Pipe ${ps?deltaBlock(s.w,ps.w):''}</span></div><br>${qCards(s.q,color,ps?.q)}</div></div>`}
-function accountPortfolioBlock(a,prevWeek=''){let s=accountSums(a.id,true),ps=prevWeek?accountSumsForWeek(a.id,prevWeek,true):null,off=inactive.includes(a.id);let gapCls=s.gap<0?'red':(s.gap>0?'green':'slate');let gapTxt=s.gap<0?`${money(Math.abs(s.gap))} behind`:(s.gap>0?`${money(s.gap)} ahead`:'At target');let toPlan=s.sold<s.target?`<span><b>${pct(s.sold,s.target)}%</b>To plan</span>`:'';return `<div class="card account-block ${off?'inactive':''}"><div class="acct-head" style="background:${a.color}"><div><div class="acct-name">${esc(a.name)} ${off?'<span style="font-size:11px;opacity:.8">(Inactive)</span>':''}</div><div class="acct-sub">Leader: ${esc(a.leader||'')}</div></div><div class="acct-metrics"><span><b>${money(s.target)}</b>Target ${ps?deltaBlock(s.target,ps.target):''}</span><span><b>${money(s.sold)}</b>Sold ${ps?deltaBlock(s.sold,ps.sold):''}</span>${toPlan}<span><b>${money(s.uw)}</b>High UW Pipe ${ps?deltaBlock(s.uw,ps.uw):''}</span><span><b>${money(s.w)}</b>High W Pipe ${ps?deltaBlock(s.w,ps.w):''}</span><span><b><span class="chip ${gapCls}">${gapTxt}</span></b>Gap ${ps?deltaBlock(s.gap,ps.gap):''}</span></div></div><div class="card-body">${qCards(s.q,a.color,ps?.q)}</div></div>`}
-function showPortfolioTab(tabKey){collectAll();activePortfolioTab=tabKey;renderPortfolio()}
-function renderPortfolio(){let pc=document.getElementById('portfolioContent');if(!currentWeek){pc.innerHTML='<div class="card pad">Add a week to begin tracking.</div>';return}let groups=leaderGroups(),leaders=Object.keys(groups).sort((a,b)=>a.localeCompare(b));let valid=['overview',...leaders.map(leaderKey)];if(!valid.includes(activePortfolioTab))activePortfolioTab='overview';let tabs=`<div class="portfolio-tabs"><button class="tab ${activePortfolioTab==='overview'?'active':''}" onclick="showPortfolioTab('overview')">Overview</button>${leaders.map(l=>`<button class="tab ${activePortfolioTab===leaderKey(l)?'active':''}" onclick="showPortfolioTab('${leaderKey(l)}')">${esc(l)}</button>`).join('')}</div>`;let prevWeek=previousComparableWeek();let body='';if(activePortfolioTab==='overview'){body=`<div class="portfolio-tab-body">${portfolioKpis(accounts,'Portfolio')}<br>${portfolioQuarterCard('Total Portfolio — Quarterly',accounts,'var(--teal)')}</div>`}else{let leader=leaders.find(l=>leaderKey(l)===activePortfolioTab),accts=groups[leader]||[],color=accts[0]?.color||'var(--teal)';body=`<div class="portfolio-tab-body">${portfolioKpis(accts,leader)}<br>${portfolioQuarterCard('Quarterly',accts,color)}<br><div class="card"><div class="card-h"><div class="card-title">Accounts</div></div><div class="card-body">${accts.map(a=>accountPortfolioBlock(a,prevWeek)).join('')}</div></div></div>`}pc.innerHTML=tabs+body}
-function accountPage(a){let d=history[currentWeek]?.[a.id]||defaultAcctData();return `<section id="page-${a.id}" class="page"><div class="page-head"><div><div class="title" style="color:${a.color}">${esc(a.name)}</div><div class="account-subtitle">Leader: <b>${esc(a.leader||'')}</b> · Weekly account tracker</div></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end"><button class="btn small light" onclick="toggleInactive('${a.id}')">${inactive.includes(a.id)?'Mark Active':'Mark Inactive'}</button> <button class="btn small danger" onclick="removeAccount('${a.id}')">Remove</button></div></div><div class="tabs"><button class="tab active" onclick="tab('${a.id}','about',this)">About</button><button class="tab" onclick="tab('${a.id}','overview',this)">Overview</button><button class="tab" onclick="tab('${a.id}','pipeline',this)">Pipeline</button><button class="tab" onclick="tab('${a.id}','sold',this)">Sold</button><button class="tab" onclick="tab('${a.id}','notes',this)">Notes & Actions</button></div><div id="sub-${a.id}-about" class="subpage active">${aboutTab(a,d)}</div><div id="sub-${a.id}-overview" class="subpage">${overviewTab(a,d)}</div><div id="sub-${a.id}-pipeline" class="subpage">${pipelineTab(a,d)}</div><div id="sub-${a.id}-sold" class="subpage">${soldTab(a,d)}</div><div id="sub-${a.id}-notes" class="subpage">${notesTab(a,d)}</div></section>`}
-function aboutTab(a,d){return `<div class="card"><div class="card-h"><div class="card-title">Account Overview</div></div><div class="card-body"><div class="account-name-leader-grid"><div class="field"><label>Account Name</label><input value="${esc(a.name||'')}" onchange="setAccountName('${a.id}',this.value)" placeholder="Use exact Excel Client name for import matching"></div><div class="field"><label>Leader Name</label><input data-a="${a.id}" data-path="leader" value="${esc(a.leader||'')}" onchange="setLeader('${a.id}',this.value)"></div></div><br><div class="field"><label>Description</label><textarea data-a="${a.id}" data-path="about.desc" placeholder="Company background, current scope, strategic importance...">${esc(d.about.desc)}</textarea></div></div></div><br><div class="about-priority-grid"><div class="card"><div class="card-h"><div class="card-title">Key Stakeholders</div><button class="btn small primary" onclick="addRow('${a.id}','stakeholders')">+ Stakeholder</button></div><div class="table-wrap stakeholder-wrap">${stakeholderTable(a,d)}</div></div><div class="card"><div class="card-h"><div class="card-title">Internal Team</div><button class="btn small primary" onclick="addRow('${a.id}','internalTeam')">+ Team Member</button></div><div class="table-wrap internal-team-wrap compact-table">${internalTeamTable(a,d)}</div></div></div><br><div class="about-priority-grid"><div class="card"><div class="card-h"><div class="card-title">Top Priorities</div></div><div class="card-body"><div class="field"><textarea data-a="${a.id}" data-path="about.priorities" placeholder="Current business priorities, white-space areas, renewal themes...">${esc(d.about.priorities)}</textarea></div></div></div><div class="card"><div class="card-h"><div class="card-title">Technology Landscape</div></div><div class="card-body"><div class="field"><textarea data-a="${a.id}" data-path="about.technology" placeholder="Platforms, vendors, BI/data stack, integrations...">${esc(d.about.technology)}</textarea></div></div></div></div><br><div class="card"><div class="card-h"><div class="card-title">Data Landscape Matrix</div><button class="btn small primary" onclick="addRow('${a.id}','matrix')">+ Domain</button></div><div class="table-wrap compact-table">${matrixTable(a,d)}</div></div>`}
-function overviewTab(a,d){let s=accountSums(a.id,false),prevWeek=previousComparableWeek(),ps=prevWeek?accountSumsForWeek(a.id,prevWeek,false):null;let opps=activePipeRows(d,false).length,prevD=prevWeek?(history[prevWeek]?.[a.id]||defaultAcctData()):null,prevOpps=prevD?activePipeRows(prevD,false).length:0;let marginActual=num(d.overview.marginActual),marginTarget=num(d.overview.marginTarget),hasMarginActual=String(d.overview.marginActual??'').trim()!=='';let marginColor=hasMarginActual&&marginTarget&&marginActual<marginTarget?'var(--red)':hasMarginActual?'var(--green)':'var(--text)';return `<div class="overview-top">
-  <div class="card"><div class="card-h"><div class="card-title">Yearly</div></div><div class="card-body"><div class="metric-mini"><div class="metric-box accent-nav"><div class="lab">Target</div><div class="val">${money(s.target)}</div>${ps?deltaBlock(s.target,ps.target):''}</div><div class="metric-box accent-green"><div class="lab">Sold</div><div class="val">${money(s.sold)}</div>${ps?deltaBlock(s.sold,ps.sold):''}</div></div></div></div>
-  <div class="card"><div class="card-h"><div class="card-title">YTD</div></div><div class="card-body"><div class="metric-mini"><div class="metric-box accent-nav"><div class="lab">Target</div><div class="val">${money(s.ytdTarget)}</div>${ps?deltaBlock(s.ytdTarget,ps.ytdTarget):''}</div><div class="metric-box accent-green"><div class="lab">Sold</div><div class="val">${money(s.ytdSold)}</div>${ps?deltaBlock(s.ytdSold,ps.ytdSold):''}</div></div></div></div>
-  <div class="card"><div class="card-h"><div class="card-title">Pipeline</div></div><div class="card-body"><div class="metric-mini three"><div class="metric-box accent-teal"><div class="lab">Opportunities</div><div class="val">${opps}</div>${ps?deltaBlock(opps,prevOpps,'count'):''}</div><div class="metric-box accent-teal"><div class="lab">Unweighted</div><div class="val">${money(s.uw)}</div>${ps?deltaBlock(s.uw,ps.uw):''}</div><div class="metric-box accent-green"><div class="lab">Weighted</div><div class="val">${money(s.w)}</div>${ps?deltaBlock(s.w,ps.w):''}</div></div></div></div>
-</div><br>
-<div class="card"><div class="card-h"><div class="card-title">Target vs Sold — Quarterly</div></div><div class="card-body"><div class="qgrid">${QTRS.map(q=>`<div class="qcard"><div class="qhead"><span class="qbadge" style="background:${a.color}">${QLAB[q]}</span>${gapChip(s.q[q].gap)}</div><div class="field"><label>Target</label><input data-a="${a.id}" data-path="targets.${q}" value="${esc(d.targets[q]||'')}" onchange="rerender()">${ps?deltaBlock(s.q[q].target,ps.q[q].target):''}</div><br><div class="qline"><span>Sold</span><span class="qval"><b>${money(s.q[q].sold)}</b>${ps?deltaInline(s.q[q].sold,ps.q[q].sold):''}</span></div><div class="qline"><span>Pipeline Unweighted</span><span class="qval"><b>${money(s.q[q].uw)}</b>${ps?deltaInline(s.q[q].uw,ps.q[q].uw):''}</span></div><div class="qline"><span>Pipeline Weighted</span><span class="qval"><b>${money(s.q[q].w)}</b>${ps?deltaInline(s.q[q].w,ps.q[q].w):''}</span></div><div class="bar"><i style="width:${Math.min(100,pct(s.q[q].sold,s.q[q].target))}%;background:${a.color}"></i></div></div>`).join('')}</div></div></div><br>
-<div class="margin-ai-bd">
-  <div class="card compact-margin"><div class="card-h"><div class="card-title">Direct Margin</div></div><div class="card-body"><div class="metric-mini"><div class="metric-box accent-teal"><div class="lab">Actual %</div><input data-a="${a.id}" data-path="overview.marginActual" value="${esc(d.overview.marginActual)}" onchange="rerender()" style="border:0;outline:0;width:100%;font-size:19px;font-weight:740;color:${marginColor};background:transparent"></div><div class="metric-box accent-nav"><div class="lab">Target %</div><input data-a="${a.id}" data-path="overview.marginTarget" value="${esc(d.overview.marginTarget)}" onchange="rerender()" style="border:0;outline:0;width:100%;font-size:19px;font-weight:740;color:var(--text);background:transparent"></div></div></div></div>
-  <div class="card"><div class="card-h"><div class="card-title">AI Index</div></div><div class="card-body">${aiIndex(a,d)}</div></div>
-  <div class="card"><div class="card-h"><div class="card-title">BD Index</div></div><div class="card-body">${bdIndex(a,d)}</div></div>
-</div><br>
-<div class="two-col"><div class="card"><div class="card-h"><div class="card-title">CSAT & NPS</div><button class="btn small primary" onclick="addRow('${a.id}','surveys')">+ Survey</button></div><div class="table-wrap">${surveyTable(a,d)}</div></div><div class="card"><div class="card-h"><div class="card-title">Client Engagement</div><button class="btn small primary" onclick="addRow('${a.id}','meetings')">+ Meeting</button></div><div class="table-wrap">${meetingTable(a,d)}</div></div></div><br>
-<div class="two-col"><div class="card"><div class="card-h"><div class="card-title">BD Cost Breakdown</div><button class="btn small primary" onclick="addRow('${a.id}','bdcost')">+ Activity</button></div><div class="table-wrap">${bdTable(a,d)}</div></div><div class="card"><div class="card-h"><div class="card-title">Key Risks & Mitigation</div><button class="btn small danger" onclick="addRow('${a.id}','risks')">+ Risk</button></div><div class="table-wrap">${riskTable(a,d)}</div></div></div><br>
-<div class="two-col"><div class="card"><div class="card-h"><div class="card-title">Innovations</div><button class="btn small primary" onclick="addRow('${a.id}','innovations')">+ Innovation</button></div><div class="table-wrap">${innovationTable(a,d)}</div></div><div class="card"><div class="card-h"><div class="card-title">Competitive Landscape</div><button class="btn small primary" onclick="addRow('${a.id}','competitive')">+ Record</button></div><div class="table-wrap">${competitiveTable(a,d)}</div></div></div>`}
-function rateBar(label,val,color='var(--teal)'){return `<div class="rate-row"><div class="rate-head"><span>${label}</span><b>${val}%</b></div><div class="bar"><i style="width:${Math.min(100,val)}%;background:${color}"></i></div></div>`}
-function bdIndex(a,d){let total=d.bdcost.length,props=d.bdcost.filter(r=>r.proposal).length,wins=d.bdcost.filter(r=>r.proposal&&r.outcome==='Win').length,cost=d.bdcost.reduce((a,r)=>a+num(r.cost),0);let prevWeek=previousComparableWeek(),prevD=prevWeek?(history[prevWeek]?.[a.id]||defaultAcctData()):null,prevCost=prevD?prevD.bdcost.reduce((x,r)=>x+num(r.cost),0):null;let c2p=pct(props,total),p2w=pct(wins,props),c2w=pct(wins,total);return `<div class="bd-kpi-grid">${kpi('Conversations',total,'BD activities','var(--nav)')}${kpi('Proposals',props,'Proposal checkbox count','var(--teal)')}${kpi('Wins',wins,'Proposal + Win count','var(--green)')}${kpi('BD Cost YTD',money(cost),'Sum of costs','var(--amber)','',prevD?deltaBlock(cost,prevCost):'')}</div><br>${rateBar('Conversation → Proposal Rate',c2p,'var(--teal)')}${rateBar('Proposal → Win Rate',p2w,'var(--green)')}${rateBar('Conversation → Win Rate',c2w,'var(--green)')}`}
-function aiIndex(a,d){let rows=[['Delivery via AI %','overview.aiDelivery',d.overview.aiDelivery,'var(--teal)'],['Proposals with AI %','overview.aiProposal',d.overview.aiProposal,'var(--nav)'],['Talent Upskilled %','overview.aiTalent',d.overview.aiTalent,'var(--amber)'],['Innovation Index','overview.innovationIndex',d.overview.innovationIndex,'var(--green)']];return rows.map(r=>{let val=Math.max(0,Math.min(100,num(r[2])));return `<div class="ai-bar-row"><div class="ai-label">${r[0]}</div><input data-a="${a.id}" data-path="${r[1]}" value="${esc(r[2]||'')}" onchange="rerender()"><div><div class="rate-head" style="margin-bottom:4px"><span></span><b>${val}%</b></div><div class="bar"><i style="width:${val}%;background:${r[3]}"></i></div></div></div>`}).join('')}
-
-function pipelineTab(a,d){let rows=activePipeRows(d,false),total=rows.length,uw=rows.reduce((x,r)=>x+pipeValue(r),0),w=rows.reduce((x,r)=>x+pipeWeightedValue(r),0);let prevWeek=previousComparableWeek(),pd=prevWeek?(history[prevWeek]?.[a.id]||defaultAcctData()):null,prevRows=pd?activePipeRows(pd,false):[],prevTotal=prevRows.length,prevUw=prevRows.reduce((x,r)=>x+pipeValue(r),0),prevW=prevRows.reduce((x,r)=>x+pipeWeightedValue(r),0);let by=['High','Medium','Low','Early'].map(c=>{let rr=rows.filter(r=>r.conviction===c);return {c,count:rr.length,uw:rr.reduce((x,r)=>x+pipeValue(r),0),w:rr.reduce((x,r)=>x+pipeWeightedValue(r),0)}});return `<div class="pipeline-summary-grid">
-  <div class="card"><div class="card-h"><div class="card-title">Total Pipeline Value</div></div><div class="card-body"><div class="metric-mini pipeline-total-mini"><div class="metric-box accent-teal"><div class="lab">Opportunities</div><div class="val">${total}</div>${pd?deltaBlock(total,prevTotal,'count'):''}</div><div class="metric-box accent-teal"><div class="lab">Unweighted Pipeline</div><div class="val">${money(uw)}</div>${pd?deltaBlock(uw,prevUw):''}</div><div class="metric-box accent-green"><div class="lab">Weighted Pipeline</div><div class="val">${money(w)}</div>${pd?deltaBlock(w,prevW):''}</div></div></div></div>
-  <div class="card"><div class="card-h"><div class="card-title">By Conviction</div></div><div class="card-body"><div class="conv-grid">${by.map(x=>`<div class="conv-card" style="border-left-color:${x.c==='High'?'var(--green)':x.c==='Medium'?'var(--amber)':x.c==='Low'?'var(--teal)':'var(--muted)'}"><div class="lab">${x.c}</div><div class="muted" style="margin-top:2px">${x.count} opportunit${x.count===1?'y':'ies'}</div><div class="conv-metrics"><div class="conv-metric"><div class="small-lab">Unweighted</div><div class="small-val">${money(x.uw)}</div></div><div class="conv-metric"><div class="small-lab">Weighted</div><div class="small-val">${money(x.w)}</div></div></div></div>`).join('')}</div></div></div>
-</div><br><div class="card"><div class="card-h"><div class="card-title">Pipeline Opportunities</div><button class="btn small primary" onclick="addRow('${a.id}','pipeline')">+ Opportunity</button></div><div class="table-wrap">${pipelineTable(a,d)}</div></div>`}
-function soldStats(d){let rows=d?.sold||[];let sumFor=fn=>rows.filter(fn).reduce((a,r)=>a+QTRS.reduce((s,q)=>s+num(quarterObj(r)[q].sold),0),0);let countFor=fn=>rows.filter(fn).length;return {total:rows.reduce((a,r)=>a+QTRS.reduce((s,q)=>s+num(quarterObj(r)[q].sold),0),0),totalCount:rows.length,newv:sumFor(r=>r.type==='New'),newCount:countFor(r=>r.type==='New'),ups:sumFor(r=>['Upsell','Renewal'].includes(r.type)),upsCount:countFor(r=>['Upsell','Renewal'].includes(r.type)),ai:sumFor(r=>r.type==='AI'),aiCount:countFor(r=>r.type==='AI')}}
-function soldTab(a,d){let st=soldStats(d),prevWeek=previousComparableWeek(),prevD=prevWeek?(history[prevWeek]?.[a.id]||defaultAcctData()):null,pst=prevD?soldStats(prevD):null;return `<div class="sold-metric-layout">
-  <div class="card sold-total-card"><div class="card-h"><div class="card-title">Total Sold</div></div><div class="card-body">${kpi('Total Sold',money(st.total),st.totalCount+' deal'+(st.totalCount===1?'':'s'),'var(--green)','',pst?deltaBlock(st.total,pst.total):'')}</div></div>
-  <div class="card sold-type-card"><div class="card-h"><div class="card-title">Sold by Deal Type</div></div><div class="card-body"><div class="sold-type-grid">${kpi('New Business',money(st.newv),st.newCount+' deal'+(st.newCount===1?'':'s'),'var(--green)','',pst?deltaBlock(st.newv,pst.newv):'')}${kpi('Upsell / Renewal',money(st.ups),st.upsCount+' deal'+(st.upsCount===1?'':'s'),'var(--amber)','',pst?deltaBlock(st.ups,pst.ups):'')}${kpi('AI / Innovation',money(st.ai),st.aiCount+' deal'+(st.aiCount===1?'':'s'),'var(--teal)','',pst?deltaBlock(st.ai,pst.ai):'')}</div></div></div>
-</div><br><div class="card"><div class="card-h"><div class="card-title">Sold Deals</div><button class="btn small primary" onclick="addRow('${a.id}','sold')">+ Deal</button></div><div class="table-wrap">${soldTable(a,d)}</div></div>`}
-function notesTab(a,d){return `<div class="card"><div class="card-h"><div class="card-title">Meeting Notes</div></div><div class="card-body"><div class="field"><textarea data-a="${a.id}" data-path="notes.meeting">${esc(d.notes.meeting)}</textarea></div></div></div><br><div class="card"><div class="card-h"><div class="card-title">Leadership Comments & Direction</div></div><div class="card-body"><div class="field"><textarea data-a="${a.id}" data-path="notes.leadership">${esc(d.notes.leadership)}</textarea></div></div></div><br><div class="card"><div class="card-h"><div class="card-title">Action Items</div><button class="btn small primary" onclick="addRow('${a.id}','actions')">+ Action</button></div><div class="table-wrap">${actionTable(a,d)}</div></div>`}
-function table(headers,rows){return `<table class="data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}<th></th></tr></thead><tbody>${rows}</tbody></table>`}
-function inp(a,path,val,type='text'){return `<input type="${type}" data-a="${a.id}" data-path="${path}" value="${esc(val)}" onchange="rerender()">`}function chk(a,path,val){return `<input type="checkbox" data-a="${a.id}" data-path="${path}" ${val?'checked':''} onchange="rerender()">`}function sel(a,path,val,opts){return `<select data-a="${a.id}" data-path="${path}" onchange="rerender()">${opts.map(o=>`<option ${o===val?'selected':''}>${o}</option>`).join('')}</select>`}function ta(a,path,val){return `<textarea data-a="${a.id}" data-path="${path}" onchange="rerender()">${esc(val)}</textarea>`}function delBtn(a,arr,id){return `<button class="iconbtn red" onclick="delRow('${a.id}','${arr}','${id}')">×</button>`}
-function stakeholderTable(a,d){return table(['Name','Designation','Role','Axtria Advocate %','Notes'],d.stakeholders.map(r=>`<tr><td>${inp(a,`stakeholders.${r.id}.name`,r.name||'')}</td><td>${inp(a,`stakeholders.${r.id}.designation`,r.designation||'')}</td><td>${inp(a,`stakeholders.${r.id}.role`,r.role||'')}</td><td>${inp(a,`stakeholders.${r.id}.advocate`,r.advocate||'')}</td><td>${ta(a,`stakeholders.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'stakeholders',r.id)}</td></tr>`).join(''))}
-function internalTeamTable(a,d){d.internalTeam=d.internalTeam||[];return table(['Name','Designation','Role','Notes'],d.internalTeam.map(r=>`<tr><td>${inp(a,`internalTeam.${r.id}.name`,r.name||'')}</td><td>${inp(a,`internalTeam.${r.id}.designation`,r.designation||'')}</td><td>${inp(a,`internalTeam.${r.id}.role`,r.role||'')}</td><td>${ta(a,`internalTeam.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'internalTeam',r.id)}</td></tr>`).join(''))}
-function matrixTable(a,d){return table(['Domain','Vendor / Tool','Status','Notes'],d.matrix.map(r=>`<tr><td>${inp(a,`matrix.${r.id}.domain`,r.domain||'')}</td><td>${inp(a,`matrix.${r.id}.vendor`,r.vendor||'')}</td><td>${sel(a,`matrix.${r.id}.status`,r.status||'',['','Active','Evaluating','Planned','Legacy','None'])}</td><td>${ta(a,`matrix.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'matrix',r.id)}</td></tr>`).join(''))}
-function surveyTable(a,d){let rows=d.surveys.slice().sort((x,y)=>(y.date||'').localeCompare(x.date||''));return table(['Date','CSAT','NPS','Notes'],rows.map(r=>`<tr><td>${inp(a,`surveys.${r.id}.date`,r.date||'','date')}</td><td>${inp(a,`surveys.${r.id}.csat`,r.csat||'')}</td><td>${inp(a,`surveys.${r.id}.nps`,r.nps||'')}</td><td>${inp(a,`surveys.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'surveys',r.id)}</td></tr>`).join(''))}
-function meetingTable(a,d){let rows=d.meetings.slice().sort((x,y)=>(x.plannedDate||'').localeCompare(y.plannedDate||''));return table(['Client / Contact','Agenda','Planned Date','Completed','Notes'],rows.map(r=>`<tr><td>${inp(a,`meetings.${r.id}.client`,r.client||'')}</td><td>${ta(a,`meetings.${r.id}.agenda`,r.agenda||'')}</td><td>${inp(a,`meetings.${r.id}.plannedDate`,r.plannedDate||'','date')}</td><td>${chk(a,`meetings.${r.id}.completed`,r.completed)}</td><td>${inp(a,`meetings.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'meetings',r.id)}</td></tr>`).join(''))}
-function bdTable(a,d){let rows=d.bdcost.slice().sort((x,y)=>num(y.cost)-num(x.cost));return table(['BD Activity','Stakeholder','Cost','Proposal','Outcome','Notes'],rows.map(r=>`<tr><td>${inp(a,`bdcost.${r.id}.activity`,r.activity||'')}</td><td>${inp(a,`bdcost.${r.id}.stakeholder`,r.stakeholder||'')}</td><td>${inp(a,`bdcost.${r.id}.cost`,r.cost||'')}</td><td>${chk(a,`bdcost.${r.id}.proposal`,r.proposal)}</td><td>${sel(a,`bdcost.${r.id}.outcome`,r.outcome||'In Progress',['In Progress','Win','Lost','No Bid'])}</td><td>${ta(a,`bdcost.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'bdcost',r.id)}</td></tr>`).join(''))}
-function riskTable(a,d){let order={High:0,Medium:1,Low:2};let rows=d.risks.slice().sort((x,y)=>(order[x.severity]??9)-(order[y.severity]??9)||(y.dueDate||'').localeCompare(x.dueDate||''));return table(['Severity','Title','Summary','Introduced On','Due Date','Mitigation'],rows.map(r=>`<tr><td>${sel(a,`risks.${r.id}.severity`,r.severity||'Medium',['High','Medium','Low'])}</td><td>${inp(a,`risks.${r.id}.title`,r.title||'')}</td><td>${ta(a,`risks.${r.id}.summary`,r.summary||'')}</td><td>${inp(a,`risks.${r.id}.introduced`,r.introduced||'','date')}</td><td>${inp(a,`risks.${r.id}.dueDate`,r.dueDate||'','date')}</td><td>${ta(a,`risks.${r.id}.mitigation`,r.mitigation||'')}</td><td>${delBtn(a,'risks',r.id)}</td></tr>`).join(''))}
-function innovationTable(a,d){let rows=d.innovations.slice().sort((x,y)=>(y.startDate||'').localeCompare(x.startDate||''));return table(['Initiative','Description','Outcome','Start Date','Completion Date'],rows.map(r=>`<tr><td>${inp(a,`innovations.${r.id}.initiative`,r.initiative||'')}</td><td>${ta(a,`innovations.${r.id}.description`,r.description||'')}</td><td>${ta(a,`innovations.${r.id}.outcome`,r.outcome||'')}</td><td>${inp(a,`innovations.${r.id}.startDate`,r.startDate||'','date')}</td><td>${inp(a,`innovations.${r.id}.completionDate`,r.completionDate||'','date')}</td><td>${delBtn(a,'innovations',r.id)}</td></tr>`).join(''))}
-function competitiveTable(a,d){let rows=d.competitive.slice().sort((x,y)=>num(y.value)-num(x.value)||num(y.confidence)-num(x.confidence));return table(['Competitor','Domain','Details','Value','Our Strategy','Confidence Score'],rows.map(r=>`<tr><td>${inp(a,`competitive.${r.id}.competitor`,r.competitor||'')}</td><td>${inp(a,`competitive.${r.id}.domain`,r.domain||'')}</td><td>${ta(a,`competitive.${r.id}.details`,r.details||'')}</td><td>${inp(a,`competitive.${r.id}.value`,r.value||'')}</td><td>${ta(a,`competitive.${r.id}.strategy`,r.strategy||'')}</td><td>${inp(a,`competitive.${r.id}.confidence`,r.confidence||'')}</td><td>${delBtn(a,'competitive',r.id)}</td></tr>`).join(''))}
-function pipelineRowKey(r){return String(r._excelClient||'')+'|'+String(r._excelRow||'')+'|'+String(r.name||'').toLowerCase().trim()}
-function findPreviousPipelineRow(aid,r){let pw=previousComparableWeek();if(!pw)return null;let rows=history[pw]?.[aid]?.pipeline||[];return rows.find(x=>x.id&&x.id===r.id)||rows.find(x=>r._source==='excel'&&x._source==='excel'&&pipelineRowKey(x)===pipelineRowKey(r))||rows.find(x=>String(x.name||'').trim().toLowerCase()===String(r.name||'').trim().toLowerCase()&&String(x.type||'')===String(r.type||''))||null}
-function totalDealSizeValue(r){let direct=num(r.totalDealSize);if(direct)return direct;let m=String(r.thisWeek||'').match(/Total Deal Size:\s*([^\n]+)/i);return m?num(m[1]):0}
-function confidenceDeltaHtml(curr,prev){if(prev===undefined||prev===null||prev==='')return '';let d=num(curr)-num(prev);let cls=d>0?'green':d<0?'red':'slate';return `<div class="pipeline-delta"><span class="delta-chip ${cls}">${d>0?'+':''}${d} pts</span></div>`}
-function pipelineStatusSelect(a,path,val){let opts=['Active','Lost','Sold','On Hold','Opp1 - Qualification','Opp2 - Proposal','Opp3 - Negotiation','Opp4 - Confirmation'];let v=String(val||'Active');if(!opts.includes(v))opts=[v,...opts];return sel(a,path,v,opts)}
-function pipelineTable(a,d){let order={High:0,Medium:1,Low:2,Early:3};let rows=d.pipeline.slice().sort((x,y)=>(order[x.conviction]??9)-(order[y.conviction]??9)||num(y.confidence)-num(x.confidence));let headers=['Conviction','Type','Opportunity','Status','Total Deal Size','Unweighted Value','Confidence','Weighted Value','Target Date','Exclude from Calc.','This Week','Last Week','Leadership Notes','Quarter Values'];let body=rows.map(r=>{let tv=pipeValue(r),tds=totalDealSizeValue(r),wv=pipeWeightedValue(r),pr=findPreviousPipelineRow(a.id,r),ptv=pr?pipeValue(pr):null,ptds=pr?totalDealSizeValue(pr):null,pwv=pr?pipeWeightedValue(pr):null,pc=pr?num(pr.confidence):null;let excluded=r.excludeFromCalc;return `<tr class="${excluded?'inactive':''}"><td>${sel(a,`pipeline.${r.id}.conviction`,r.conviction||'Early',['High','Medium','Low','Early'])}</td><td>${sel(a,`pipeline.${r.id}.type`,r.type||'New',['New','Upsell','Renewal','AI','Expansion'])}</td><td>${inp(a,`pipeline.${r.id}.name`,r.name||'')}</td><td><span class="status-pill">${esc(r.status||'From Excel')}</span></td><td class="pipeline-deal-col"><b>${money(tds)}</b>${pr?`<div class="pipeline-delta">${deltaChip(tds,ptds)}</div>`:''}</td><td class="pipeline-uw-col"><b>${money(tv)}</b>${pr?`<div class="pipeline-delta">${deltaChip(tv,ptv)}</div>`:''}<div class="muted" style="font-size:10px">Q1+Q2+Q3+Q4 unweighted</div></td><td class="pipeline-conf-col">${inp(a,`pipeline.${r.id}.confidence`,r.confidence||'')}${pr?confidenceDeltaHtml(r.confidence,pc):''}</td><td><b>${money(wv)}</b>${pr?`<div class="pipeline-delta">${deltaChip(wv,pwv)}</div>`:''}</td><td>${inp(a,`pipeline.${r.id}.targetDate`,r.targetDate||'','date')}</td><td class="pipeline-exclude-col">${chk(a,`pipeline.${r.id}.excludeFromCalc`,!!r.excludeFromCalc)}</td><td>${ta(a,`pipeline.${r.id}.thisWeek`,r.thisWeek||'')}</td><td>${ta(a,`pipeline.${r.id}.lastWeek`,r.lastWeek||'')}</td><td class="pipeline-notes-col">${ta(a,`pipeline.${r.id}.leaderNotes`,r.leaderNotes||'')}</td><td class="pipeline-values-col"><button class="iconbtn teal" onclick="openQuarterModal('${a.id}','pipeline','${r.id}')">Values</button></td><td><div class="row-actions"><button class="iconbtn amber" onclick="moveToSold('${a.id}','${r.id}')">Sold</button>${delBtn(a,'pipeline',r.id)}</div></td></tr>`}).join('');return `<table class="data-table pipeline-table"><thead><tr>${headers.map((h,i)=>`<th class="${i===6?'pipeline-conf-col':i===12?'pipeline-notes-col':i===4?'pipeline-deal-col':i===5?'pipeline-uw-col':i===9?'pipeline-exclude-col':i===13?'pipeline-values-col':''}">${h}</th>`).join('')}<th></th></tr></thead><tbody>${body}</tbody></table>`}
-function soldTable(a,d){let rows=d.sold.slice().sort((x,y)=>(y.soldDate||'').localeCompare(x.soldDate||''));return table(['Deal Name','Deal Details','Type','Total Value','Sold Date','Duration','Status','Quarter Values'],rows.map(r=>`<tr><td>${inp(a,`sold.${r.id}.name`,r.name||'')}</td><td>${ta(a,`sold.${r.id}.details`,r.details||'')}</td><td>${sel(a,`sold.${r.id}.type`,r.type||'New',['New','Upsell','Renewal','AI'])}</td><td>${money(QTRS.reduce((s,q)=>s+num(quarterObj(r)[q].sold),0))}</td><td>${inp(a,`sold.${r.id}.soldDate`,r.soldDate||'','date')}</td><td>${inp(a,`sold.${r.id}.duration`,r.duration||'')}</td><td>${sel(a,`sold.${r.id}.status`,r.status||'Active',['Active','Completed','On Hold'])}</td><td><button class="iconbtn teal" onclick="openQuarterModal('${a.id}','sold','${r.id}')">Values</button></td><td>${delBtn(a,'sold',r.id)}</td></tr>`).join(''))}
-function actionTable(a,d){let rows=d.notes.actions.slice().sort((x,y)=>(x.due||'').localeCompare(y.due||''));return table(['Action','Owner','Due Date','Notes'],rows.map(r=>`<tr><td>${inp(a,`notes.actions.${r.id}.action`,r.action||'')}</td><td>${inp(a,`notes.actions.${r.id}.owner`,r.owner||'')}</td><td>${inp(a,`notes.actions.${r.id}.due`,r.due||'','date')}</td><td>${ta(a,`notes.actions.${r.id}.notes`,r.notes||'')}</td><td>${delBtn(a,'actions',r.id)}</td></tr>`).join(''))}
-function subForArray(arr){if(['stakeholders','internalTeam','matrix'].includes(arr))return 'about';if(['pipeline'].includes(arr))return 'pipeline';if(['sold'].includes(arr))return 'sold';if(['actions'].includes(arr))return 'notes';return 'overview'}
-function preserveLocation(aid,arr){activePage=aid;activeSubTabs[aid]=subForArray(arr)}
-function addRow(aid,arr){collectAll();preserveLocation(aid,arr);let d=data(aid),r={id:uid(arr)};if(arr==='pipeline')r={...r,conviction:'Early',type:'New',status:'',totalDealSize:'',value:'',confidence:'',excludeFromCalc:false,q:{q1:{uw:0},q2:{uw:0},q3:{uw:0},q4:{uw:0}}};if(arr==='sold')r={...r,type:'New',status:'Active',soldDate:new Date().toISOString().slice(0,10),q:{q1:{sold:0},q2:{sold:0},q3:{sold:0},q4:{sold:0}}};if(arr==='risks')r.severity='Medium';if(arr==='bdcost')r.outcome='In Progress';if(arr==='actions')d.notes.actions.push(r);else d[arr].push(r);renderAll()}
-function delRow(aid,arr,id){collectAll();preserveLocation(aid,arr);let d=data(aid);if(arr==='actions')d.notes.actions=d.notes.actions.filter(r=>r.id!==id);else d[arr]=d[arr].filter(r=>r.id!==id);renderAll()}
-function moveToSold(aid,id){collectAll();activePage=aid;activeSubTabs[aid]='sold';let d=data(aid),p=d.pipeline.find(r=>r.id===id);if(!p)return;let s={id:uid('sold'),name:p.name||'Pipeline Deal',details:p.thisWeek||'',type:p.type==='Expansion'?'Upsell':p.type,totalValue:pipeValue(p),soldDate:new Date().toISOString().slice(0,10),duration:'',status:'Active',q:{}};QTRS.forEach(q=>{let pq=quarterObj(p)[q];s.q[q]={sold:num(pq.uw)||0}});d.pipeline=d.pipeline.filter(r=>r.id!==id);d.sold.push(s);renderAll();toast('Moved to Sold and removed from Pipeline. Override sold quarterly values using Values button.')}
-function openQuarterModal(aid,arr,id){collectAll();let d=data(aid),r=d[arr].find(x=>x.id===id);modalCtx={aid,arr,id};document.getElementById('forecastTitle').textContent=(arr==='pipeline'?'Pipeline Quarterly Unweighted Values':'Sold Quarterly Values')+' — '+(r.name||r.opportunity||'Record');document.getElementById('forecastHelp').textContent=arr==='pipeline'?'Enter only the unweighted amount for each quarter. Weighted values are derived as unweighted × confidence score.':'Enter or override sold values by quarter.';let q=quarterObj(r);let body='';if(arr==='pipeline'){body=`<div class="forecast-stack">${QTRS.map(x=>`<div class="forecast-row"><div class="h">${QLAB[x]} Unweighted</div><input id="qm-${x}-uw" value="${esc(q[x].uw||'')}" placeholder="e.g. 250K or 0.25M"></div>`).join('')}</div><p class="muted" style="margin-top:12px">Derived weighted: ${QTRS.map(x=>QLAB[x]+': '+money(pipeQuarterW(r,x))).join(' · ')}</p>`}else{body=`<div class="forecast-stack">${QTRS.map(x=>`<div class="forecast-row"><div class="h">${QLAB[x]} Sold</div><input id="qm-${x}-sold" value="${esc(q[x].sold||'')}" placeholder="e.g. 250K or 0.25M"></div>`).join('')}</div>`}document.getElementById('forecastBody').innerHTML=body;openModal('forecastModal')}
-function saveQuarterModal(){let {aid,arr,id}=modalCtx,d=data(aid),r=d[arr].find(x=>x.id===id);let q=quarterObj(r);QTRS.forEach(x=>{if(arr==='pipeline'){q[x].uw=num(document.getElementById(`qm-${x}-uw`).value)}else q[x].sold=num(document.getElementById(`qm-${x}-sold`).value)});if(arr==='pipeline')r.value=pipeQuarterTotal(r);closeModal('forecastModal');preserveLocation(aid,arr);renderAll();toast('Quarter values saved')}
-function setByPath(obj,path,value,checked){let parts=path.split('.');if(parts[0]==='leader')return;let root=obj;for(let i=0;i<parts.length-1;i++){let p=parts[i];if(Array.isArray(root[p])){let id=parts[++i];root=root[p].find(r=>r.id===id);continue}root=root[p]}let last=parts.at(-1);root[last]=checked!==undefined?checked:value}
-function collectAll(){if(!currentWeek||!history[currentWeek])return;document.querySelectorAll('[data-a][data-path]').forEach(el=>{let aid=el.dataset.a,path=el.dataset.path;if(path==='leader')return;let d=history[currentWeek]?.[aid];if(!d)return;setByPath(d,path,el.type==='checkbox'?undefined:el.value,el.type==='checkbox'?el.checked:undefined)});persist()}
-function setLeader(aid,val){let a=accounts.find(x=>x.id===aid);if(a){a.leader=val;persist();renderAll()}}
-function setAccountName(aid,val){let a=accounts.find(x=>x.id===aid),name=String(val||'').trim();if(!a||!name)return toast('Enter account name');collectAll();a.name=name;let applied={sold:0,pipeline:0};if(currentWeek&&excelCache){applied=applyExcelCache(aid,true)}persist();renderAll();toast(applied.sold||applied.pipeline?`Account name updated · Excel matched ${applied.sold} sold and ${applied.pipeline} pipeline rows`:'Account name updated')}
-function applyChanges(){collectAll();renderAll();toast('Metrics refreshed')}
-function rerender(){collectAll();renderAll()}
-function toggleInactive(aid){inactive=inactive.includes(aid)?inactive.filter(x=>x!==aid):[...inactive,aid];persist();renderAll()}
-function removeAccount(aid){let a=accounts.find(x=>x.id===aid);if(!confirm(`Remove ${a?.name}? This deletes this account across all weeks.`))return;accounts=accounts.filter(x=>x.id!==aid);inactive=inactive.filter(x=>x!==aid);Object.keys(history).forEach(w=>delete history[w][aid]);persist();showPage('portfolio');renderAll()}
-function showPage(id){collectAll();activePage=id;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id)?.classList.add('active');(id==='portfolio'?document.getElementById('navPortfolio'):document.getElementById('nav-'+id))?.classList.add('active');if(id==='portfolio')renderPortfolio()}
-function tab(aid,sub,btn){collectAll();activePage=aid;activeSubTabs[aid]=sub;let page=document.getElementById('page-'+aid);page.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));page.querySelectorAll('.subpage').forEach(s=>s.classList.remove('active'));btn?.classList.add('active');document.getElementById(`sub-${aid}-${sub}`)?.classList.add('active')}
-function restoreActive(){let id=activePage||'portfolio';if(id!=='portfolio'&&!accounts.some(a=>a.id===id))id='portfolio';document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id)?.classList.add('active');(id==='portfolio'?document.getElementById('navPortfolio'):document.getElementById('nav-'+id))?.classList.add('active');if(id!=='portfolio'){let sub=activeSubTabs[id]||'about',page=document.getElementById('page-'+id);if(page){page.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));page.querySelectorAll('.subpage').forEach(sp=>sp.classList.remove('active'));let idx={about:0,overview:1,pipeline:2,sold:3,notes:4}[sub]??0;page.querySelectorAll('.tab')[idx]?.classList.add('active');document.getElementById(`sub-${id}-${sub}`)?.classList.add('active')}}else renderPortfolio()}
-async function exportPpt(){collectAll();closeModal('pptModal');let ppt=new PptxGenJS();ppt.layout='LAYOUT_WIDE';const W=13.33,H=7.5,NAV='1E293B',TEAL='0D9488',BG='F8FAFC',TXT='0F172A',MUT='64748B';function hdr(sl,t,sub){sl.background={color:BG};sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:W,h:.75,fill:{color:NAV},line:{color:NAV}});sl.addText(t,{x:.35,y:.15,w:9,h:.28,fontSize:18,bold:true,color:'FFFFFF'});sl.addText(sub,{x:.35,y:.46,w:9,h:.18,fontSize:9,color:'CBD5E1'});sl.addText(getWeekLabel(currentWeek),{x:10.5,y:.22,w:2.5,h:.24,fontSize:9,color:'CBD5E1',align:'right'})}let sl=ppt.addSlide();sl.background={color:NAV};sl.addShape(ppt.ShapeType.rect,{x:0,y:0,w:.12,h:H,fill:{color:TEAL},line:{color:TEAL}});sl.addText('PORTFOLIO TRACKER REVIEW',{x:.45,y:2.25,w:11.5,h:.5,fontSize:30,bold:true,color:'FFFFFF'});sl.addText(accounts.map(a=>a.name).join(' · '),{x:.45,y:3,w:11.5,h:.3,fontSize:14,color:'CBD5E1'});sl.addText(getWeekLabel(currentWeek),{x:.45,y:3.45,w:11.5,h:.25,fontSize:11,color:'94A3B8'});let s=portfolioSums(accounts),sl2=ppt.addSlide();hdr(sl2,'PORTFOLIO OVERVIEW','High conviction pipeline rollup · quarterly targets and sold');[['Target',money(s.target)],['Sold',money(s.sold)],['Gap',money(s.gap)],['High UW Pipe',money(s.uw)],['High W Pipe',money(s.w)]].forEach((m,i)=>{sl2.addShape(ppt.ShapeType.roundRect,{x:.35+i*2.52,y:1,w:2.25,h:.8,fill:{color:'FFFFFF'},line:{color:'E2E8F0'},radius:.08});sl2.addText(m[0],{x:.5+i*2.52,y:1.13,w:1.9,h:.15,fontSize:8,color:MUT,bold:true});sl2.addText(m[1],{x:.5+i*2.52,y:1.33,w:1.9,h:.25,fontSize:16,color:TXT,bold:true})});let table=[['Account','Leader','Target','Sold','Gap','High UW Pipe','High W Pipe']].concat(accounts.map(a=>{let x=accountSums(a.id,true);return [a.name,a.leader,money(x.target),money(x.sold),money(x.gap),money(x.uw),money(x.w)]}));sl2.addTable(table,{x:.35,y:2.1,w:12.6,h:4.5,border:{type:'solid',color:'E2E8F0',pt:.5},fontSize:9,color:TXT,fill:'FFFFFF'});for(let a of accounts){let x=accountSums(a.id,false),sl=ppt.addSlide();hdr(sl,a.name.toUpperCase()+' — ACCOUNT SUMMARY','Leader: '+(a.leader||''));[['Target',money(x.target)],['Sold',money(x.sold)],['YTD Target',money(x.ytdTarget)],['YTD Sold',money(x.ytdSold)],['Pipe UW',money(x.uw)],['Pipe W',money(x.w)]].forEach((m,i)=>{sl.addShape(ppt.ShapeType.roundRect,{x:.35+i*2.1,y:1,w:1.85,h:.75,fill:{color:'FFFFFF'},line:{color:'E2E8F0'}});sl.addText(m[0],{x:.47+i*2.1,y:1.12,w:1.5,h:.14,fontSize:7,color:MUT,bold:true});sl.addText(m[1],{x:.47+i*2.1,y:1.32,w:1.5,h:.22,fontSize:13,color:TXT,bold:true})});let d=data(a.id);let notes=(d.notes.meeting||'').slice(0,500);sl.addText('Leadership / Meeting Notes',{x:.35,y:2.1,w:4,h:.2,fontSize:10,bold:true,color:TXT});sl.addText(notes||'—',{x:.35,y:2.4,w:5.8,h:1.2,fontSize:9,color:MUT,fit:'shrink'});let pipe=d.pipeline.slice(0,8).map(r=>[r.conviction,r.name||'',r.type||'',r.status||'',r.confidence||'',money(pipeWeightedValue(r))]);sl.addTable([['Conviction','Opportunity','Type','Status','Conf','W Pipe'],...pipe],{x:.35,y:4.0,w:12.4,h:2.6,border:{type:'solid',color:'E2E8F0',pt:.5},fontSize:8,color:TXT,fill:'FFFFFF'});}await ppt.writeFile({fileName:`Portfolio_Review_${currentWeek||'export'}.pptx`});toast('PPT exported')}
-
-function renderAccounts(){
-  const nav=document.getElementById('accountNav'), pages=document.getElementById('accountPages');
-  if(!nav||!pages)return;
-  nav.innerHTML=accounts.map(a=>`<button id="nav-${a.id}" class="navitem ${inactive.includes(a.id)?'inactive':''}" onclick="showPage('${a.id}')"><span class="dot" style="background:${a.color}"></span><span>${esc(a.name)}</span>${inactive.includes(a.id)?'<span style="margin-left:auto;font-size:10px;color:var(--muted)">inactive</span>':''}</button>`).join('');
-  pages.innerHTML=accounts.map(accountPage).join('');
-}
-function setupColorOptions(){let input=document.getElementById('newAcctColor'),wrap=document.getElementById('colorPalette');if(!input||!wrap)return;input.value=input.value||PALETTE[0][1];wrap.innerHTML=PALETTE.map((p,i)=>`<button type="button" class="palette-opt ${input.value===p[1]||(!input.value&&i===0)?'active':''}" onclick="selectAcctColor('${p[1]}')"><span class="palette-swatch" style="background:${p[1]}"></span><span>${p[0]}</span></button>`).join('')}
-function selectAcctColor(color){document.getElementById('newAcctColor').value=color;document.querySelectorAll('.palette-opt').forEach(b=>b.classList.remove('active'));[...document.querySelectorAll('.palette-opt')].find(b=>b.getAttribute('onclick').includes(color))?.classList.add('active')}function setupPptOptions(){document.getElementById('pptOptions').innerHTML='<label><input type="checkbox" checked disabled> Portfolio Overview</label><br>'+accounts.map(a=>`<label><input type="checkbox" checked disabled> ${esc(a.name)}</label><br>`).join('')}
-function renderAll(){buildWeekOptions();ensureWeek();renderAccounts();renderPortfolio();setupPptOptions();updateStatus();restoreActive();let ui=document.getElementById('userNameInput');if(ui&&ui.value!==userName)ui.value=userName||''}
-setupColorOptions();renderAll();
+function pipeQuarterTotal(r){return QTRS.reduce((a,q)=>a+pipeQuarterUW(r,q),0)}
+function pipeValue(r){let qTotal=pipeQuarterTotal(r); let direct=num(r.value??r.totalValue??r.estimatedValue??r.totalDealSize); return qTotal||direct}
+function pipeWeightedValue(r){return pipeValue(r)*confidenceFactor(r)}
+function includePipe(r,highOnly=false){return !r.excludeFromCalc && (!highOnly || r.conviction==='High')}
+function accountSums(item, highOnly=false){let d=item.data||defaultAcctData(), pipe=(d.pipeline||[]).filter(r=>includePipe(r,highOnly));let s={target:0,sold:0,gap:0,uw:0,w:0,fu:0,fw:0,q:{}};s.uw=pipe.reduce((a,r)=>a+pipeValue(r),0);s.w=pipe.reduce((a,r)=>a+pipeWeightedValue(r),0);QTRS.forEach(q=>{let t=num(d.targets?.[q]);let sold=(d.sold||[]).reduce((a,r)=>a+num(quarterObj(r)[q]?.sold),0);let fu=pipe.reduce((a,r)=>a+pipeQuarterUW(r,q),0);let fw=pipe.reduce((a,r)=>a+pipeQuarterW(r,q),0);s.q[q]={target:t,sold,gap:sold-t,uw:fu,w:fw,fu,fw};s.target+=t;s.sold+=sold;s.fu+=fu;s.fw+=fw});s.gap=s.sold-s.target;return s}
+function portfolioSums(items){let s={target:0,sold:0,gap:0,uw:0,w:0,fu:0,fw:0,q:{q1:{},q2:{},q3:{},q4:{}}};QTRS.forEach(q=>s.q[q]={target:0,sold:0,gap:0,uw:0,w:0,fu:0,fw:0});items.forEach(it=>{let x=accountSums(it,true);['target','sold','uw','w','fu','fw'].forEach(k=>s[k]+=x[k]);QTRS.forEach(q=>Object.keys(s.q[q]).forEach(k=>s.q[q][k]+=x.q[q][k]))});s.gap=s.sold-s.target;return s}
+function normalize(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+function sourceKey(snap){return snap.userName || snap._fileBase || 'Unknown User'}
+function latestWeekForSnapshot(s){let keys=[...(s.submitted||[]),...Object.keys(s.history||{})].filter(k=>s.history?.[k]);keys=[...new Set(keys)].sort((a,b)=>b.localeCompare(a));return keys[0]||''}
+function weekLabel(s,w){return (s.weeks||[]).find(x=>x.key===w)?.label||w||'—'}
+function isValidTrackerJson(s){return s && Array.isArray(s.accounts) && s.history && typeof s.history==='object'}
+async function parseFile(file){let txt=await file.text();let s=JSON.parse(txt);if(!isValidTrackerJson(s))throw new Error('Invalid tracker JSON');s._fileName=file.name;s._fileBase=file.name.replace(/\.json$/i,'');s._fileModified=file.lastModified||0;s._loadedAt=new Date().toISOString();return s}
+function rankSnapshot(s){let d=Date.parse(s.exportedAt||'');return isFinite(d)?d:(s._fileModified||0)}
+function dedupeLatestByUser(snaps){let m=new Map();snaps.forEach(s=>{let k=sourceKey(s);let prev=m.get(k);if(!prev||rankSnapshot(s)>rankSnapshot(prev))m.set(k,s)});return [...m.values()].sort((a,b)=>sourceKey(a).localeCompare(sourceKey(b)))}
+function filteredAccounts(){let filter=normalize(leaderName);let out=[];snapshots.forEach((s,si)=>{let w=latestWeekForSnapshot(s);if(!w)return;(s.accounts||[]).forEach((a,ai)=>{let leader=a.leader||'';if(filter && normalize(leader)!==filter)return;let d=s.history?.[w]?.[a.id]||defaultAcctData();out.push({key:`${si}_${a.id}_${ai}`,source:sourceKey(s),fileName:s._fileName||'',week:w,weekLabel:weekLabel(s,w),account:a,data:d,color:a.color||COLORS[out.length%COLORS.length]});});});return out}
+async function pickFolder(){if(!window.showDirectoryPicker){toast('Folder picker is not supported here. Use Import JSON Files.');return}try{directoryHandle=await window.showDirectoryPicker();await refreshFromFolder();}catch(e){if(e.name!=='AbortError')toast('Could not read folder') }}
+async function refreshFromFolder(){if(!directoryHandle){toast('Choose a folder first, or import JSON files.');return}try{let parsed=[];for await (const [name,handle] of directoryHandle.entries()){if(handle.kind==='file'&&name.toLowerCase().endsWith('.json')){let f=await handle.getFile();try{parsed.push(await parseFile(f))}catch{}}}snapshots=dedupeLatestByUser(parsed);rawFiles=snapshots.map(s=>({name:s._fileName,source:sourceKey(s),rank:rankSnapshot(s)}));renderAll();toast(`Loaded ${snapshots.length} latest JSON snapshot(s)`)}catch(e){toast('Folder refresh failed. Re-select the folder or import files.')}}
+async function importFiles(e){let files=[...(e.target.files||[])];if(!files.length)return;let parsed=[];for(let f of files){try{parsed.push(await parseFile(f))}catch(err){console.warn('Skipped file',f.name,err)}}snapshots=dedupeLatestByUser(parsed);rawFiles=snapshots.map(s=>({name:s._fileName,source:sourceKey(s),rank:rankSnapshot(s)}));e.target.value='';renderAll();toast(`Loaded ${snapshots.length} latest JSON snapshot(s)`)}
+function setLeaderFilter(v){leaderName=String(v||'').trim();localStorage.setItem('leader_agg_name',leaderName);renderAll()}
+function clearAll(){snapshots=[];rawFiles=[];directoryHandle=null;activePage='overview';renderAll();toast('Cleared loaded JSON data')}
+function download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
+function safe(v){return String(v||'leader').trim().replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'')||'leader'}
+function exportLeaderJson(){let items=filteredAccounts();let payload={view:'Leader Portfolio Aggregator',leaderName,exportedAt:new Date().toISOString(),sourceSnapshots:snapshots.map(s=>({userName:sourceKey(s),fileName:s._fileName,exportedAt:s.exportedAt,latestWeek:latestWeekForSnapshot(s)})),accounts:items.map(it=>({source:it.source,week:it.week,weekLabel:it.weekLabel,account:it.account,data:it.data}))};download(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),`${safe(leaderName)}_leader_view_${new Date().toISOString().replace(/[-:]/g,'').replace(/\..+$/,'').replace('T','_')}.json`);toast('Leader view JSON exported')}
+function kpi(label,val,sub='',color='var(--teal)'){return `<div class="card kpi" style="--accent:${color}"><div class="k-label">${label}</div><div class="k-val">${val}</div><div class="k-sub">${sub}</div></div>`}
+function gapChip(g){let cls=g>0?'green':g<0?'red':'slate';let sign=g>0?'+':'';return `<span class="chip ${cls}">${sign}${money(g)}</span>`}
+function qCards(qs,color='var(--teal)'){return `<div class="qgrid">${QTRS.map(q=>{let x=qs[q]||{},gp=num(x.sold)-num(x.target);return `<div class="qcard"><div class="qhead"><span class="qbadge" style="background:${color}">${QLAB[q]}</span>${gapChip(gp)}</div><div class="qline"><span>Target</span><b>${money(x.target)}</b></div><div class="qline"><span>Sold</span><b>${money(x.sold)}</b></div><div class="qline"><span>Gap %</span><b>${gp>=0?'—':pct(Math.abs(gp),x.target)+'%'}</b></div><div class="qline"><span>High Pipeline Unweighted</span><b>${money(x.uw)}</b></div><div class="qline"><span>High Pipeline Weighted</span><b>${money(x.w)}</b></div><div class="bar"><i style="width:${Math.min(100,pct(x.sold,x.target))}%;background:${color}"></i></div></div>`}).join('')}</div>`}
+function overviewPage(){let items=filteredAccounts();let s=portfolioSums(items);let subtitle=document.getElementById('overviewSubtitle');subtitle.textContent=leaderName?`Showing accounts where leader is ${leaderName}. High pipeline rollup uses High conviction only.`:'No leader filter entered. Showing all accounts from loaded JSON exports.';if(!snapshots.length)return `<div class="empty"><b>No JSON data loaded yet.</b><br>Use <b>Choose JSON Folder</b> on supported desktop browsers, or use <b>Import JSON Files</b> to select multiple exported portfolio JSON files.</div>`;if(!items.length)return `<div class="warnbox"><b>No accounts found for ${esc(leaderName||'the selected leader')}.</b><br>Check spelling against the Leader field in the source tracker JSONs, or clear the leader name to see all loaded accounts.</div>`;return `<div class="grid kpi-row">${kpi('Accounts',items.length,`${snapshots.length} latest source snapshot(s)`,'var(--teal)')}${kpi('Yearly Target',money(s.target),'Sum of account quarterly targets','var(--nav)')}${kpi('Yearly Sold',money(s.sold),'Sum of sold quarterly values','var(--green)')}${kpi('Gap to Target',money(s.gap),s.gap<0?pct(Math.abs(s.gap),s.target)+'% behind target':s.gap>0?'Ahead of target':'At target',s.gap<0?'var(--red)':s.gap>0?'var(--green)':'var(--text2)')}${kpi('High Pipeline Unweighted',money(s.uw),'High conviction only','var(--teal)')}${kpi('High Pipeline Weighted',money(s.w),'High × confidence','var(--teal)')}</div><br><div class="card"><div class="card-h"><div class="card-title">Leader Quarterly Rollup</div></div><div class="card-body">${qCards(s.q,'var(--teal)')}</div></div><br><div class="card"><div class="card-h"><div class="card-title">Accounts in Scope</div></div><div class="card-body">${items.map(accountBlock).join('')}</div></div>`}
+function accountBlock(it){let s=accountSums(it,true);let a=it.account;let gapCls=s.gap<0?'red':s.gap>0?'green':'slate';let gapTxt=s.gap<0?`${money(Math.abs(s.gap))} behind`:s.gap>0?`${money(s.gap)} ahead`:'At target';return `<div class="card account-block"><div class="acct-head" style="background:${it.color}"><div><div class="acct-name">${esc(a.name)}</div><div class="acct-sub">Leader: ${esc(a.leader||'')} · Source: ${esc(it.source)} · Week: ${esc(it.weekLabel)}</div></div><div class="acct-metrics"><span><b>${money(s.target)}</b>Target</span><span><b>${money(s.sold)}</b>Sold</span><span><b>${money(s.uw)}</b>High UW Pipe</span><span><b>${money(s.w)}</b>High W Pipe</span><span><b><span class="chip ${gapCls}">${gapTxt}</span></b>Gap</span></div></div><div class="card-body">${qCards(s.q,it.color)}</div></div>`}
+function accountPage(it){let a=it.account,d=it.data,s=accountSums(it,false),pipe=(d.pipeline||[]).filter(r=>!r.excludeFromCalc),sold=d.sold||[];return `<section id="page-${it.key}" class="page"><div class="page-head"><div><div class="title" style="color:${it.color}">${esc(a.name)}</div><div class="subtitle">Leader: ${esc(a.leader||'')} · Source: ${esc(it.source)} · Week: ${esc(it.weekLabel)}</div></div></div><div class="tabs"><button class="tab active" onclick="tab('${it.key}','overview',this)">Overview</button><button class="tab" onclick="tab('${it.key}','pipeline',this)">Pipeline</button><button class="tab" onclick="tab('${it.key}','sold',this)">Sold</button><button class="tab" onclick="tab('${it.key}','notes',this)">Notes</button></div><div id="sub-${it.key}-overview" class="subpage active">${acctOverview(it,s)}</div><div id="sub-${it.key}-pipeline" class="subpage">${pipelineTable(pipe)}</div><div id="sub-${it.key}-sold" class="subpage">${soldTable(sold)}</div><div id="sub-${it.key}-notes" class="subpage">${notesView(d)}</div></section>`}
+function acctOverview(it,s){return `<div class="grid kpi-row">${kpi('Target',money(s.target),'Yearly','var(--nav)')}${kpi('Sold',money(s.sold),'Yearly','var(--green)')}${kpi('Gap',money(s.gap),s.gap<0?pct(Math.abs(s.gap),s.target)+'% behind':'On / above plan',s.gap<0?'var(--red)':'var(--green)')}${kpi('Pipeline Unweighted',money(s.uw),'All included opportunities','var(--teal)')}${kpi('Pipeline Weighted',money(s.w),'Unweighted × confidence','var(--teal)')}${kpi('Source User',esc(it.source),'Latest snapshot','var(--amber)')}</div><br><div class="card"><div class="card-h"><div class="card-title">Quarterly Account View</div></div><div class="card-body">${qCards(s.q,it.color)}</div></div><br><div class="two-col"><div class="card"><div class="card-h"><div class="card-title">About / Priorities</div></div><div class="card-body"><b>Description</b><p class="muted">${esc(it.data.about?.desc||'—')}</p><b>Priorities</b><p class="muted">${esc(it.data.about?.priorities||'—')}</p></div></div><div class="card"><div class="card-h"><div class="card-title">Technology Landscape</div></div><div class="card-body"><p class="muted">${esc(it.data.about?.technology||'—')}</p></div></div></div>`}
+function pipelineTable(rows){if(!rows.length)return '<div class="empty">No included pipeline opportunities found.</div>';let body=rows.map(r=>`<tr><td>${esc(r.conviction||'')}</td><td>${esc(r.type||'')}</td><td><b>${esc(r.name||'')}</b><br><span class="muted">${esc(r.status||'')}</span></td><td>${money(num(r.totalDealSize)||pipeValue(r))}</td><td>${money(pipeValue(r))}</td><td>${esc(r.confidence||'')}</td><td>${money(pipeWeightedValue(r))}</td><td>${esc(r.targetDate||'')}</td><td>${r.excludeFromCalc?'<span class="chip red">Excluded</span>':'<span class="chip green">Included</span>'}</td><td class="muted">${esc(r.thisWeek||'')}</td></tr>`).join('');return `<div class="card"><div class="card-h"><div class="card-title">Pipeline Opportunities</div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Conviction</th><th>Type</th><th>Opportunity</th><th>Total Deal Size</th><th>Unweighted</th><th>Confidence</th><th>Weighted</th><th>Target Date</th><th>Calc.</th><th>This Week</th></tr></thead><tbody>${body}</tbody></table></div></div>`}
+function soldTable(rows){if(!rows.length)return '<div class="empty">No sold deals found.</div>';let body=rows.map(r=>{let val=QTRS.reduce((s,q)=>s+num(quarterObj(r)[q]?.sold),0);return `<tr><td><b>${esc(r.name||'')}</b></td><td>${esc(r.type||'')}</td><td>${money(val)}</td><td>${esc(r.soldDate||'')}</td><td>${esc(r.status||'')}</td><td class="muted">${esc(r.details||'')}</td></tr>`}).join('');return `<div class="card"><div class="card-h"><div class="card-title">Sold Deals</div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Deal</th><th>Type</th><th>Total Value</th><th>Sold Date</th><th>Status</th><th>Details</th></tr></thead><tbody>${body}</tbody></table></div></div>`}
+function notesView(d){return `<div class="two-col"><div class="card"><div class="card-h"><div class="card-title">Meeting Notes</div></div><div class="card-body"><p class="muted">${esc(d.notes?.meeting||'—')}</p></div></div><div class="card"><div class="card-h"><div class="card-title">Leadership Direction</div></div><div class="card-body"><p class="muted">${esc(d.notes?.leadership||'—')}</p></div></div></div><br>${actionsTable(d.notes?.actions||[])}`}
+function actionsTable(rows){if(!rows.length)return '<div class="empty">No actions captured.</div>';let body=rows.map(r=>`<tr><td>${esc(r.action||'')}</td><td>${esc(r.owner||'')}</td><td>${esc(r.due||'')}</td><td class="muted">${esc(r.notes||'')}</td></tr>`).join('');return `<div class="card"><div class="card-h"><div class="card-title">Action Items</div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Notes</th></tr></thead><tbody>${body}</tbody></table></div></div>`}
+function renderNav(items){let nav=document.getElementById('accountNav');nav.innerHTML=items.map(it=>`<button id="nav-${it.key}" class="navitem" onclick="showPage('${it.key}')"><span class="dot" style="background:${it.color}"></span><span>${esc(it.account.name)}</span></button>`).join('')||'<div class="muted" style="padding:8px">No accounts in scope</div>';let src=document.getElementById('sourceList');src.innerHTML=snapshots.map(s=>`<span class="file-pill" title="${esc(s._fileName||'')}">${esc(sourceKey(s))}</span>`).join('')||'<div class="muted" style="padding:8px">No sources loaded</div>'}
+function renderAll(){document.getElementById('leaderNameInput').value=leaderName;let items=filteredAccounts();renderNav(items);document.getElementById('overviewContent').innerHTML=overviewPage();document.getElementById('accountPages').innerHTML=items.map(accountPage).join('');document.getElementById('statusText').textContent=snapshots.length?`${snapshots.length} latest snapshot(s) loaded · ${items.length} account(s) in scope`:'Import latest user JSON exports to begin';restoreActive(items)}
+function showPage(id){activePage=id;document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.navitem').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+id)?.classList.add('active');(id==='overview'?document.getElementById('navOverview'):document.getElementById('nav-'+id))?.classList.add('active')}
+function restoreActive(items){if(activePage!=='overview'&&!items.some(it=>it.key===activePage))activePage='overview';showPage(activePage);if(activePage!=='overview'){let sub=activeSubTabs[activePage]||'overview';let page=document.getElementById('page-'+activePage);if(page){page.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));page.querySelectorAll('.subpage').forEach(sp=>sp.classList.remove('active'));let idx={overview:0,pipeline:1,sold:2,notes:3}[sub]??0;page.querySelectorAll('.tab')[idx]?.classList.add('active');document.getElementById(`sub-${activePage}-${sub}`)?.classList.add('active')}}}
+function tab(key,sub,btn){activeSubTabs[key]=sub;let page=document.getElementById('page-'+key);page.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));page.querySelectorAll('.subpage').forEach(s=>s.classList.remove('active'));btn.classList.add('active');document.getElementById(`sub-${key}-${sub}`)?.classList.add('active')}
+renderAll();
 </script>
 </body>
 </html>
