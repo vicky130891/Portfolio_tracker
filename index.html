@@ -2,180 +2,1908 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DailyOps Scrum & Escalation Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Project Action Tracker</title>
   <style>
-    :root{
-      --nav:#1E293B; --accent:#0D9488; --amber:#D97706; --green:#15803D; --red:#DC2626;
-      --bg:#F8FAFC; --card:#FFFFFF; --border:#E2E8F0; --text:#0F172A; --muted:#64748B; --soft:#F1F5F9;
-      --blue:#2563EB; --purple:#7C3AED;
+    :root {
+      --nav: #1E293B;
+      --accent: #0D9488;
+      --warning: #D97706;
+      --success: #15803D;
+      --danger: #DC2626;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --muted: #64748B;
+      --text: #0F172A;
+      --soft: #F1F5F9;
+      --blue: #2563EB;
+      --purple: #7C3AED;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    .app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
-    aside{background:var(--nav);color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}
-    .brand{font-size:20px;font-weight:800;margin:0 0 4px 6px;letter-spacing:.2px}.sub{font-size:12px;color:#cbd5e1;margin:0 0 20px 6px}
-    .navbtn{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;color:#e2e8f0;padding:11px 12px;margin:4px 0;border-radius:10px;text-align:left;cursor:pointer;font-weight:650}
-    .navbtn:hover,.navbtn.active{background:rgba(255,255,255,.12);color:#fff}.navicon{width:22px;text-align:center}
-    main{padding:22px 24px 40px;overflow:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.title h1{font-size:26px;margin:0 0 4px}.title p{margin:0;color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--border);background:var(--card);color:var(--text);padding:9px 12px;border-radius:10px;font-weight:700;cursor:pointer}.btn:hover{border-color:#94a3b8}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.danger{background:var(--red);border-color:var(--red);color:#fff}.btn.ghost{background:transparent}.btn.small{padding:6px 9px;font-size:12px;border-radius:8px}.btn.green{background:var(--green);border-color:var(--green);color:#fff}.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
-    .grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(8,minmax(120px,1fr));margin-bottom:18px}.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-    .kpi{border-left:5px solid var(--accent)}.kpi .label{font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.03em}.kpi .value{font-size:28px;font-weight:850;margin-top:8px}.kpi.red{border-left-color:var(--red)}.kpi.amber{border-left-color:var(--amber)}.kpi.green{border-left-color:var(--green)}.kpi.blue{border-left-color:var(--blue)}.kpi.purple{border-left-color:var(--purple)}
-    .section{margin-top:18px}.section h2{font-size:18px;margin:0 0 12px}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden}th,td{padding:10px 11px;border-bottom:1px solid var(--border);font-size:13px;text-align:left;vertical-align:top}th{background:#F8FAFC;color:#475569;font-size:12px;text-transform:uppercase;letter-spacing:.03em}tr:hover td{background:#FBFDFF}.muted{color:var(--muted)}
-    .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar input,.toolbar select{max-width:220px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.formgrid.threecol{grid-template-columns:repeat(3,minmax(0,1fr))}.full{grid-column:1/-1}label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:800;color:#475569}input,select,textarea{border:1px solid var(--border);border-radius:10px;padding:9px 10px;font:inherit;background:white;color:var(--text)}textarea{min-height:76px;resize:vertical}.hidden{display:none!important}
-    .badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#E2E8F0;color:#334155;white-space:nowrap}.badge.red{background:#FEE2E2;color:#991B1B}.badge.amber{background:#FEF3C7;color:#92400E}.badge.green{background:#DCFCE7;color:#166534}.badge.blue{background:#DBEAFE;color:#1D4ED8}.badge.purple{background:#EDE9FE;color:#5B21B6}.badge.teal{background:#CCFBF1;color:#115E59}
-    .modal{position:fixed;inset:0;background:rgba(15,23,42,.48);display:flex;align-items:center;justify-content:center;padding:20px;z-index:1000}.modalbox{background:white;border-radius:18px;max-width:980px;width:100%;max-height:90vh;overflow:auto;border:1px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,.25)}.modalhead{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:white;z-index:2}.modalhead h3{margin:0;font-size:18px}.modalbody{padding:18px}.modalfoot{padding:14px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;background:#F8FAFC;position:sticky;bottom:0}
-    .tabs{display:flex;gap:6px;border-bottom:1px solid var(--border);margin-bottom:14px;flex-wrap:wrap}.tab{border:0;background:transparent;padding:9px 12px;border-radius:10px 10px 0 0;font-weight:800;cursor:pointer;color:var(--muted)}.tab.active{background:white;border:1px solid var(--border);border-bottom-color:white;color:var(--accent);margin-bottom:-1px}
-    .timeline{border-left:3px solid var(--border);padding-left:14px}.logitem{position:relative;background:#fff;border:1px solid var(--border);padding:12px;border-radius:12px;margin:0 0 10px}.logitem:before{content:"";position:absolute;left:-22px;top:16px;width:10px;height:10px;background:var(--accent);border-radius:50%}.logmeta{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:14px;background:white}.rowactions{display:flex;gap:6px;flex-wrap:wrap}.notice{background:#ECFEFF;border:1px solid #A5F3FC;color:#155E75;padding:12px;border-radius:12px;font-size:13px;margin-bottom:14px}.warn{background:#FFFBEB;border-color:#FDE68A;color:#92400E}.dangerbox{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}.nowrap{white-space:nowrap}.filelabel{display:inline-flex;align-items:center;gap:8px}.filelabel input{display:none}
-    @media(max-width:1100px){.app{grid-template-columns:1fr}aside{height:auto;position:static}.kpis{grid-template-columns:repeat(2,1fr)}.split,.three{grid-template-columns:1fr}.formgrid,.formgrid.threecol{grid-template-columns:1fr}}
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--nav);
+      color: white;
+      padding: 14px 22px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 2px 8px rgba(15,23,42,0.18);
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      color: #CBD5E1;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button, .button {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 11px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+      background: var(--accent);
+      color: white;
+      transition: 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    button:hover, .button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    button.secondary {
+      background: #334155;
+      color: white;
+      border: 1px solid #475569;
+    }
+
+    button.light {
+      background: white;
+      color: var(--nav);
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    button.warning {
+      background: var(--warning);
+    }
+
+    button.success {
+      background: var(--success);
+    }
+
+    button.tiny {
+      padding: 5px 8px;
+      font-size: 11px;
+      border-radius: 7px;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 18px 48px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: var(--accent);
+    }
+
+    .metric:nth-child(2)::before { background: var(--blue); }
+    .metric:nth-child(3)::before { background: var(--warning); }
+    .metric:nth-child(4)::before { background: var(--danger); }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin: 14px 0;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .tab {
+      background: var(--card);
+      color: var(--nav);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.05);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-title h2 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: 700;
+      color: var(--nav);
+      letter-spacing: -0.01em;
+    }
+
+    .card-title p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .form-grid.three {
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
+    }
+
+    .form-grid.two {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 10px;
+      font-size: 13px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 9px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #F8FAFC;
+      color: #334155;
+      z-index: 2;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-not-started { background: #E2E8F0; color: #334155; }
+    .status-in-progress { background: #DBEAFE; color: #1D4ED8; }
+    .status-blocked { background: #FEE2E2; color: #B91C1C; }
+    .status-done { background: #DCFCE7; color: #166534; }
+    .status-deferred { background: #FEF3C7; color: #92400E; }
+
+    .priority-high { background: #FEE2E2; color: #B91C1C; }
+    .priority-medium { background: #FEF3C7; color: #92400E; }
+    .priority-low { background: #DCFCE7; color: #166534; }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 11px;
+    }
+
+    .empty {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      background: #F8FAFC;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.56);
+      z-index: 40;
+      padding: 20px;
+      overflow: auto;
+    }
+
+    .modal-backdrop.active {
+      display: block;
+    }
+
+    .modal {
+      background: white;
+      max-width: 860px;
+      margin: 40px auto;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 20px 70px rgba(15,23,42,0.25);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--nav);
+    }
+
+    .comment-log {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 360px;
+      overflow: auto;
+      padding: 4px;
+    }
+
+    .comment-item {
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      border-radius: 10px;
+      padding: 9px;
+    }
+
+    .comment-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .section-split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+    }
+
+    .team-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      background: #FFFFFF;
+      margin-bottom: 10px;
+    }
+
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .team-name {
+      font-weight: 750;
+      color: var(--nav);
+    }
+
+    .lead-chip {
+      background: #CCFBF1;
+      color: #115E59;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .member-list {
+      margin-top: 8px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .member-chip {
+      background: #F1F5F9;
+      color: #334155;
+      border: 1px solid #E2E8F0;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 11px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 980px) {
+      .top-grid, .form-grid, .form-grid.three, .form-grid.two, .section-split {
+        grid-template-columns: 1fr;
+      }
+      table {
+        min-width: 980px;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="app">
-  <aside>
-    <div class="brand">DailyOps Tracker</div>
-    <div class="sub">Scrum • Timeline • Escalation</div>
-    <button class="navbtn active" data-view="dashboard"><span class="navicon">▦</span>Dashboard</button>
-    <button class="navbtn" data-view="scrum"><span class="navicon">☀</span>Daily Scrum</button>
-    <button class="navbtn" data-view="projects"><span class="navicon">P</span>Projects</button>
-    <button class="navbtn" data-view="streams"><span class="navicon">S</span>Streams</button>
-    <button class="navbtn" data-view="phases"><span class="navicon">Φ</span>Phases</button>
-    <button class="navbtn" data-view="tasks"><span class="navicon">✓</span>Tasks</button>
-    <button class="navbtn" data-view="teams"><span class="navicon">☷</span>Teams</button>
-    <button class="navbtn" data-view="people"><span class="navicon">◎</span>People</button>
-    <button class="navbtn" data-view="ooo"><span class="navicon">◴</span>OOO</button>
-    <button class="navbtn" data-view="raid"><span class="navicon">⚠</span>RAID</button>
-    <button class="navbtn" data-view="logs"><span class="navicon">≡</span>Activity Log</button>
-    <button class="navbtn" data-view="settings"><span class="navicon">⚙</span>Import / Export</button>
-  </aside>
-  <main>
-    <div class="topbar">
-      <div class="title"><h1 id="pageTitle">Dashboard</h1><p id="pageSub">Portfolio-level view across projects, streams, phases, tasks, risks, and timeline movements.</p></div>
-      <div class="actions" id="pageActions"></div>
+  <header>
+    <div class="header-row">
+      <div>
+        <h1>Daily Project Action Tracker</h1>
+        <div class="subtitle">Projects • Streams • Phases • Tasks • Teams • Risks • Comment Logs</div>
+      </div>
+      <div class="header-actions">
+        <button class="light" onclick="exportJson()">Export JSON</button>
+        <label class="button secondary" for="importFile">Import JSON</label>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJson(event)" />
+        <button class="secondary" onclick="seedDemoData()">Load Sample</button>
+        <button class="danger" onclick="resetAll()">Reset</button>
+      </div>
     </div>
-    <div id="view"></div>
-  </main>
-</div>
-<div id="modalRoot"></div>
-<script>
-const TODAY = () => new Date().toISOString().slice(0,10);
-const nowISO = () => new Date().toISOString();
-const uid = (prefix) => prefix + '-' + Math.random().toString(36).slice(2,7).toUpperCase() + '-' + Date.now().toString().slice(-5);
-const STATUS = ['Not Started','In Progress','Pending Internal','Pending Client','Blocked','At Risk','Done','Completed','Deferred'];
-const ACTIVE_STATUSES = ['In Progress','Pending Internal','Pending Client','Blocked','At Risk'];
-const CLOSED_STATUSES = ['Done','Completed','Deferred'];
-const PRIORITY = ['Critical','High','Medium','Low'];
-const PHASE_NAMES = ['Intake','Requirements','Design','Build','QA','UAT','Deployment','Hypercare','Closed'];
-const STORE_KEY = 'dailyops_tracker_v1';
-let state = loadState();
-let currentView = 'dashboard';
-let filters = {};
-function defaultState(){return {projects:[],streams:[],phases:[],teams:[],people:[],tasks:[],taskDependencies:[],ooo:[],raid:[],activityLog:[],settings:{userName:'Sagar', escalationRules:{l1OverdueDays:1,l2OverdueDays:3,clientL1Days:2,clientL2Days:5}}};}
-function loadState(){try{const raw=localStorage.getItem(STORE_KEY); if(raw) return {...defaultState(),...JSON.parse(raw)};}catch(e){} return seedState();}
-function save(){localStorage.setItem(STORE_KEY,JSON.stringify(state));}
-function seedState(){const s=defaultState();
-  const teams=['PMO','BA / Requirements','MDM','CDW','Reporting','QA','Client Business','Client IT','DevOps'];
-  teams.forEach((t,i)=>s.teams.push({teamId:uid('TEAM'),teamName:t,teamType:t.startsWith('Client')?'Client':'Internal',functionalArea:i<2?'PMO/BA':i<4?'Data':i<6?'Delivery':'Client',primaryLead:'',backupLead:'',escalationL1:'',escalationL2:'',escalationL3:'',distributionList:'',timeZone:t.startsWith('Client')?'EST':'IST/EST',active:true,notes:''}));
-  saveState(s); return s; }
-function saveState(s){localStorage.setItem(STORE_KEY,JSON.stringify(s));}
-function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
-function dateDiff(a,b){if(!a||!b)return null; const da=new Date(a+'T00:00:00'), db=new Date(b+'T00:00:00'); return Math.round((db-da)/86400000);}
-function inclusiveDuration(start,end){const d=dateDiff(start,end); return d===null?null:d+1;}
-function todayDiff(d){return dateDiff(d,TODAY());}
-function isOverdue(item){return item.plannedEndDate && !CLOSED_STATUSES.includes(item.status) && item.plannedEndDate < TODAY();}
-function isDueToday(item){return item.plannedEndDate===TODAY() && !CLOSED_STATUSES.includes(item.status);}
-function scheduleBadge(item){if(CLOSED_STATUSES.includes(item.status)){ if(item.actualEndDate && item.plannedEndDate){const v=dateDiff(item.plannedEndDate,item.actualEndDate); if(v>0)return badge('Completed Late','red'); if(v<0)return badge('Completed Early','green'); return badge('Completed On Time','green');} return badge('Closed','green'); }
-  if(isOverdue(item)) return badge('Delayed','red');
-  if(item.plannedEndDate && dateDiff(TODAY(),item.plannedEndDate)<=2 && dateDiff(TODAY(),item.plannedEndDate)>=0) return badge('At Risk','amber');
-  return badge('On Track','green');}
-function statusBadge(st){const map={Blocked:'red','At Risk':'amber','Pending Client':'purple','Pending Internal':'blue','In Progress':'teal',Done:'green',Completed:'green',Deferred:'amber','Not Started':''}; return badge(st,map[st]||'');}
-function priorityBadge(p){return badge(p, p==='Critical'?'red':p==='High'?'amber':p==='Medium'?'blue':'');}
-function badge(t,c=''){return `<span class="badge ${c}">${esc(t||'')}</span>`}
-function getProject(id){return state.projects.find(x=>x.projectId===id)} function getStream(id){return state.streams.find(x=>x.streamId===id)} function getPhase(id){return state.phases.find(x=>x.phaseId===id)} function getTeam(id){return state.teams.find(x=>x.teamId===id)} function getPerson(id){return state.people.find(x=>x.personId===id)} function getTask(id){return state.tasks.find(x=>x.taskId===id)}
-function nameBy(type,id){let x= type==='Project'?getProject(id):type==='Stream'?getStream(id):type==='Phase'?getPhase(id):type==='Task'?getTask(id):null; return x?.projectName||x?.streamName||x?.phaseName||x?.title||id||'';}
-function log(entityType, entityId, changeType, oldValue='', newValue='', comment='', extra={}){const entityName=nameBy(entityType,entityId); state.activityLog.unshift({logId:uid('LOG'), entityType, entityId, entityName, projectId:extra.projectId||'', streamId:extra.streamId||'', phaseId:extra.phaseId||'', taskId:extra.taskId||'', changeType, oldValue, newValue, commentType:extra.commentType||changeType, comment, updatedBy:state.settings.userName||'User', updatedAt:nowISO(), impact:extra.impact||'', notes:extra.notes||''});}
-function recalcDurations(item){item.baselineDurationDays=inclusiveDuration(item.baselineStartDate,item.baselineEndDate); item.plannedDurationDays=inclusiveDuration(item.plannedStartDate,item.plannedEndDate); item.actualDurationDays=item.actualStartDate ? inclusiveDuration(item.actualStartDate,item.actualEndDate||TODAY()) : null; item.startVarianceDays=(item.actualStartDate&&item.plannedStartDate)?dateDiff(item.plannedStartDate,item.actualStartDate):null; item.endVarianceDays=(item.actualEndDate&&item.plannedEndDate)?dateDiff(item.plannedEndDate,item.actualEndDate):null; item.durationVarianceDays=(item.actualDurationDays!=null&&item.plannedDurationDays!=null)?item.actualDurationDays-item.plannedDurationDays:null; }
-function applyStatusDates(item, newStatus, entityType){const oldStatus=item.status||'Not Started'; item.status=newStatus;
-  if(ACTIVE_STATUSES.includes(newStatus) && !item.actualStartDate){item.actualStartDate=TODAY(); log(entityType,item[`${entityType.toLowerCase()}Id`],'Actual Start Auto-set','',TODAY(),`Actual Start Date auto-populated when status changed to ${newStatus}.`, contextFor(item,entityType));}
-  if(CLOSED_STATUSES.includes(newStatus) && !item.actualEndDate){if(!item.actualStartDate && newStatus!=='Deferred') item.actualStartDate=TODAY(); item.actualEndDate=TODAY(); log(entityType,item[`${entityType.toLowerCase()}Id`],'Actual End Auto-set','',TODAY(),`Actual End Date auto-populated when status changed to ${newStatus}.`, contextFor(item,entityType));}
-  if(CLOSED_STATUSES.includes(oldStatus) && ACTIVE_STATUSES.includes(newStatus) && item.actualEndDate){const oldEnd=item.actualEndDate; item.actualEndDate=''; log(entityType,item[`${entityType.toLowerCase()}Id`],'Reopened',oldEnd,'',`Actual End Date cleared because item was reopened as ${newStatus}.`, contextFor(item,entityType));}
-  recalcDurations(item);
-}
-function contextFor(item,type){return {projectId:item.projectId || (type==='Project'?item.projectId:''), streamId:item.streamId || '', phaseId:item.phaseId || '', taskId:type==='Task'?item.taskId:''};}
-function updateDatesWithLog(item,type,id,fields){['baselineStartDate','baselineEndDate','plannedStartDate','plannedEndDate','actualStartDate','actualEndDate'].forEach(f=>{ if(fields[f]!==undefined && fields[f]!==item[f]){const old=item[f]||''; item[f]=fields[f]||''; if(f.includes('planned')||f.includes('baseline')){item.dateChangeCount=(item.dateChangeCount||0)+1; item.lastDateChangeReason=fields.dateChangeReason||item.lastDateChangeReason||'';} log(type,id,'Date Change',old,item[f],`${labelForField(f)} changed. ${fields.dateChangeReason?('Reason: '+fields.dateChangeReason):''}`,contextFor(item,type)); }}); recalcDurations(item);}
-function labelForField(f){return f.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase());}
-function render(){save(); document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===currentView)); const map={dashboard:['Dashboard','Portfolio-level view across projects, streams, phases, tasks, risks, and timeline movements.'],scrum:['Daily Scrum','Run standup using today’s focus, blockers, dependency issues, escalations, and timeline changes.'],projects:['Projects','Manage overall projects and project-level schedule health.'],streams:['Streams','Manage sub-projects under each project.'],phases:['Phases','Track phase timelines per stream.'],tasks:['Tasks','Track detailed work items, teams, owners, dependencies, dates, and comments.'],teams:['Teams / Escalation Matrix','Configure owner teams, leads, backups, escalation contacts, and time zones.'],people:['People','Configure people and link them to teams.'],ooo:['OOO / Availability','Track internal/client availability and impact.'],raid:['RAID','Track risks, issues, assumptions, decisions, and dependencies.'],logs:['Activity Log','Full audit trail of status, comments, ownership, dates, blockers, dependencies, and escalations.'],settings:['Import / Export','Save, load, reset, and configure tracker data.']}; document.getElementById('pageTitle').textContent=map[currentView][0]; document.getElementById('pageSub').textContent=map[currentView][1]; document.getElementById('pageActions').innerHTML=actionsFor(currentView); document.getElementById('view').innerHTML=views[currentView](); bindView();}
-function actionsFor(v){const addMap={projects:['Add Project','openProject()'],streams:['Add Stream','openStream()'],phases:['Add Phase','openPhase()'],tasks:['Add Task','openTask()'],teams:['Add Team','openTeam()'],people:['Add Person','openPerson()'],ooo:['Add OOO','openOOO()'],raid:['Add RAID','openRaid()']}; if(addMap[v]) return `<button class="btn primary" onclick="${addMap[v][1]}">${addMap[v][0]}</button>`; if(v==='settings') return `<button class="btn primary" onclick="exportData()">Export JSON</button>`; return `<button class="btn" onclick="currentView='tasks';render()">Open Tasks</button><button class="btn primary" onclick="openTask()">Add Task</button>`;}
-function kpi(label,value,cls=''){return `<div class="card kpi ${cls}"><div class="label">${label}</div><div class="value">${value}</div></div>`}
-function dashboardMetrics(){const open=state.tasks.filter(t=>!CLOSED_STATUSES.includes(t.status)); const overdue=open.filter(isOverdue); const due=open.filter(isDueToday); const blocked=open.filter(t=>t.status==='Blocked'); const pc=open.filter(t=>t.status==='Pending Client'); const atRisk=open.filter(t=>t.status==='At Risk'||(t.plannedEndDate && dateDiff(TODAY(),t.plannedEndDate)<=2 && dateDiff(TODAY(),t.plannedEndDate)>=0)); const compToday=state.tasks.filter(t=>CLOSED_STATUSES.includes(t.status)&&t.actualEndDate===TODAY()); const depBlocked=open.filter(t=>dependencyIssues(t).length); return {open,due,overdue,blocked,pc,atRisk,compToday,depBlocked};}
-function dependencyIssues(t){const deps=state.taskDependencies.filter(d=>d.taskId===t.taskId); return deps.map(d=>getTask(d.dependsOnTaskId)).filter(dt=>dt && !CLOSED_STATUSES.includes(dt.status));}
-function escalationForTask(t){let level=''; let reason=''; let team=getTeam(t.ownerTeamId); const overdueDays=isOverdue(t)?todayDiff(t.plannedEndDate):0; if(t.priority==='Critical'&&overdueDays>0){level='L2'; reason='Critical overdue task';} else if(overdueDays>=state.settings.escalationRules.l2OverdueDays){level='L2'; reason=`Overdue by ${overdueDays} days`;} else if(overdueDays>=state.settings.escalationRules.l1OverdueDays){level='L1'; reason=`Overdue by ${overdueDays} days`;} else if(t.status==='Blocked'&&t.impact==='High'){level='L1'; reason='High-impact blocked task';}
-  const dep=dependencyIssues(t)[0]; if(dep){const depTeam=getTeam(dep.ownerTeamId); if(!level){level='L1'; reason=`Blocked by dependency: ${dep.title}`;} team=depTeam||team;}
-  const contact=level==='L2'?(team?.escalationL2||team?.primaryLead||'') : level==='L1'?(team?.escalationL1||team?.primaryLead||'') : '';
-  return {level,reason,contact,team:team?.teamName||''};}
-const views={
- dashboard(){const m=dashboardMetrics(); return `<div class="grid kpis">${kpi('Open Tasks',m.open.length,'blue')}${kpi('Due Today',m.due.length,'amber')}${kpi('Overdue',m.overdue.length,'red')}${kpi('Blocked',m.blocked.length,'red')}${kpi('Dependency Blocked',m.depBlocked.length,'purple')}${kpi('Pending Client',m.pc.length,'purple')}${kpi('At Risk',m.atRisk.length,'amber')}${kpi('Completed Today',m.compToday.length,'green')}</div>
- <div class="split"><div class="card"><h2>Today’s Focus</h2>${taskTable(m.open.filter(t=>isDueToday(t)||isOverdue(t)||t.priority==='Critical').slice(0,8),true)}</div><div class="card"><h2>Escalation Needed</h2>${taskTable(m.open.filter(t=>escalationForTask(t).level).slice(0,8),true,true)}</div></div>
- <div class="section split"><div class="card"><h2>Upcoming Stream / Phase Milestones</h2>${genericScheduleTable([...state.streams,...state.phases].filter(x=>x.plannedEndDate && x.plannedEndDate>=TODAY()).sort((a,b)=>a.plannedEndDate.localeCompare(b.plannedEndDate)).slice(0,10))}</div><div class="card"><h2>Timeline Changes</h2>${logList(state.activityLog.filter(l=>l.changeType==='Date Change').slice(0,8))}</div></div>`},
- scrum(){const m=dashboardMetrics(); const timeline=state.activityLog.filter(l=>l.changeType==='Date Change' && l.updatedAt.slice(0,10)>=TODAY()).slice(0,20); return `<div class="toolbar"><input id="scrumSearch" placeholder="Search scrum items..." value="${esc(filters.scrumSearch||'')}"><select id="scrumTeam"><option value="">All Teams</option>${opts(state.teams,'teamId','teamName',filters.scrumTeam)}</select><select id="scrumProject"><option value="">All Projects</option>${opts(state.projects,'projectId','projectName',filters.scrumProject)}</select></div><div class="grid kpis">${kpi('Due Today',m.due.length,'amber')}${kpi('Overdue',m.overdue.length,'red')}${kpi('Blocked',m.blocked.length,'red')}${kpi('Dependency Blocked',m.depBlocked.length,'purple')}${kpi('Pending Client',m.pc.length,'purple')}${kpi('At Risk',m.atRisk.length,'amber')}${kpi('Completed Today',m.compToday.length,'green')}${kpi('OOO Conflicts',oooConflicts().length,'blue')}</div>
- <div class="section card"><h2>Today’s Scrum Focus</h2>${taskTable(scrumTasks(),false,true,true)}</div><div class="section card"><h2>Team-wise Standup Board</h2>${teamBoard(scrumTasks())}</div><div class="section split"><div class="card"><h2>Timeline Changes Today</h2>${logList(timeline)}</div><div class="card"><h2>OOO / Availability Impacts</h2>${oooTable(oooConflicts())}</div></div>`},
- projects(){return crudView('Project',state.projects,['projectName','client','status','plannedEndDate'],projectRows())},
- streams(){return crudView('Stream',state.streams,['streamName','projectId','status','plannedEndDate'],streamRows())},
- phases(){return crudView('Phase',state.phases,['phaseName','streamId','status','plannedEndDate'],phaseRows())},
- tasks(){return `<div class="toolbar"><input id="taskSearch" placeholder="Search tasks..." value="${esc(filters.taskSearch||'')}"><select id="taskProject"><option value="">All Projects</option>${opts(state.projects,'projectId','projectName',filters.taskProject)}</select><select id="taskTeam"><option value="">All Teams</option>${opts(state.teams,'teamId','teamName',filters.taskTeam)}</select><select id="taskStatus"><option value="">All Statuses</option>${STATUS.map(s=>`<option ${filters.taskStatus===s?'selected':''}>${s}</option>`).join('')}</select></div>${taskTable(filteredTasks(),false,true,true)}`},
- teams(){return crudView('Team',state.teams,['teamName','teamType','primaryLead','escalationL1'],teamRows())},
- people(){return crudView('Person',state.people,['personName','teamId','role','personType'],personRows())},
- ooo(){return crudView('OOO',state.ooo,['personName','personType','oooStart','oooEnd'],oooTable(state.ooo))},
- raid(){return crudView('RAID',state.raid,['raidType','description','severity','status'],raidRows())},
- logs(){return `<div class="toolbar"><input id="logSearch" placeholder="Search logs..." value="${esc(filters.logSearch||'')}"><select id="logType"><option value="">All Change Types</option>${[...new Set(state.activityLog.map(l=>l.changeType))].map(s=>`<option ${filters.logType===s?'selected':''}>${esc(s)}</option>`).join('')}</select></div>${logList(filteredLogs())}`},
- settings(){return `<div class="split"><div class="card"><h2>Import / Export</h2><p class="muted">Data is stored in this browser’s local storage. Export JSON regularly for backup or sharing.</p><div class="actions"><button class="btn primary" onclick="exportData()">Export JSON</button><label class="btn filelabel">Import JSON<input type="file" id="importFile" accept="application/json"></label><button class="btn danger" onclick="resetData()">Reset Tracker</button></div></div><div class="card"><h2>Configuration</h2><div class="formgrid"><label>User Name<input id="settingsUser" value="${esc(state.settings.userName||'')}"></label><label>L1 Overdue Days<input type="number" id="settingsL1" value="${state.settings.escalationRules.l1OverdueDays}"></label><label>L2 Overdue Days<input type="number" id="settingsL2" value="${state.settings.escalationRules.l2OverdueDays}"></label></div><br><button class="btn primary" onclick="saveSettings()">Save Settings</button></div></div><div class="section card"><h2>Data Summary</h2><table><tr><th>Object</th><th>Count</th></tr>${['projects','streams','phases','tasks','teams','people','ooo','raid','activityLog'].map(k=>`<tr><td>${k}</td><td>${state[k].length}</td></tr>`).join('')}</table></div>`}
-};
-function crudView(label,arr,cols,rows){return `<div class="notice">Use <b>View Log</b> beside each item to see comments, status history, date changes, ownership changes, and escalation notes.</div>${rows||'<div class="empty">No records yet.</div>'}`}
-function opts(arr,id,name,sel){return arr.map(x=>`<option value="${x[id]}" ${sel===x[id]?'selected':''}>${esc(x[name])}</option>`).join('')}
-function projectRows(){return `<table><thead><tr><th>Project</th><th>Client</th><th>Status</th><th>Schedule</th><th>Streams</th><th>Open Tasks</th><th>Actions</th></tr></thead><tbody>${state.projects.map(p=>`<tr><td><b>${esc(p.projectName)}</b><div class="muted">${esc(p.description||'')}</div></td><td>${esc(p.client)}</td><td>${statusBadge(p.status)}</td><td>${dateSummary(p)} ${scheduleBadge(p)}</td><td>${state.streams.filter(s=>s.projectId===p.projectId).length}</td><td>${state.tasks.filter(t=>t.projectId===p.projectId&&!CLOSED_STATUSES.includes(t.status)).length}</td><td>${rowActions('Project',p.projectId)}</td></tr>`).join('')}</tbody></table>`}
-function streamRows(){return `<table><thead><tr><th>Stream</th><th>Project</th><th>Owner</th><th>Status</th><th>Schedule</th><th>Phases</th><th>Actions</th></tr></thead><tbody>${state.streams.map(s=>`<tr><td><b>${esc(s.streamName)}</b></td><td>${esc(getProject(s.projectId)?.projectName||'')}</td><td>${esc(getPerson(s.ownerPersonId)?.personName||s.owner||'')}</td><td>${statusBadge(s.status)}</td><td>${dateSummary(s)} ${scheduleBadge(s)}</td><td>${state.phases.filter(p=>p.streamId===s.streamId).length}</td><td>${rowActions('Stream',s.streamId)}</td></tr>`).join('')}</tbody></table>`}
-function phaseRows(){return `<table><thead><tr><th>Phase</th><th>Project / Stream</th><th>Owner Team</th><th>Status</th><th>Schedule</th><th>Tasks</th><th>Actions</th></tr></thead><tbody>${state.phases.map(p=>`<tr><td><b>${esc(p.phaseName)}</b></td><td>${esc(getProject(p.projectId)?.projectName||'')}<div class="muted">${esc(getStream(p.streamId)?.streamName||'')}</div></td><td>${esc(getTeam(p.ownerTeamId)?.teamName||'')}</td><td>${statusBadge(p.status)}</td><td>${dateSummary(p)} ${scheduleBadge(p)}</td><td>${state.tasks.filter(t=>t.phaseId===p.phaseId).length}</td><td>${rowActions('Phase',p.phaseId)}</td></tr>`).join('')}</tbody></table>`}
-function teamRows(){return `<table><thead><tr><th>Team</th><th>Type</th><th>Primary / Backup</th><th>Escalation</th><th>Time Zone</th><th>Actions</th></tr></thead><tbody>${state.teams.map(t=>`<tr><td><b>${esc(t.teamName)}</b><div class="muted">${esc(t.functionalArea||'')}</div></td><td>${badge(t.teamType,t.teamType==='Client'?'purple':'blue')}</td><td>${esc(t.primaryLead||'')}<div class="muted">Backup: ${esc(t.backupLead||'-')}</div></td><td>L1: ${esc(t.escalationL1||'-')}<div class="muted">L2: ${esc(t.escalationL2||'-')}</div></td><td>${esc(t.timeZone||'')}</td><td>${rowActions('Team',t.teamId)}</td></tr>`).join('')}</tbody></table>`}
-function personRows(){return `<table><thead><tr><th>Name</th><th>Team</th><th>Role</th><th>Type</th><th>Email</th><th>Actions</th></tr></thead><tbody>${state.people.map(p=>`<tr><td><b>${esc(p.personName)}</b></td><td>${esc(getTeam(p.teamId)?.teamName||'')}</td><td>${esc(p.role||'')}</td><td>${badge(p.personType,p.personType==='Client'?'purple':'blue')}</td><td>${esc(p.email||'')}</td><td>${rowActions('Person',p.personId)}</td></tr>`).join('')}</tbody></table>`}
-function raidRows(){return `<table><thead><tr><th>Type</th><th>Description</th><th>Project / Stream</th><th>Severity</th><th>Status</th><th>Owner</th><th>Actions</th></tr></thead><tbody>${state.raid.map(r=>`<tr><td>${badge(r.raidType,'amber')}</td><td><b>${esc(r.description)}</b><div class="muted">${esc(r.mitigation||'')}</div></td><td>${esc(getProject(r.projectId)?.projectName||'')}<div class="muted">${esc(getStream(r.streamId)?.streamName||'')}</div></td><td>${priorityBadge(r.severity||'Medium')}</td><td>${statusBadge(r.status)}</td><td>${esc(getTeam(r.ownerTeamId)?.teamName||'')} / ${esc(getPerson(r.ownerPersonId)?.personName||'')}</td><td>${rowActions('RAID',r.raidId)}</td></tr>`).join('')}</tbody></table>`}
-function taskTable(tasks,compact=false,showEsc=false,showUpdate=false){if(!tasks.length)return '<div class="empty">No matching tasks.</div>'; return `<table><thead><tr><th>Task</th><th>Project / Stream / Phase</th><th>Owner Team</th><th>Status</th><th>Dates</th>${showEsc?'<th>Escalation</th>':''}<th>Latest</th><th>Actions</th></tr></thead><tbody>${tasks.map(t=>{const e=escalationForTask(t); return `<tr><td><b>${esc(t.title)}</b><div>${priorityBadge(t.priority||'Medium')} ${t.impact?badge('Impact: '+t.impact,t.impact==='High'?'red':'blue'):''}</div><div class="muted">${esc(t.description||'')}</div></td><td>${esc(getProject(t.projectId)?.projectName||'')}<div class="muted">${esc(getStream(t.streamId)?.streamName||'')} / ${esc(getPhase(t.phaseId)?.phaseName||'')}</div></td><td>${esc(getTeam(t.ownerTeamId)?.teamName||'')}<div class="muted">${esc(getPerson(t.ownerPersonId)?.personName||'')}</div></td><td>${statusBadge(t.status)}<div>${scheduleBadge(t)}</div></td><td>${dateSummary(t)}</td>${showEsc?`<td>${e.level?badge(e.level,e.level==='L2'?'red':'amber'):badge('None')}<div class="muted">${esc(e.reason||'')}</div><div>${esc(e.contact||'')}</div></td>`:''}<td>${esc(t.latestUpdate||'')}<div class="muted">Next: ${esc(t.nextStep||'-')}</div></td><td>${rowActions('Task',t.taskId,showUpdate)}</td></tr>`}).join('')}</tbody></table>`}
-function genericScheduleTable(arr){if(!arr.length)return '<div class="empty">No upcoming scheduled items.</div>';return `<table><thead><tr><th>Item</th><th>Level</th><th>Status</th><th>Schedule</th><th>Actions</th></tr></thead><tbody>${arr.map(x=>{const type=x.projectId&&x.streamId?'Phase':x.projectId?'Stream':'Project'; const id=x.phaseId||x.streamId||x.projectId; return `<tr><td><b>${esc(x.phaseName||x.streamName||x.projectName)}</b></td><td>${type}</td><td>${statusBadge(x.status)}</td><td>${dateSummary(x)} ${scheduleBadge(x)}</td><td>${rowActions(type,id)}</td></tr>`}).join('')}</tbody></table>`}
-function oooTable(arr){if(!arr.length)return '<div class="empty">No OOO records.</div>'; return `<table><thead><tr><th>Person</th><th>Type</th><th>Project</th><th>Dates</th><th>Backup</th><th>Impact</th><th>Actions</th></tr></thead><tbody>${arr.map(o=>`<tr><td><b>${esc(o.personName)}</b></td><td>${badge(o.personType,o.personType==='Client'?'purple':'blue')}</td><td>${esc(getProject(o.projectId)?.projectName||'All')}</td><td>${esc(o.oooStart)} → ${esc(o.oooEnd)}</td><td>${esc(o.backup||'-')}</td><td>${esc(o.impactNotes||'')}</td><td>${rowActions('OOO',o.oooId)}</td></tr>`).join('')}</tbody></table>`}
-function dateSummary(x){return `<div class="nowrap">Plan: ${esc(x.plannedStartDate||'-')} → ${esc(x.plannedEndDate||'-')}</div><div class="muted nowrap">Actual: ${esc(x.actualStartDate||'-')} → ${esc(x.actualEndDate||'-')}</div><div class="muted">Dur: P ${x.plannedDurationDays??'-'} / A ${x.actualDurationDays??'-'} days ${x.endVarianceDays!=null?` | Var ${x.endVarianceDays>0?'+':''}${x.endVarianceDays}`:''}</div>`}
+  </header>
 
-function editFn(type){return {Project:'openProject',Stream:'openStream',Phase:'openPhase',Task:'openTask',Team:'openTeam',Person:'openPerson',OOO:'openOOO',RAID:'openRaid'}[type]||'';}
-function rowActions(type,id,showUpdate=false){return `<div class="rowactions">${showUpdate?`<button class="btn small green" onclick="openScrumUpdate('${id}')">Update Today</button>`:''}<button class="btn small" onclick="openLog('${type}','${id}')">View Log</button><button class="btn small blue" onclick="${editFn(type)}('${id}')">Edit</button><button class="btn small danger" onclick="deleteEntity('${type}','${id}')">Delete</button></div>`}
-function logList(logs){if(!logs.length)return '<div class="empty">No logs found.</div>'; return `<div class="timeline">${logs.map(l=>`<div class="logitem"><div class="logmeta">${new Date(l.updatedAt).toLocaleString()} • ${esc(l.updatedBy)} • ${esc(l.entityType)} • ${esc(l.changeType)}</div><b>${esc(l.entityName||l.entityId)}</b><div>${l.oldValue||l.newValue?`<span class="muted">${esc(l.oldValue||'-')} → ${esc(l.newValue||'-')}</span>`:''}</div><div>${esc(l.comment||'')}</div></div>`).join('')}</div>`}
-function filteredTasks(){let arr=[...state.tasks]; if(filters.taskSearch) arr=arr.filter(t=>(JSON.stringify(t)+namePath(t)).toLowerCase().includes(filters.taskSearch.toLowerCase())); if(filters.taskProject) arr=arr.filter(t=>t.projectId===filters.taskProject); if(filters.taskTeam) arr=arr.filter(t=>t.ownerTeamId===filters.taskTeam); if(filters.taskStatus) arr=arr.filter(t=>t.status===filters.taskStatus); return arr.sort((a,b)=>(a.plannedEndDate||'9999').localeCompare(b.plannedEndDate||'9999'));}
-function scrumTasks(){let arr=state.tasks.filter(t=>!CLOSED_STATUSES.includes(t.status)||t.actualEndDate===TODAY()); if(filters.scrumSearch) arr=arr.filter(t=>(JSON.stringify(t)+namePath(t)).toLowerCase().includes(filters.scrumSearch.toLowerCase())); if(filters.scrumTeam) arr=arr.filter(t=>t.ownerTeamId===filters.scrumTeam); if(filters.scrumProject) arr=arr.filter(t=>t.projectId===filters.scrumProject); return arr.sort((a,b)=>(a.plannedEndDate||'9999').localeCompare(b.plannedEndDate||'9999'));}
-function namePath(t){return [getProject(t.projectId)?.projectName,getStream(t.streamId)?.streamName,getPhase(t.phaseId)?.phaseName,getTeam(t.ownerTeamId)?.teamName,getPerson(t.ownerPersonId)?.personName].join(' ')}
-function filteredLogs(){let arr=[...state.activityLog]; if(filters.logSearch) arr=arr.filter(l=>JSON.stringify(l).toLowerCase().includes(filters.logSearch.toLowerCase())); if(filters.logType) arr=arr.filter(l=>l.changeType===filters.logType); return arr;}
-function teamBoard(tasks){const groups={}; tasks.forEach(t=>{const k=getTeam(t.ownerTeamId)?.teamName||'Unassigned'; (groups[k]||(groups[k]=[])).push(t)}); if(!Object.keys(groups).length)return '<div class="empty">No scrum tasks.</div>'; return Object.keys(groups).sort().map(k=>`<h3>${esc(k)}</h3>${taskTable(groups[k],true,true,true)}`).join('')}
-function oooConflicts(){return state.ooo.filter(o=>state.tasks.some(t=>!CLOSED_STATUSES.includes(t.status)&&(!o.projectId||o.projectId===t.projectId)&&((getPerson(t.ownerPersonId)?.personName===o.personName)||t.ownerPersonName===o.personName)&&(t.plannedEndDate>=o.oooStart&&t.plannedEndDate<=o.oooEnd)));}
-function bindView(){document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{currentView=b.dataset.view;render()}); const bind=(id,key)=>{const el=document.getElementById(id); if(el) el.oninput=()=>{filters[key]=el.value;render()}}; bind('taskSearch','taskSearch'); bind('taskProject','taskProject'); bind('taskTeam','taskTeam'); bind('taskStatus','taskStatus'); bind('scrumSearch','scrumSearch'); bind('scrumTeam','scrumTeam'); bind('scrumProject','scrumProject'); bind('logSearch','logSearch'); bind('logType','logType'); const imp=document.getElementById('importFile'); if(imp) imp.onchange=importData;}
-function modal(title,body,onSave){document.getElementById('modalRoot').innerHTML=`<div class="modal"><div class="modalbox"><div class="modalhead"><h3>${title}</h3><button class="btn small" onclick="closeModal()">Close</button></div><div class="modalbody">${body}</div><div class="modalfoot"><button class="btn" onclick="closeModal()">Cancel</button>${onSave?`<button class="btn primary" id="modalSave">Save</button>`:''}</div></div></div>`; if(onSave) document.getElementById('modalSave').onclick=onSave;}
-function closeModal(){document.getElementById('modalRoot').innerHTML=''} function val(id){return document.getElementById(id)?.value||''}
-function dateFields(x={}){return `<div class="formgrid threecol"><label>Baseline Start<input type="date" id="baselineStartDate" value="${x.baselineStartDate||''}"></label><label>Baseline End<input type="date" id="baselineEndDate" value="${x.baselineEndDate||''}"></label><label>Date Change Reason<input id="dateChangeReason" placeholder="Required when changing planned/baseline dates"></label><label>Planned Start<input type="date" id="plannedStartDate" value="${x.plannedStartDate||''}"></label><label>Planned End<input type="date" id="plannedEndDate" value="${x.plannedEndDate||''}"></label><label>Actual Start<input type="date" id="actualStartDate" value="${x.actualStartDate||''}"></label><label>Actual End<input type="date" id="actualEndDate" value="${x.actualEndDate||''}"></label></div>`}
-function openProject(id){const x=id?getProject(id):{}; modal(id?'Edit Project':'Add Project',`<div class="formgrid"><label>Project Name<input id="projectName" value="${esc(x.projectName||'')}"></label><label>Client<input id="client" value="${esc(x.client||'')}"></label><label>Status<select id="status">${STATUS.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Owner<input id="owner" value="${esc(x.owner||'')}"></label><label class="full">Description<textarea id="description">${esc(x.description||'')}</textarea></label></div><br>${dateFields(x)}`,()=>{let obj=x; const isNew=!id; if(isNew){obj={projectId:uid('PROJ'),status:'Not Started'}; state.projects.push(obj)}; const oldStatus=obj.status; Object.assign(obj,{projectName:val('projectName'),client:val('client'),owner:val('owner'),description:val('description')}); updateDatesWithLog(obj,'Project',obj.projectId,{baselineStartDate:val('baselineStartDate'),baselineEndDate:val('baselineEndDate'),plannedStartDate:val('plannedStartDate'),plannedEndDate:val('plannedEndDate'),actualStartDate:val('actualStartDate'),actualEndDate:val('actualEndDate'),dateChangeReason:val('dateChangeReason')}); applyStatusDates(obj,val('status'),'Project'); if(isNew) log('Project',obj.projectId,'Created','',obj.projectName,'Project created.'); else if(oldStatus!==obj.status) log('Project',obj.projectId,'Status Change',oldStatus,obj.status,'Project status updated.'); closeModal(); render();});}
-function openStream(id){const x=id?getStream(id):{}; modal(id?'Edit Stream':'Add Stream',`<div class="formgrid"><label>Project<select id="projectId">${opts(state.projects,'projectId','projectName',x.projectId)}</select></label><label>Stream Name<input id="streamName" value="${esc(x.streamName||'')}"></label><label>Status<select id="status">${STATUS.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Owner Person<select id="ownerPersonId"><option value="">Select</option>${opts(state.people,'personId','personName',x.ownerPersonId)}</select></label><label class="full">Notes<textarea id="notes">${esc(x.notes||'')}</textarea></label></div><br>${dateFields(x)}`,()=>{let obj=x; const isNew=!id; if(isNew){obj={streamId:uid('STRM'),status:'Not Started'}; state.streams.push(obj)}; const oldStatus=obj.status; Object.assign(obj,{projectId:val('projectId'),streamName:val('streamName'),ownerPersonId:val('ownerPersonId'),notes:val('notes')}); updateDatesWithLog(obj,'Stream',obj.streamId,{baselineStartDate:val('baselineStartDate'),baselineEndDate:val('baselineEndDate'),plannedStartDate:val('plannedStartDate'),plannedEndDate:val('plannedEndDate'),actualStartDate:val('actualStartDate'),actualEndDate:val('actualEndDate'),dateChangeReason:val('dateChangeReason')}); applyStatusDates(obj,val('status'),'Stream'); if(isNew) log('Stream',obj.streamId,'Created','',obj.streamName,'Stream created.',contextFor(obj,'Stream')); else if(oldStatus!==obj.status) log('Stream',obj.streamId,'Status Change',oldStatus,obj.status,'Stream status updated.',contextFor(obj,'Stream')); closeModal(); render();});}
-function openPhase(id){const x=id?getPhase(id):{}; modal(id?'Edit Phase':'Add Phase',`<div class="formgrid"><label>Project<select id="projectId" onchange="phaseProjectChanged()">${opts(state.projects,'projectId','projectName',x.projectId)}</select></label><label>Stream<select id="streamId">${opts(state.streams.filter(s=>!x.projectId||s.projectId===x.projectId),'streamId','streamName',x.streamId)}</select></label><label>Phase Name<select id="phaseName">${PHASE_NAMES.map(s=>`<option ${x.phaseName===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Owner Team<select id="ownerTeamId"><option value="">Select</option>${opts(state.teams,'teamId','teamName',x.ownerTeamId)}</select></label><label>Status<select id="status">${STATUS.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Notes<input id="notes" value="${esc(x.notes||'')}"></label></div><br>${dateFields(x)}`,()=>{let obj=x; const isNew=!id; if(isNew){obj={phaseId:uid('PHASE'),status:'Not Started'}; state.phases.push(obj)}; const oldStatus=obj.status; Object.assign(obj,{projectId:val('projectId'),streamId:val('streamId'),phaseName:val('phaseName'),ownerTeamId:val('ownerTeamId'),notes:val('notes')}); updateDatesWithLog(obj,'Phase',obj.phaseId,{baselineStartDate:val('baselineStartDate'),baselineEndDate:val('baselineEndDate'),plannedStartDate:val('plannedStartDate'),plannedEndDate:val('plannedEndDate'),actualStartDate:val('actualStartDate'),actualEndDate:val('actualEndDate'),dateChangeReason:val('dateChangeReason')}); applyStatusDates(obj,val('status'),'Phase'); if(isNew) log('Phase',obj.phaseId,'Created','',obj.phaseName,'Phase created.',contextFor(obj,'Phase')); else if(oldStatus!==obj.status) log('Phase',obj.phaseId,'Status Change',oldStatus,obj.status,'Phase status updated.',contextFor(obj,'Phase')); closeModal(); render();});}
-function phaseProjectChanged(){const p=val('projectId'); const el=document.getElementById('streamId'); if(el) el.innerHTML=opts(state.streams.filter(s=>s.projectId===p),'streamId','streamName','');}
-function openTask(id){const x=id?getTask(id):{}; const deps=state.taskDependencies.filter(d=>d.taskId===id).map(d=>d.dependsOnTaskId); modal(id?'Edit Task':'Add Task',`<div class="formgrid"><label>Project<select id="projectId">${opts(state.projects,'projectId','projectName',x.projectId)}</select></label><label>Stream<select id="streamId"><option value="">Select</option>${opts(state.streams,'streamId','streamName',x.streamId)}</select></label><label>Phase<select id="phaseId"><option value="">Select</option>${opts(state.phases,'phaseId','phaseName',x.phaseId)}</select></label><label>Owner Team<select id="ownerTeamId"><option value="">Select</option>${opts(state.teams,'teamId','teamName',x.ownerTeamId)}</select></label><label>Owner Person<select id="ownerPersonId"><option value="">Select</option>${opts(state.people,'personId','personName',x.ownerPersonId)}</select></label><label>Status<select id="status">${STATUS.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Priority<select id="priority">${PRIORITY.map(s=>`<option ${x.priority===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Impact<select id="impact"><option></option>${['High','Medium','Low'].map(s=>`<option ${x.impact===s?'selected':''}>${s}</option>`).join('')}</select></label><label class="full">Task Title<input id="title" value="${esc(x.title||'')}"></label><label class="full">Description<textarea id="description">${esc(x.description||'')}</textarea></label><label>Depends On Tasks<select id="dependsOnTaskIds" multiple size="4">${state.tasks.filter(t=>t.taskId!==id).map(t=>`<option value="${t.taskId}" ${deps.includes(t.taskId)?'selected':''}>${esc(t.title)}</option>`).join('')}</select></label><label>Dependency Notes<textarea id="dependencyNotes">${esc(x.dependencyNotes||'')}</textarea></label><label>Latest Update<textarea id="latestUpdate">${esc(x.latestUpdate||'')}</textarea></label><label>Next Step<textarea id="nextStep">${esc(x.nextStep||'')}</textarea></label><label class="full">Blocker<textarea id="blocker">${esc(x.blocker||'')}</textarea></label></div><br>${dateFields(x)}`,()=>{let obj=x; const isNew=!id; if(isNew){obj={taskId:uid('TASK'),status:'Not Started'}; state.tasks.push(obj)}; const oldStatus=obj.status, oldOwnerTeam=obj.ownerTeamId, oldOwner=obj.ownerPersonId; Object.assign(obj,{projectId:val('projectId'),streamId:val('streamId'),phaseId:val('phaseId'),ownerTeamId:val('ownerTeamId'),ownerPersonId:val('ownerPersonId'),priority:val('priority'),impact:val('impact'),title:val('title'),description:val('description'),dependencyNotes:val('dependencyNotes'),latestUpdate:val('latestUpdate'),nextStep:val('nextStep'),blocker:val('blocker')}); updateDatesWithLog(obj,'Task',obj.taskId,{baselineStartDate:val('baselineStartDate'),baselineEndDate:val('baselineEndDate'),plannedStartDate:val('plannedStartDate'),plannedEndDate:val('plannedEndDate'),actualStartDate:val('actualStartDate'),actualEndDate:val('actualEndDate'),dateChangeReason:val('dateChangeReason')}); applyStatusDates(obj,val('status'),'Task'); if(isNew) log('Task',obj.taskId,'Created','',obj.title,'Task created.',contextFor(obj,'Task')); else { if(oldStatus!==obj.status) log('Task',obj.taskId,'Status Change',oldStatus,obj.status,'Task status updated.',contextFor(obj,'Task')); if(oldOwnerTeam!==obj.ownerTeamId) log('Task',obj.taskId,'Owner Team Change',getTeam(oldOwnerTeam)?.teamName||'',getTeam(obj.ownerTeamId)?.teamName||'','Task owner team updated.',contextFor(obj,'Task')); if(oldOwner!==obj.ownerPersonId) log('Task',obj.taskId,'Owner Change',getPerson(oldOwner)?.personName||'',getPerson(obj.ownerPersonId)?.personName||'','Task owner updated.',contextFor(obj,'Task')); }
- const selected=[...document.getElementById('dependsOnTaskIds').selectedOptions].map(o=>o.value); state.taskDependencies=state.taskDependencies.filter(d=>d.taskId!==obj.taskId); selected.forEach(dep=>{state.taskDependencies.push({dependencyId:uid('DEP'),taskId:obj.taskId,dependsOnTaskId:dep,dependencyType:'Task Dependency',dependencyImpact:obj.impact||'Medium',notes:val('dependencyNotes')}); log('Task',obj.taskId,'Dependency Added','',getTask(dep)?.title||dep,'Task dependency updated.',contextFor(obj,'Task'));}); closeModal(); render();});}
-function openTeam(id){const x=id?getTeam(id):{}; modal(id?'Edit Team':'Add Team',`<div class="formgrid"><label>Team Name<input id="teamName" value="${esc(x.teamName||'')}"></label><label>Team Type<select id="teamType">${['Internal','Client','Vendor'].map(s=>`<option ${x.teamType===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Functional Area<input id="functionalArea" value="${esc(x.functionalArea||'')}"></label><label>Time Zone<input id="timeZone" value="${esc(x.timeZone||'')}"></label><label>Primary Lead<input id="primaryLead" value="${esc(x.primaryLead||'')}"></label><label>Backup Lead<input id="backupLead" value="${esc(x.backupLead||'')}"></label><label>L1 Escalation<input id="escalationL1" value="${esc(x.escalationL1||'')}"></label><label>L2 Escalation<input id="escalationL2" value="${esc(x.escalationL2||'')}"></label><label>L3 Escalation<input id="escalationL3" value="${esc(x.escalationL3||'')}"></label><label>Distribution List<input id="distributionList" value="${esc(x.distributionList||'')}"></label><label class="full">Notes<textarea id="notes">${esc(x.notes||'')}</textarea></label></div>`,()=>{let obj=x; const isNew=!id; if(isNew){obj={teamId:uid('TEAM'),active:true}; state.teams.push(obj)}; Object.assign(obj,{teamName:val('teamName'),teamType:val('teamType'),functionalArea:val('functionalArea'),timeZone:val('timeZone'),primaryLead:val('primaryLead'),backupLead:val('backupLead'),escalationL1:val('escalationL1'),escalationL2:val('escalationL2'),escalationL3:val('escalationL3'),distributionList:val('distributionList'),notes:val('notes')}); log('Team',obj.teamId,isNew?'Created':'Updated','',obj.teamName,`Team ${isNew?'created':'updated'}.`); closeModal(); render();});}
-function openPerson(id){const x=id?getPerson(id):{}; modal(id?'Edit Person':'Add Person',`<div class="formgrid"><label>Name<input id="personName" value="${esc(x.personName||'')}"></label><label>Email<input id="email" value="${esc(x.email||'')}"></label><label>Team<select id="teamId"><option value="">Select</option>${opts(state.teams,'teamId','teamName',x.teamId)}</select></label><label>Role<input id="role" value="${esc(x.role||'')}"></label><label>Type<select id="personType">${['Internal','Client','Vendor'].map(s=>`<option ${x.personType===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Time Zone<input id="timeZone" value="${esc(x.timeZone||'')}"></label><label class="full">Notes<textarea id="notes">${esc(x.notes||'')}</textarea></label></div>`,()=>{let obj=x; const isNew=!id; if(isNew){obj={personId:uid('PERS'),active:true}; state.people.push(obj)}; Object.assign(obj,{personName:val('personName'),email:val('email'),teamId:val('teamId'),role:val('role'),personType:val('personType'),timeZone:val('timeZone'),notes:val('notes')}); log('Person',obj.personId,isNew?'Created':'Updated','',obj.personName,`Person ${isNew?'created':'updated'}.`); closeModal(); render();});}
-function openOOO(id){const x=id?state.ooo.find(o=>o.oooId===id):{}; modal(id?'Edit OOO':'Add OOO',`<div class="formgrid"><label>Person Name<input id="personName" value="${esc(x.personName||'')}"></label><label>Type<select id="personType">${['Internal','Client','Vendor'].map(s=>`<option ${x.personType===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Project<select id="projectId"><option value="">All Projects</option>${opts(state.projects,'projectId','projectName',x.projectId)}</select></label><label>Backup<input id="backup" value="${esc(x.backup||'')}"></label><label>OOO Start<input type="date" id="oooStart" value="${x.oooStart||''}"></label><label>OOO End<input type="date" id="oooEnd" value="${x.oooEnd||''}"></label><label class="full">Impact Notes<textarea id="impactNotes">${esc(x.impactNotes||'')}</textarea></label></div>`,()=>{let obj=x; const isNew=!id; if(isNew){obj={oooId:uid('OOO')}; state.ooo.push(obj)}; Object.assign(obj,{personName:val('personName'),personType:val('personType'),projectId:val('projectId'),backup:val('backup'),oooStart:val('oooStart'),oooEnd:val('oooEnd'),impactNotes:val('impactNotes')}); log('OOO',obj.oooId,isNew?'Created':'Updated','',obj.personName,`OOO ${isNew?'created':'updated'}.`); closeModal(); render();});}
-function openRaid(id){const x=id?state.raid.find(r=>r.raidId===id):{}; modal(id?'Edit RAID':'Add RAID',`<div class="formgrid"><label>Type<select id="raidType">${['Risk','Issue','Assumption','Decision','Dependency'].map(s=>`<option ${x.raidType===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Status<select id="status">${STATUS.map(s=>`<option ${x.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Project<select id="projectId"><option value="">Select</option>${opts(state.projects,'projectId','projectName',x.projectId)}</select></label><label>Stream<select id="streamId"><option value="">Select</option>${opts(state.streams,'streamId','streamName',x.streamId)}</select></label><label>Phase<select id="phaseId"><option value="">Select</option>${opts(state.phases,'phaseId','phaseName',x.phaseId)}</select></label><label>Owner Team<select id="ownerTeamId"><option value="">Select</option>${opts(state.teams,'teamId','teamName',x.ownerTeamId)}</select></label><label>Owner Person<select id="ownerPersonId"><option value="">Select</option>${opts(state.people,'personId','personName',x.ownerPersonId)}</select></label><label>Severity<select id="severity">${PRIORITY.map(s=>`<option ${x.severity===s?'selected':''}>${s}</option>`).join('')}</select></label><label class="full">Description<textarea id="description">${esc(x.description||'')}</textarea></label><label class="full">Mitigation / Action Plan<textarea id="mitigation">${esc(x.mitigation||'')}</textarea></label></div><br>${dateFields(x)}`,()=>{let obj=x; const isNew=!id; if(isNew){obj={raidId:uid('RAID'),status:'Not Started'}; state.raid.push(obj)}; const oldStatus=obj.status; Object.assign(obj,{raidType:val('raidType'),status:val('status'),projectId:val('projectId'),streamId:val('streamId'),phaseId:val('phaseId'),ownerTeamId:val('ownerTeamId'),ownerPersonId:val('ownerPersonId'),severity:val('severity'),description:val('description'),mitigation:val('mitigation')}); updateDatesWithLog(obj,'RAID',obj.raidId,{baselineStartDate:val('baselineStartDate'),baselineEndDate:val('baselineEndDate'),plannedStartDate:val('plannedStartDate'),plannedEndDate:val('plannedEndDate'),actualStartDate:val('actualStartDate'),actualEndDate:val('actualEndDate'),dateChangeReason:val('dateChangeReason')}); if(oldStatus!==obj.status) log('RAID',obj.raidId,'Status Change',oldStatus,obj.status,'RAID status updated.',contextFor(obj,'RAID')); if(isNew) log('RAID',obj.raidId,'Created','',obj.description,'RAID item created.',contextFor(obj,'RAID')); closeModal(); render();});}
-function openScrumUpdate(taskId){const t=getTask(taskId); modal('Daily Scrum Update',`<div class="formgrid"><label>Status<select id="status">${STATUS.map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}</select></label><label>Next Follow-up Date<input type="date" id="nextFollowUpDate" value="${t.nextFollowUpDate||''}"></label><label>Yesterday Update<textarea id="yesterdayUpdate"></textarea></label><label>Today Plan<textarea id="todayPlan"></textarea></label><label>Blocker<textarea id="blocker">${esc(t.blocker||'')}</textarea></label><label>Help Needed From<input id="helpNeededFrom" value="${esc(t.helpNeededFrom||'')}"></label><label class="full">Comment<textarea id="comment"></textarea></label></div>`,()=>{const oldStatus=t.status; applyStatusDates(t,val('status'),'Task'); t.nextFollowUpDate=val('nextFollowUpDate'); t.blocker=val('blocker'); t.helpNeededFrom=val('helpNeededFrom'); t.latestUpdate=`Yesterday: ${val('yesterdayUpdate')} | Today: ${val('todayPlan')} ${val('comment')?('| '+val('comment')):''}`; t.nextStep=val('todayPlan'); if(oldStatus!==t.status) log('Task',taskId,'Status Change',oldStatus,t.status,'Status updated during daily scrum.',contextFor(t,'Task')); log('Task',taskId,'Daily Scrum Update','',t.status,`Yesterday: ${val('yesterdayUpdate')}\nToday: ${val('todayPlan')}\nBlocker: ${val('blocker')}\nHelp Needed From: ${val('helpNeededFrom')}\nComment: ${val('comment')}`,{...contextFor(t,'Task'),commentType:'Daily Scrum Update'}); closeModal(); render();});}
-function openLog(type,id){const logs=state.activityLog.filter(l=>l.entityType===type&&l.entityId===id); modal(`${type} Log - ${esc(nameBy(type,id))}`,`<div class="notice">This log captures comments, statuses, date changes, ownership changes, blockers, dependencies, and escalations for this item.</div><div class="toolbar"><button class="btn primary" onclick="addComment('${type}','${id}')">Add Comment</button></div>${logList(logs)}`,null)}
-function addComment(type,id){modal(`Add Comment - ${type}`,`<div class="formgrid"><label>Comment Type<select id="commentType">${['Daily Scrum Update','General Comment','Blocker Update','Client Follow-up','Internal Follow-up','Escalation Note','Decision Note','Risk Note','Timeline Change Note','Closure Note'].map(s=>`<option>${s}</option>`).join('')}</select></label><label>Impact<select id="impact"><option></option>${['High','Medium','Low'].map(s=>`<option>${s}</option>`).join('')}</select></label><label class="full">Comment<textarea id="comment"></textarea></label></div>`,()=>{log(type,id,'Comment Added','','',val('comment'),{commentType:val('commentType'),impact:val('impact')}); closeModal(); render(); openLog(type,id);});}
-function deleteEntity(type,id){if(!confirm(`Delete this ${type}?`))return; const map={Project:['projects','projectId'],Stream:['streams','streamId'],Phase:['phases','phaseId'],Task:['tasks','taskId'],Team:['teams','teamId'],Person:['people','personId'],OOO:['ooo','oooId'],RAID:['raid','raidId']}; const [arr,key]=map[type]; state[arr]=state[arr].filter(x=>x[key]!==id); log(type,id,'Deleted',nameBy(type,id),'','Item deleted.'); render();}
-function exportData(){const data=JSON.stringify(state,null,2); const blob=new Blob([data],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`dailyops_tracker_${new Date().toISOString().replace(/[:.]/g,'-')}.json`; a.click(); URL.revokeObjectURL(url);}
-function importData(e){const file=e.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>{try{const imported=JSON.parse(reader.result); state={...defaultState(),...imported}; save(); render(); alert('Import complete.')}catch(err){alert('Invalid JSON file.')}}; reader.readAsText(file);}
-function resetData(){if(confirm('Reset all tracker data in this browser? Export first if needed.')){state=seedState(); render();}}
-function saveSettings(){state.settings.userName=val('settingsUser'); state.settings.escalationRules.l1OverdueDays=Number(val('settingsL1')||1); state.settings.escalationRules.l2OverdueDays=Number(val('settingsL2')||3); save(); render();}
-render();
-</script>
+  <main class="container">
+    <section class="top-grid">
+      <div class="metric">
+        <div class="metric-label">Open Tasks</div>
+        <div class="metric-value" id="metricOpenTasks">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">In Progress</div>
+        <div class="metric-value" id="metricInProgress">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">At Risk / Blocked</div>
+        <div class="metric-value" id="metricRisks">0</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Changed End Dates</div>
+        <div class="metric-value" id="metricDateChanges">0</div>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" onclick="showTab('scrum')">Daily Scrum</button>
+      <button class="tab" onclick="showTab('tasks')">Tasks</button>
+      <button class="tab" onclick="showTab('streams')">Projects & Streams</button>
+      <button class="tab" onclick="showTab('teams')">Teams</button>
+      <button class="tab" onclick="showTab('risks')">Risks / OOO</button>
+    </nav>
+
+    <section id="scrum" class="panel active">
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Daily Scrum View</h2>
+            <p>Filter by project, stream, team, owner, status, and due date.</p>
+          </div>
+          <button onclick="renderAll()">Refresh</button>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Project</label>
+            <select id="filterProject" onchange="renderAll()"></select>
+          </div>
+          <div class="field">
+            <label>Stream</label>
+            <select id="filterStream" onchange="renderAll()"></select>
+          </div>
+          <div class="field">
+            <label>Team</label>
+            <select id="filterTeam" onchange="renderAll()"></select>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="filterStatus" onchange="renderAll()">
+              <option value="">All</option>
+              <option>Not Started</option>
+              <option>In Progress</option>
+              <option>Blocked</option>
+              <option>Done</option>
+              <option>Deferred</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Action Items</h2>
+            <p>Use the comments button to see the full status/comment history.</p>
+          </div>
+        </div>
+        <div id="scrumTable"></div>
+      </div>
+    </section>
+
+    <section id="tasks" class="panel">
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Add / Update Task</h2>
+            <p>Owner Person now includes the team Primary Lead plus active team members.</p>
+          </div>
+        </div>
+
+        <input type="hidden" id="taskId" />
+        <div class="form-grid">
+          <div class="field">
+            <label>Project</label>
+            <select id="taskProject" onchange="refreshTaskDependentDropdowns()"></select>
+          </div>
+          <div class="field">
+            <label>Stream</label>
+            <select id="taskStream" onchange="refreshTaskPhaseDropdown()"></select>
+          </div>
+          <div class="field">
+            <label>Phase</label>
+            <select id="taskPhase"></select>
+          </div>
+          <div class="field">
+            <label>Owner Team</label>
+            <select id="taskOwnerTeam" onchange="refreshOwnerPeopleDropdown('taskOwnerTeam','taskOwnerPerson')"></select>
+          </div>
+          <div class="field">
+            <label>Owner Person</label>
+            <select id="taskOwnerPerson"></select>
+          </div>
+          <div class="field">
+            <label>Priority</label>
+            <select id="taskPriority">
+              <option>High</option>
+              <option selected>Medium</option>
+              <option>Low</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="taskStatus">
+              <option>Not Started</option>
+              <option>In Progress</option>
+              <option>Blocked</option>
+              <option>Done</option>
+              <option>Deferred</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Dependency Task</label>
+            <select id="taskDependency"></select>
+          </div>
+          <div class="field">
+            <label>Planned Start</label>
+            <input type="date" id="taskPlannedStart" />
+          </div>
+          <div class="field">
+            <label>Planned End</label>
+            <input type="date" id="taskPlannedEnd" />
+          </div>
+          <div class="field">
+            <label>Actual Start</label>
+            <input type="date" id="taskActualStart" readonly />
+          </div>
+          <div class="field">
+            <label>Actual End</label>
+            <input type="date" id="taskActualEnd" readonly />
+          </div>
+          <div class="field full">
+            <label>Task Name</label>
+            <input type="text" id="taskName" placeholder="Enter task/action item" />
+          </div>
+          <div class="field full">
+            <label>Status / Comment</label>
+            <textarea id="taskComment" placeholder="Add latest update, blocker, dependency, or decision"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button onclick="saveTask()">Save Task</button>
+          <button class="secondary" onclick="clearTaskForm()">Clear</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>All Tasks</h2>
+            <p>Actual Start auto-populates when moved to In Progress. Actual End auto-populates when Done or Deferred.</p>
+          </div>
+        </div>
+        <div id="tasksTable"></div>
+      </div>
+    </section>
+
+    <section id="streams" class="panel">
+      <div class="section-split">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Projects / Streams / Phases</h2>
+              <p>Each project can have multiple streams, and each stream can have independent phases.</p>
+            </div>
+          </div>
+
+          <div class="form-grid two">
+            <div class="field">
+              <label>Project Name</label>
+              <input id="projectName" placeholder="e.g., Lundbeck iCompass" />
+            </div>
+            <div class="field">
+              <label>Project End Date</label>
+              <input id="projectEndDate" type="date" />
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="saveProject()">Add Project</button>
+          </div>
+
+          <hr style="border:0;border-top:1px solid var(--border);margin:14px 0;"/>
+
+          <div class="form-grid three">
+            <div class="field">
+              <label>Project</label>
+              <select id="streamProject"></select>
+            </div>
+            <div class="field">
+              <label>Stream Name</label>
+              <input id="streamName" placeholder="e.g., Reporting Build" />
+            </div>
+            <div class="field">
+              <label>Stream End Date</label>
+              <input id="streamEndDate" type="date" />
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="saveStream()">Add Stream</button>
+          </div>
+
+          <hr style="border:0;border-top:1px solid var(--border);margin:14px 0;"/>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Project</label>
+              <select id="phaseProject" onchange="refreshPhaseStreamDropdown()"></select>
+            </div>
+            <div class="field">
+              <label>Stream</label>
+              <select id="phaseStream"></select>
+            </div>
+            <div class="field">
+              <label>Phase</label>
+              <select id="phaseName">
+                <option>Requirements</option>
+                <option>Design</option>
+                <option>Build</option>
+                <option>QA</option>
+                <option>UAT</option>
+                <option>Deployment</option>
+                <option>Hypercare</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Phase End Date</label>
+              <input id="phaseEndDate" type="date" />
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="savePhase()">Add Phase</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Date Change Log</h2>
+              <p>Tracks project, stream, phase, and task end-date changes.</p>
+            </div>
+          </div>
+          <div id="dateChangeLog"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Hierarchy</h2>
+            <p>Current project / stream / phase setup.</p>
+          </div>
+        </div>
+        <div id="hierarchyTable"></div>
+      </div>
+    </section>
+
+    <section id="teams" class="panel">
+      <div class="section-split">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Configure Teams</h2>
+              <p>Primary Lead is now treated as an assignable owner automatically.</p>
+            </div>
+          </div>
+
+          <input type="hidden" id="teamId" />
+          <div class="form-grid two">
+            <div class="field">
+              <label>Team Name</label>
+              <input id="teamName" placeholder="e.g., MDM, CDW, Reporting" />
+            </div>
+            <div class="field">
+              <label>Primary Lead</label>
+              <input id="teamPrimaryLead" placeholder="e.g., Jane Doe" />
+            </div>
+            <div class="field">
+              <label>Team Members</label>
+              <textarea id="teamMembers" placeholder="Comma-separated names, e.g., Asha, Ravi, Nick"></textarea>
+            </div>
+            <div class="field">
+              <label>Escalation Contacts</label>
+              <textarea id="teamEscalations" placeholder="Comma-separated names or emails"></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="saveTeam()">Save Team</button>
+            <button class="secondary" onclick="clearTeamForm()">Clear</button>
+          </div>
+
+          <div class="footer-note">
+            Fix applied: Owner Person dropdown uses a unique active list built from <strong>Primary Lead + Team Members</strong>.
+            The lead appears even when not duplicated in the member list.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Owner Dropdown Preview</h2>
+              <p>Select a team to confirm the Primary Lead appears.</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Team</label>
+              <select id="ownerPreviewTeam" onchange="refreshOwnerPeopleDropdown('ownerPreviewTeam','ownerPreviewPerson')"></select>
+            </div>
+            <div class="field">
+              <label>Owner Person</label>
+              <select id="ownerPreviewPerson"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Configured Teams</h2>
+            <p>Manage team members, primary leads, and escalation contacts.</p>
+          </div>
+        </div>
+        <div id="teamsList"></div>
+      </div>
+    </section>
+
+    <section id="risks" class="panel">
+      <div class="section-split">
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Risks / Blockers</h2>
+              <p>Track risks for daily scrum and escalation.</p>
+            </div>
+          </div>
+          <div class="form-grid two">
+            <div class="field">
+              <label>Risk Title</label>
+              <input id="riskTitle" placeholder="e.g., Delayed source extract" />
+            </div>
+            <div class="field">
+              <label>Severity</label>
+              <select id="riskSeverity">
+                <option>High</option>
+                <option selected>Medium</option>
+                <option>Low</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Owner Team</label>
+              <select id="riskTeam"></select>
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <select id="riskStatus">
+                <option>Open</option>
+                <option>Mitigating</option>
+                <option>Closed</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label>Mitigation / Notes</label>
+              <textarea id="riskNotes"></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="saveRisk()">Save Risk</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <div>
+              <h2>Out of Office</h2>
+              <p>Track planned OOO for owner availability.</p>
+            </div>
+          </div>
+          <div class="form-grid two">
+            <div class="field">
+              <label>Person</label>
+              <input id="oooPerson" placeholder="Name" />
+            </div>
+            <div class="field">
+              <label>Team</label>
+              <select id="oooTeam"></select>
+            </div>
+            <div class="field">
+              <label>From</label>
+              <input id="oooFrom" type="date" />
+            </div>
+            <div class="field">
+              <label>To</label>
+              <input id="oooTo" type="date" />
+            </div>
+            <div class="field full">
+              <label>Backup / Notes</label>
+              <textarea id="oooNotes"></textarea>
+            </div>
+          </div>
+          <div class="actions">
+            <button onclick="saveOOO()">Save OOO</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div>
+            <h2>Risk and OOO Register</h2>
+          </div>
+        </div>
+        <div id="riskOooTable"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="commentModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h3 id="commentModalTitle">Comments</h3>
+          <div class="muted small" id="commentModalSubTitle"></div>
+        </div>
+        <button class="secondary" onclick="closeCommentModal()">Close</button>
+      </div>
+      <div class="comment-log" id="commentLog"></div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "dailyProjectActionTracker_v2";
+
+    const app = {
+      projects: [],
+      streams: [],
+      phases: [],
+      teams: [],
+      tasks: [],
+      risks: [],
+      ooo: [],
+      dateChanges: []
+    };
+
+    function uid(prefix) {
+      return prefix + "_" + Math.random().toString(36).slice(2, 10) + "_" + Date.now().toString(36);
+    }
+
+    function todayISO() {
+      return new Date().toISOString().slice(0,10);
+    }
+
+    function parseList(value) {
+      return (value || "")
+        .split(",")
+        .map(v => v.trim())
+        .filter(Boolean)
+        .map(name => ({ id: stablePersonId(name), name, active: true }));
+    }
+
+    function stablePersonId(name) {
+      return "person_" + String(name || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "_")
+        .replace(/^_+|_+$/g, "");
+    }
+
+    function removeDuplicatePeople(people) {
+      const seen = new Set();
+      const output = [];
+
+      for (const person of people || []) {
+        if (!person) continue;
+
+        const normalizedName = String(person.name || person.email || "").trim();
+        if (!normalizedName) continue;
+
+        const key = String(person.id || person.email || normalizedName).trim().toLowerCase();
+
+        if (!seen.has(key)) {
+          seen.add(key);
+          output.push({
+            id: person.id || stablePersonId(normalizedName),
+            name: normalizedName,
+            email: person.email || "",
+            active: person.active !== false
+          });
+        }
+      }
+
+      return output;
+    }
+
+    /*
+      IMPORTANT FIX:
+      Owner Person is populated from Primary Lead + Team Members.
+      This ensures the Primary Lead appears even if not manually added to Team Members.
+    */
+    function getAssignablePeopleForTeam(teamId) {
+      const team = app.teams.find(t => t.id === teamId);
+      if (!team) return [];
+
+      const primaryLead = team.primaryLead
+        ? [{ id: stablePersonId(team.primaryLead), name: team.primaryLead, active: true, isPrimaryLead: true }]
+        : [];
+
+      const members = team.members || [];
+      const combined = [...primaryLead, ...members];
+
+      return removeDuplicatePeople(combined).filter(p => p.active !== false);
+    }
+
+    function saveToStorage() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+    }
+
+    function loadFromStorage() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const loaded = JSON.parse(raw);
+        Object.assign(app, {
+          projects: loaded.projects || [],
+          streams: loaded.streams || [],
+          phases: loaded.phases || [],
+          teams: loaded.teams || [],
+          tasks: loaded.tasks || [],
+          risks: loaded.risks || [],
+          ooo: loaded.ooo || [],
+          dateChanges: loaded.dateChanges || []
+        });
+      } catch (e) {
+        console.error("Could not load tracker data", e);
+      }
+    }
+
+    function showTab(id) {
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+      event.target.classList.add("active");
+      document.getElementById(id).classList.add("active");
+      renderAll();
+    }
+
+    function optionHtml(items, selected = "", includeAll = false, allLabel = "All") {
+      let html = includeAll ? `<option value="">${allLabel}</option>` : "";
+      for (const item of items) {
+        const value = item.id || item.value || item.name;
+        const label = item.name || item.label || item.value;
+        html += `<option value="${escapeHtml(value)}" ${String(value) === String(selected) ? "selected" : ""}>${escapeHtml(label)}</option>`;
+      }
+      return html;
+    }
+
+    function refreshDropdowns() {
+      const projectOptions = optionHtml(app.projects);
+      const projectOptionsAll = optionHtml(app.projects, "", true);
+
+      setOptions("taskProject", projectOptions);
+      setOptions("streamProject", projectOptions);
+      setOptions("phaseProject", projectOptions);
+      setOptions("filterProject", projectOptionsAll);
+
+      const teamOptions = optionHtml(app.teams);
+      const teamOptionsAll = optionHtml(app.teams, "", true);
+
+      setOptions("taskOwnerTeam", teamOptions);
+      setOptions("riskTeam", teamOptions);
+      setOptions("oooTeam", teamOptions);
+      setOptions("filterTeam", teamOptionsAll);
+      setOptions("ownerPreviewTeam", teamOptions);
+
+      refreshTaskDependentDropdowns();
+      refreshPhaseStreamDropdown();
+      refreshOwnerPeopleDropdown("taskOwnerTeam", "taskOwnerPerson");
+      refreshOwnerPeopleDropdown("ownerPreviewTeam", "ownerPreviewPerson");
+
+      const dependencyOptions = optionHtml(app.tasks.map(t => ({ id: t.id, name: t.name })), "", true, "None");
+      setOptions("taskDependency", dependencyOptions);
+
+      refreshFilterStreamDropdown();
+    }
+
+    function setOptions(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html || "";
+    }
+
+    function refreshTaskDependentDropdowns() {
+      const projectId = document.getElementById("taskProject").value;
+      const streams = app.streams.filter(s => s.projectId === projectId);
+      setOptions("taskStream", optionHtml(streams));
+      refreshTaskPhaseDropdown();
+    }
+
+    function refreshTaskPhaseDropdown() {
+      const streamId = document.getElementById("taskStream").value;
+      const phases = app.phases.filter(p => p.streamId === streamId);
+      setOptions("taskPhase", optionHtml(phases.map(p => ({ id: p.id, name: p.name }))));
+    }
+
+    function refreshPhaseStreamDropdown() {
+      const projectId = document.getElementById("phaseProject").value;
+      const streams = app.streams.filter(s => s.projectId === projectId);
+      setOptions("phaseStream", optionHtml(streams));
+    }
+
+    function refreshFilterStreamDropdown() {
+      const projectId = document.getElementById("filterProject").value;
+      const streams = projectId ? app.streams.filter(s => s.projectId === projectId) : app.streams;
+      setOptions("filterStream", optionHtml(streams, "", true));
+    }
+
+    function refreshOwnerPeopleDropdown(teamSelectId, personSelectId, preserveValue = true) {
+      const teamId = document.getElementById(teamSelectId)?.value || "";
+      const personEl = document.getElementById(personSelectId);
+      if (!personEl) return;
+
+      const previousValue = preserveValue ? personEl.value : "";
+      const people = getAssignablePeopleForTeam(teamId);
+
+      personEl.innerHTML = optionHtml(people.map(p => ({
+        id: p.id,
+        name: p.name
+      })));
+
+      if (previousValue && people.some(p => p.id === previousValue)) {
+        personEl.value = previousValue;
+      } else if (people.length > 0) {
+        personEl.value = people[0].id;
+      } else {
+        personEl.innerHTML = `<option value="">No people configured</option>`;
+      }
+    }
+
+    function saveProject() {
+      const name = document.getElementById("projectName").value.trim();
+      const endDate = document.getElementById("projectEndDate").value;
+      if (!name) return alert("Project name is required.");
+
+      app.projects.push({
+        id: uid("project"),
+        name,
+        plannedEnd: endDate,
+        createdAt: new Date().toISOString()
+      });
+
+      document.getElementById("projectName").value = "";
+      document.getElementById("projectEndDate").value = "";
+      persistRender();
+    }
+
+    function saveStream() {
+      const projectId = document.getElementById("streamProject").value;
+      const name = document.getElementById("streamName").value.trim();
+      const endDate = document.getElementById("streamEndDate").value;
+      if (!projectId || !name) return alert("Project and stream name are required.");
+
+      app.streams.push({
+        id: uid("stream"),
+        projectId,
+        name,
+        plannedEnd: endDate,
+        createdAt: new Date().toISOString()
+      });
+
+      document.getElementById("streamName").value = "";
+      document.getElementById("streamEndDate").value = "";
+      persistRender();
+    }
+
+    function savePhase() {
+      const projectId = document.getElementById("phaseProject").value;
+      const streamId = document.getElementById("phaseStream").value;
+      const name = document.getElementById("phaseName").value;
+      const endDate = document.getElementById("phaseEndDate").value;
+      if (!projectId || !streamId || !name) return alert("Project, stream, and phase are required.");
+
+      app.phases.push({
+        id: uid("phase"),
+        projectId,
+        streamId,
+        name,
+        plannedEnd: endDate,
+        createdAt: new Date().toISOString()
+      });
+
+      document.getElementById("phaseEndDate").value = "";
+      persistRender();
+    }
+
+    function saveTeam() {
+      const id = document.getElementById("teamId").value || uid("team");
+      const name = document.getElementById("teamName").value.trim();
+      const primaryLead = document.getElementById("teamPrimaryLead").value.trim();
+      const members = parseList(document.getElementById("teamMembers").value);
+      const escalations = parseList(document.getElementById("teamEscalations").value);
+
+      if (!name) return alert("Team name is required.");
+
+      const team = { id, name, primaryLead, members, escalations, updatedAt: new Date().toISOString() };
+      const existingIndex = app.teams.findIndex(t => t.id === id);
+
+      if (existingIndex >= 0) {
+        app.teams[existingIndex] = team;
+      } else {
+        app.teams.push(team);
+      }
+
+      clearTeamForm();
+      persistRender();
+    }
+
+    function editTeam(id) {
+      const team = app.teams.find(t => t.id === id);
+      if (!team) return;
+
+      document.getElementById("teamId").value = team.id;
+      document.getElementById("teamName").value = team.name || "";
+      document.getElementById("teamPrimaryLead").value = team.primaryLead || "";
+      document.getElementById("teamMembers").value = (team.members || []).map(m => m.name).join(", ");
+      document.getElementById("teamEscalations").value = (team.escalations || []).map(m => m.name).join(", ");
+      showSpecificTab("teams");
+    }
+
+    function deleteTeam(id) {
+      if (!confirm("Delete this team? Existing tasks will retain the team id but dropdown references may be blank.")) return;
+      app.teams = app.teams.filter(t => t.id !== id);
+      persistRender();
+    }
+
+    function clearTeamForm() {
+      ["teamId","teamName","teamPrimaryLead","teamMembers","teamEscalations"].forEach(id => document.getElementById(id).value = "");
+    }
+
+    function saveTask() {
+      const id = document.getElementById("taskId").value || uid("task");
+      const existing = app.tasks.find(t => t.id === id);
+      const status = document.getElementById("taskStatus").value;
+      const plannedEnd = document.getElementById("taskPlannedEnd").value;
+      const comment = document.getElementById("taskComment").value.trim();
+
+      const currentActualStart = document.getElementById("taskActualStart").value || existing?.actualStart || "";
+      const currentActualEnd = document.getElementById("taskActualEnd").value || existing?.actualEnd || "";
+
+      let actualStart = currentActualStart;
+      let actualEnd = currentActualEnd;
+
+      if (status === "In Progress" && !actualStart) actualStart = todayISO();
+      if ((status === "Done" || status === "Deferred") && !actualEnd) {
+        actualEnd = todayISO();
+        if (!actualStart) actualStart = todayISO();
+      }
+
+      if (existing && existing.plannedEnd && plannedEnd && existing.plannedEnd !== plannedEnd) {
+        app.dateChanges.push({
+          id: uid("datechange"),
+          entityType: "Task",
+          entityName: existing.name,
+          oldDate: existing.plannedEnd,
+          newDate: plannedEnd,
+          changedAt: new Date().toISOString()
+        });
+      }
+
+      const task = {
+        id,
+        projectId: document.getElementById("taskProject").value,
+        streamId: document.getElementById("taskStream").value,
+        phaseId: document.getElementById("taskPhase").value,
+        ownerTeamId: document.getElementById("taskOwnerTeam").value,
+        ownerPersonId: document.getElementById("taskOwnerPerson").value,
+        priority: document.getElementById("taskPriority").value,
+        status,
+        dependencyTaskId: document.getElementById("taskDependency").value,
+        plannedStart: document.getElementById("taskPlannedStart").value,
+        plannedEnd,
+        actualStart,
+        actualEnd,
+        name: document.getElementById("taskName").value.trim(),
+        comments: existing?.comments || [],
+        createdAt: existing?.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!task.name) return alert("Task name is required.");
+
+      if (comment) {
+        task.comments.push({
+          id: uid("comment"),
+          status,
+          comment,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      const existingIndex = app.tasks.findIndex(t => t.id === id);
+      if (existingIndex >= 0) {
+        app.tasks[existingIndex] = task;
+      } else {
+        app.tasks.push(task);
+      }
+
+      clearTaskForm();
+      persistRender();
+    }
+
+    function editTask(id) {
+      const task = app.tasks.find(t => t.id === id);
+      if (!task) return;
+
+      document.getElementById("taskId").value = task.id;
+      document.getElementById("taskProject").value = task.projectId || "";
+      refreshTaskDependentDropdowns();
+      document.getElementById("taskStream").value = task.streamId || "";
+      refreshTaskPhaseDropdown();
+      document.getElementById("taskPhase").value = task.phaseId || "";
+      document.getElementById("taskOwnerTeam").value = task.ownerTeamId || "";
+      refreshOwnerPeopleDropdown("taskOwnerTeam", "taskOwnerPerson", false);
+
+      const people = getAssignablePeopleForTeam(task.ownerTeamId);
+      if (people.some(p => p.id === task.ownerPersonId)) {
+        document.getElementById("taskOwnerPerson").value = task.ownerPersonId;
+      }
+
+      document.getElementById("taskPriority").value = task.priority || "Medium";
+      document.getElementById("taskStatus").value = task.status || "Not Started";
+      document.getElementById("taskDependency").value = task.dependencyTaskId || "";
+      document.getElementById("taskPlannedStart").value = task.plannedStart || "";
+      document.getElementById("taskPlannedEnd").value = task.plannedEnd || "";
+      document.getElementById("taskActualStart").value = task.actualStart || "";
+      document.getElementById("taskActualEnd").value = task.actualEnd || "";
+      document.getElementById("taskName").value = task.name || "";
+      document.getElementById("taskComment").value = "";
+
+      showSpecificTab("tasks");
+    }
+
+    function deleteTask(id) {
+      if (!confirm("Delete this task?")) return;
+      app.tasks = app.tasks.filter(t => t.id !== id);
+      persistRender();
+    }
+
+    function clearTaskForm() {
+      [
+        "taskId","taskName","taskComment","taskPlannedStart","taskPlannedEnd","taskActualStart","taskActualEnd"
+      ].forEach(id => document.getElementById(id).value = "");
+
+      document.getElementById("taskPriority").value = "Medium";
+      document.getElementById("taskStatus").value = "Not Started";
+      refreshDropdowns();
+    }
+
+    function saveRisk() {
+      const title = document.getElementById("riskTitle").value.trim();
+      if (!title) return alert("Risk title is required.");
+
+      app.risks.push({
+        id: uid("risk"),
+        title,
+        severity: document.getElementById("riskSeverity").value,
+        teamId: document.getElementById("riskTeam").value,
+        status: document.getElementById("riskStatus").value,
+        notes: document.getElementById("riskNotes").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      ["riskTitle","riskNotes"].forEach(id => document.getElementById(id).value = "");
+      persistRender();
+    }
+
+    function saveOOO() {
+      const person = document.getElementById("oooPerson").value.trim();
+      if (!person) return alert("Person is required.");
+
+      app.ooo.push({
+        id: uid("ooo"),
+        person,
+        teamId: document.getElementById("oooTeam").value,
+        from: document.getElementById("oooFrom").value,
+        to: document.getElementById("oooTo").value,
+        notes: document.getElementById("oooNotes").value.trim(),
+        createdAt: new Date().toISOString()
+      });
+
+      ["oooPerson","oooFrom","oooTo","oooNotes"].forEach(id => document.getElementById(id).value = "");
+      persistRender();
+    }
+
+    function renderAll() {
+      refreshDropdowns();
+      renderMetrics();
+      renderScrumTable();
+      renderTasksTable();
+      renderTeamsList();
+      renderHierarchyTable();
+      renderDateChangeLog();
+      renderRiskOooTable();
+    }
+
+    function persistRender() {
+      saveToStorage();
+      renderAll();
+    }
+
+    function renderMetrics() {
+      const openTasks = app.tasks.filter(t => !["Done", "Deferred"].includes(t.status)).length;
+      const inProgress = app.tasks.filter(t => t.status === "In Progress").length;
+      const risks = app.tasks.filter(t => t.status === "Blocked").length + app.risks.filter(r => r.status !== "Closed").length;
+      const dateChanges = app.dateChanges.length;
+
+      document.getElementById("metricOpenTasks").textContent = openTasks;
+      document.getElementById("metricInProgress").textContent = inProgress;
+      document.getElementById("metricRisks").textContent = risks;
+      document.getElementById("metricDateChanges").textContent = dateChanges;
+    }
+
+    function getProjectName(id) {
+      return app.projects.find(p => p.id === id)?.name || "";
+    }
+
+    function getStreamName(id) {
+      return app.streams.find(s => s.id === id)?.name || "";
+    }
+
+    function getPhaseName(id) {
+      return app.phases.find(p => p.id === id)?.name || "";
+    }
+
+    function getTeamName(id) {
+      return app.teams.find(t => t.id === id)?.name || "";
+    }
+
+    function getPersonName(teamId, personId) {
+      return getAssignablePeopleForTeam(teamId).find(p => p.id === personId)?.name || "";
+    }
+
+    function statusPill(status) {
+      const cls = {
+        "Not Started": "status-not-started",
+        "In Progress": "status-in-progress",
+        "Blocked": "status-blocked",
+        "Done": "status-done",
+        "Deferred": "status-deferred"
+      }[status] || "status-not-started";
+
+      return `<span class="pill ${cls}">${escapeHtml(status || "")}</span>`;
+    }
+
+    function priorityPill(priority) {
+      const cls = {
+        "High": "priority-high",
+        "Medium": "priority-medium",
+        "Low": "priority-low"
+      }[priority] || "priority-medium";
+
+      return `<span class="pill ${cls}">${escapeHtml(priority || "")}</span>`;
+    }
+
+    function renderScrumTable() {
+      const projectId = document.getElementById("filterProject").value;
+      const streamId = document.getElementById("filterStream").value;
+      const teamId = document.getElementById("filterTeam").value;
+      const status = document.getElementById("filterStatus").value;
+
+      let rows = app.tasks.slice();
+
+      if (projectId) rows = rows.filter(t => t.projectId === projectId);
+      if (streamId) rows = rows.filter(t => t.streamId === streamId);
+      if (teamId) rows = rows.filter(t => t.ownerTeamId === teamId);
+      if (status) rows = rows.filter(t => t.status === status);
+
+      rows.sort((a,b) => {
+        const ad = a.plannedEnd || "9999-12-31";
+        const bd = b.plannedEnd || "9999-12-31";
+        return ad.localeCompare(bd);
+      });
+
+      document.getElementById("scrumTable").innerHTML = taskTableHtml(rows);
+    }
+
+    function renderTasksTable() {
+      document.getElementById("tasksTable").innerHTML = taskTableHtml(app.tasks);
+    }
+
+    function taskTableHtml(rows) {
+      if (!rows.length) return `<div class="empty">No tasks added yet.</div>`;
+
+      return `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Project / Stream / Phase</th>
+                <th>Owner Team</th>
+                <th>Owner Person</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Planned</th>
+                <th>Actual</th>
+                <th>Dependency</th>
+                <th>Latest Comment</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(t => {
+                const latest = (t.comments || []).slice(-1)[0];
+                const dependency = app.tasks.find(x => x.id === t.dependencyTaskId);
+                return `
+                  <tr>
+                    <td><strong>${escapeHtml(t.name)}</strong></td>
+                    <td>
+                      ${escapeHtml(getProjectName(t.projectId))}<br/>
+                      <span class="muted">${escapeHtml(getStreamName(t.streamId))} • ${escapeHtml(getPhaseName(t.phaseId))}</span>
+                    </td>
+                    <td>${escapeHtml(getTeamName(t.ownerTeamId))}</td>
+                    <td>${escapeHtml(getPersonName(t.ownerTeamId, t.ownerPersonId))}</td>
+                    <td>${priorityPill(t.priority)}</td>
+                    <td>${statusPill(t.status)}</td>
+                    <td>
+                      <span class="muted">Start:</span> ${escapeHtml(t.plannedStart || "-")}<br/>
+                      <span class="muted">End:</span> ${escapeHtml(t.plannedEnd || "-")}<br/>
+                      <span class="muted">Dur:</span> ${plannedDuration(t)}
+                    </td>
+                    <td>
+                      <span class="muted">Start:</span> ${escapeHtml(t.actualStart || "-")}<br/>
+                      <span class="muted">End:</span> ${escapeHtml(t.actualEnd || "-")}<br/>
+                      <span class="muted">Dur:</span> ${actualDuration(t)}
+                    </td>
+                    <td>${dependency ? escapeHtml(dependency.name) : "-"}</td>
+                    <td>${latest ? escapeHtml(latest.comment) : "<span class='muted'>No comments</span>"}</td>
+                    <td>
+                      <button class="tiny secondary" onclick="editTask('${t.id}')">Edit</button>
+                      <button class="tiny" onclick="openCommentModal('${t.id}')">Comments</button>
+                      <button class="tiny danger" onclick="deleteTask('${t.id}')">Delete</button>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function plannedDuration(t) {
+      return durationDays(t.plannedStart, t.plannedEnd);
+    }
+
+    function actualDuration(t) {
+      return durationDays(t.actualStart, t.actualEnd);
+    }
+
+    function durationDays(start, end) {
+      if (!start || !end) return "-";
+      const s = new Date(start);
+      const e = new Date(end);
+      if (Number.isNaN(s) || Number.isNaN(e)) return "-";
+      const days = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
+      return days > 0 ? `${days}d` : "-";
+    }
+
+    function renderTeamsList() {
+      const container = document.getElementById("teamsList");
+      if (!app.teams.length) {
+        container.innerHTML = `<div class="empty">No teams configured yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = app.teams.map(team => {
+        const assignable = getAssignablePeopleForTeam(team.id);
+        return `
+          <div class="team-card">
+            <div class="team-header">
+              <div>
+                <div class="team-name">${escapeHtml(team.name)}</div>
+                <div class="small muted">Escalations: ${(team.escalations || []).map(e => escapeHtml(e.name)).join(", ") || "-"}</div>
+              </div>
+              <div>
+                ${team.primaryLead ? `<span class="lead-chip">Primary Lead: ${escapeHtml(team.primaryLead)}</span>` : ""}
+                <button class="tiny secondary" onclick="editTeam('${team.id}')">Edit</button>
+                <button class="tiny danger" onclick="deleteTeam('${team.id}')">Delete</button>
+              </div>
+            </div>
+            <div class="member-list">
+              ${assignable.map(p => `<span class="member-chip">${escapeHtml(p.name)}${stablePersonId(team.primaryLead) === p.id ? " • Lead" : ""}</span>`).join("") || "<span class='muted small'>No assignable people</span>"}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderHierarchyTable() {
+      if (!app.projects.length) {
+        document.getElementById("hierarchyTable").innerHTML = `<div class="empty">No projects configured yet.</div>`;
+        return;
+      }
+
+      const rows = [];
+
+      for (const project of app.projects) {
+        const streams = app.streams.filter(s => s.projectId === project.id);
+        if (!streams.length) {
+          rows.push({ project: project.name, stream: "-", phase: "-", endDate: project.plannedEnd || "-" });
+        }
+        for (const stream of streams) {
+          const phases = app.phases.filter(p => p.streamId === stream.id);
+          if (!phases.length) {
+            rows.push({ project: project.name, stream: stream.name, phase: "-", endDate: stream.plannedEnd || "-" });
+          }
+          for (const phase of phases) {
+            rows.push({ project: project.name, stream: stream.name, phase: phase.name, endDate: phase.plannedEnd || "-" });
+          }
+        }
+      }
+
+      document.getElementById("hierarchyTable").innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Project</th><th>Stream</th><th>Phase</th><th>Planned End</th></tr>
+            </thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${escapeHtml(r.project)}</td>
+                  <td>${escapeHtml(r.stream)}</td>
+                  <td>${escapeHtml(r.phase)}</td>
+                  <td>${escapeHtml(r.endDate)}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderDateChangeLog() {
+      const container = document.getElementById("dateChangeLog");
+      if (!app.dateChanges.length) {
+        container.innerHTML = `<div class="empty">No end-date changes tracked yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="comment-log">
+          ${app.dateChanges.slice().reverse().map(d => `
+            <div class="comment-item">
+              <div class="comment-meta">${escapeHtml(d.entityType)} • ${new Date(d.changedAt).toLocaleString()}</div>
+              <strong>${escapeHtml(d.entityName)}</strong><br/>
+              <span class="muted">Old:</span> ${escapeHtml(d.oldDate || "-")} →
+              <span class="muted">New:</span> ${escapeHtml(d.newDate || "-")}
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderRiskOooTable() {
+      const riskRows = app.risks.map(r => `
+        <tr>
+          <td>Risk</td>
+          <td><strong>${escapeHtml(r.title)}</strong></td>
+          <td>${escapeHtml(getTeamName(r.teamId))}</td>
+          <td>${priorityPill(r.severity)}</td>
+          <td>${escapeHtml(r.status)}</td>
+          <td>${escapeHtml(r.notes || "-")}</td>
+        </tr>
+      `).join("");
+
+      const oooRows = app.ooo.map(o => `
+        <tr>
+          <td>OOO</td>
+          <td><strong>${escapeHtml(o.person)}</strong></td>
+          <td>${escapeHtml(getTeamName(o.teamId))}</td>
+          <td>-</td>
+          <td>${escapeHtml(o.from || "-")} to ${escapeHtml(o.to || "-")}</td>
+          <td>${escapeHtml(o.notes || "-")}</td>
+        </tr>
+      `).join("");
+
+      if (!riskRows && !oooRows) {
+        document.getElementById("riskOooTable").innerHTML = `<div class="empty">No risks or OOO records yet.</div>`;
+        return;
+      }
+
+      document.getElementById("riskOooTable").innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Type</th><th>Item</th><th>Team</th><th>Severity</th><th>Status / Dates</th><th>Notes</th></tr>
+            </thead>
+            <tbody>${riskRows}${oooRows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function openCommentModal(taskId) {
+      const task = app.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      document.getElementById("commentModalTitle").textContent = task.name;
+      document.getElementById("commentModalSubTitle").textContent =
+        `${getProjectName(task.projectId)} • ${getStreamName(task.streamId)} • ${getTeamName(task.ownerTeamId)}`;
+
+      const comments = task.comments || [];
+      document.getElementById("commentLog").innerHTML = comments.length
+        ? comments.slice().reverse().map(c => `
+            <div class="comment-item">
+              <div class="comment-meta">${escapeHtml(c.status || "")} • ${new Date(c.createdAt).toLocaleString()}</div>
+              <div>${escapeHtml(c.comment)}</div>
+            </div>
+          `).join("")
+        : `<div class="empty">No comments captured yet.</div>`;
+
+      document.getElementById("commentModal").classList.add("active");
+    }
+
+    function closeCommentModal() {
+      document.getElementById("commentModal").classList.remove("active");
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(app, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0,19);
+      a.href = url;
+      a.download = `daily_project_action_tracker_${stamp}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const loaded = JSON.parse(e.target.result);
+          Object.assign(app, {
+            projects: loaded.projects || [],
+            streams: loaded.streams || [],
+            phases: loaded.phases || [],
+            teams: loaded.teams || [],
+            tasks: loaded.tasks || [],
+            risks: loaded.risks || [],
+            ooo: loaded.ooo || [],
+            dateChanges: loaded.dateChanges || []
+          });
+          persistRender();
+          alert("Import complete.");
+        } catch (err) {
+          alert("Invalid JSON file.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    function resetAll() {
+      if (!confirm("Reset all tracker data from this browser?")) return;
+      Object.assign(app, {
+        projects: [],
+        streams: [],
+        phases: [],
+        teams: [],
+        tasks: [],
+        risks: [],
+        ooo: [],
+        dateChanges: []
+      });
+      localStorage.removeItem(STORAGE_KEY);
+      renderAll();
+    }
+
+    function seedDemoData() {
+      if (!confirm("Load sample data? This will replace existing data.")) return;
+
+      const reportingTeam = {
+        id: uid("team"),
+        name: "Reporting",
+        primaryLead: "Sagar Suri",
+        members: parseList("Asha Mehta, Nick Brown"),
+        escalations: parseList("Program Lead, Delivery Manager")
+      };
+
+      const mdmTeam = {
+        id: uid("team"),
+        name: "MDM",
+        primaryLead: "Priya Shah",
+        members: parseList("Rahul Jain, Komal Patel"),
+        escalations: parseList("MDM Director")
+      };
+
+      const project = {
+        id: uid("project"),
+        name: "iCompass Reporting Build",
+        plannedEnd: "2026-06-30",
+        createdAt: new Date().toISOString()
+      };
+
+      const stream = {
+        id: uid("stream"),
+        projectId: project.id,
+        name: "Dashboard Enhancements",
+        plannedEnd: "2026-06-21",
+        createdAt: new Date().toISOString()
+      };
+
+      const phase = {
+        id: uid("phase"),
+        projectId: project.id,
+        streamId: stream.id,
+        name: "Build",
+        plannedEnd: "2026-06-14",
+        createdAt: new Date().toISOString()
+      };
+
+      const task = {
+        id: uid("task"),
+        projectId: project.id,
+        streamId: stream.id,
+        phaseId: phase.id,
+        ownerTeamId: reportingTeam.id,
+        ownerPersonId: stablePersonId("Sagar Suri"),
+        priority: "High",
+        status: "In Progress",
+        dependencyTaskId: "",
+        plannedStart: "2026-05-28",
+        plannedEnd: "2026-06-03",
+        actualStart: todayISO(),
+        actualEnd: "",
+        name: "Finalize owner dropdown behavior",
+        comments: [{
+          id: uid("comment"),
+          status: "In Progress",
+          comment: "Primary Lead should appear even when not manually added as a team member.",
+          createdAt: new Date().toISOString()
+        }],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      Object.assign(app, {
+        projects: [project],
+        streams: [stream],
+        phases: [phase],
+        teams: [reportingTeam, mdmTeam],
+        tasks: [task],
+        risks: [],
+        ooo: [],
+        dateChanges: []
+      });
+
+      persistRender();
+    }
+
+    function showSpecificTab(id) {
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
+
+      const tabs = Array.from(document.querySelectorAll(".tab"));
+      const matching = tabs.find(btn => btn.getAttribute("onclick")?.includes("'" + id + "'"));
+      if (matching) matching.classList.add("active");
+
+      document.getElementById(id).classList.add("active");
+      renderAll();
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadFromStorage();
+      renderAll();
+    });
+  </script>
 </body>
 </html>
